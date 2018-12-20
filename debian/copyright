@@ -1,6 +1,6 @@
 Format: http://dep.debian.net/deps/dep5
 Upstream-Name: pho
-Source: https://github.com/dcharles525/pho
+Source: https://github.com/dcharles525/crypt
 
 Files: src/* data/* debian/*
 Copyright: 2018 David Johnson <dcharles525@gmail.com>

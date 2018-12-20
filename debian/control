@@ -1,4 +1,4 @@
-Source: com.github.dcharles525.pho
+Source: com.github.dcharles525.crypt
 Section: x11
 Maintainer: David Johnson <dcharles525@gmail.com>
 Build-Depends: meson,
@@ -15,9 +15,9 @@ Build-Depends: meson,
                libclutter-gtk-1.0-dev,
                libclutter-gst-3.0-dev
 Standards-Version: 3.9.3
-Homepage: https://github.com/dcharles525/pho
+Homepage: https://github.com/dcharles525/crypt
 
-Package: com.github.dcharles525.pho
+Package: com.github.dcharles525.crypt
 Architecture: any
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}
