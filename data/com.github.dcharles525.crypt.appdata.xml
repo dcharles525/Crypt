@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018 David Johnson <dcharles525@gmail.com> -->
+<component type="desktop">
+  <id>com.github.dcharles525.crypt</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>Crypt</name>
+  <summary>Crypt - Making the crypto market more cryptic!</summary>
+  <description>
+    <p>Ever want to view the crypto market in native Vala/GTK? Well look no more Crypt is all you
+    need to look at charts, prices, and other information while using less than 50mb of RAM.</p>
+    <ul>
+      <li>Data refreshes every minute!</li>
+      <li>View hourly, daily, and weekly charts!</li>
+      <li>View full coin information!</li>
+    </ul>
+  </description>
+  <provides>
+    <binary>com.github.dcharles525.crypt</binary>
+  </provides>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot2.png</image>
+    </screenshot>
+  </screenshots>
+
+  ​<releases>
+
+    <release version="1.0.0" date="2018-06-02">
+      <description>
+        <p>Initial release</p>
+      </description>
+    </release>
+
+  </releases>
+
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+
+  <developer_name>David Johnson</developer_name>
+  <url type="homepage">https://github.com/dcharles525/crypt</url>
+  <url type="bugtracker">https://github.com/dcharles525/crypt/issues</url>
+
+  <custom>
+    <value key="x-appcenter-color-primary">#00aeae</value>
+    <value key="x-appcenter-color-primary-text">#000</value>
+    <value key="x-appcenter-suggested-price">10</value>
+  </custom>
+</component>
