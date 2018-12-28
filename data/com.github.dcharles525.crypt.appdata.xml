@@ -5,10 +5,9 @@
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>Crypt</name>
-  <summary>Crypt - Making the crypto market more cryptic!</summary>
+  <summary>Making the crypto market more cryptic!</summary>
   <description>
-    <p>Ever want to view the crypto market in native Vala/GTK? Well look no more Crypt is all you
-    need to look at charts, prices, and other information while using less than 50mb of RAM.</p>
+    <p>Ever want to view the crypto market in native Vala/GTK? Well look no more Crypt is all you need to look at charts, prices, and other information while using less than 50mb of RAM.</p>
     <ul>
       <li>Data refreshes every minute!</li>
       <li>View hourly, daily, and weekly charts!</li>

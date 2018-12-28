@@ -2,11 +2,10 @@
 Name=Crypt
 GenericName=Crypto Market Watcher
 Comment=Crypto Trading Made Even More Cryptic!
-Categories=GNOME;GTK;Network;
+Categories=GNOME;GTK;Network;Finance;Office;
 Exec=com.github.dcharles525.crypt
 Icon=com.github.dcharles525.crypt
 Terminal=false
 Type=Application
 X-GNOME-Gettext-Domain=com.github.dcharles525.crypt
 Keywords=crypto;bitcoin;litecoin;coin;bit;trading;money;
-

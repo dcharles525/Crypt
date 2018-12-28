@@ -21,4 +21,4 @@ Package: com.github.dcharles525.crypt
 Architecture: any
 Priority: optional
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Pho for 4chan
+Description: Crypto Trading Made Even More Cryptic!
