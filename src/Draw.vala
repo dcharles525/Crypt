@@ -113,14 +113,13 @@ public class Draw: Gtk.Window{
 
   }
 
-  public Caroline drawSmallChartHour(string coinAbrv){
+  public Caroline drawSmallChartHour(string coinAbrv,int width,int height){
 
     var caroline = new Caroline();
 
     coin.getPriceDataHour(coinAbrv);
-    
-    caroline.width = 550;
-    caroline.height = 200;
+    caroline.width = width;
+    caroline.height = height;
     caroline.spreadY = 10;
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
