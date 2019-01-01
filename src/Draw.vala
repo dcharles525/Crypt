@@ -8,13 +8,13 @@ public class Draw: Gtk.Window{
 
   }
 
-  public Caroline drawLargeChartHour(string coinAbrv){
+  public Caroline drawLargeChartHour(string coinAbrv,int width,int height){
 
     var caroline = new Caroline();
 
     coin.getPriceDataHour(coinAbrv);
-    caroline.width = 1300-550;
-    caroline.height = (850/2)-20;
+    caroline.width = width;
+    caroline.height = height;
     caroline.spreadY = 10;
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
@@ -43,13 +43,13 @@ public class Draw: Gtk.Window{
 
   }
 
-  public Caroline drawLargeChartDay(string coinAbrv){
+  public Caroline drawLargeChartDay(string coinAbrv,int width,int height){
 
     var caroline = new Caroline();
 
     coin.getPriceDataDay(coinAbrv);
-    caroline.width = 1300-550;
-    caroline.height = (850/2)-20;
+    caroline.width = width;
+    caroline.height = height;
     caroline.spreadY = 10;
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
@@ -78,13 +78,13 @@ public class Draw: Gtk.Window{
 
   }
 
-  public Caroline drawLargeChartWeek(string coinAbrv){
+  public Caroline drawLargeChartWeek(string coinAbrv,int width,int height){
 
     var caroline = new Caroline();
 
     coin.getPriceDataWeek(coinAbrv);
-    caroline.width = 1300-550;
-    caroline.height = (850/2)-20;
+    caroline.width = width;
+    caroline.height = height;
     caroline.spreadY = 10;
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;

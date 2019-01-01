@@ -35,9 +35,11 @@ public class Crypt: Gtk.Window{
   private double[] DATA = {};
   private double[] HIGH = {};
   private double[] LOW = {};
+  public int signalDampener = 0;
+  public int signalDampenerSecondary = 0;
   public string CODE_STYLE = """
     .box{
-      padding-left: 20px;
+      padding-left: 10px;
     }
 
     .area{
@@ -86,19 +88,19 @@ public class Crypt: Gtk.Window{
     Gtk.Label ltcLabel = new Gtk.Label ("Litecoin (LTC)");
     Gtk.Label ethLabel = new Gtk.Label ("Etherum (ETH)");
 
-    Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth / 2) - 50,(int)this.windowHeight/3 - 60);
+    Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth / 2) - 175,(int)this.windowHeight/3 - 80);
     this.btcLineChartArea = btcLineChart.createGraph();
-    this.btcLineChartArea.width_request = ((int)this.windowWidth / 2);
+    this.btcLineChartArea.width_request = ((int)this.windowWidth / 2) - 100;
     this.btcLineChartArea.height_request = (int)this.windowHeight/3;
 
-    Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth / 2) - 50,(int)this.windowHeight/3 - 60);
+    Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth / 2) - 175,(int)this.windowHeight/3 - 80);
     this.ltcLineChartArea = ltcLineChart.createGraph();
-    this.ltcLineChartArea.width_request = ((int)this.windowWidth / 2);
+    this.ltcLineChartArea.width_request = ((int)this.windowWidth / 2) - 100;
     this.ltcLineChartArea.height_request = (int)this.windowHeight/3;
 
-    Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth / 2) - 50,(int)this.windowHeight/3 - 80);
+    Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth / 2) - 175,(int)this.windowHeight/3 - 80);
     this.ethLineChartArea = ethLineChart.createGraph();
-    this.ethLineChartArea.width_request = ((int)this.windowWidth / 2);
+    this.ethLineChartArea.width_request = ((int)this.windowWidth / 2) - 100;
     this.ethLineChartArea.height_request = (int)this.windowHeight/3;
 
     Gtk.Label chartHomeLabel = new Gtk.Label ("Last 24h");
@@ -141,6 +143,7 @@ public class Crypt: Gtk.Window{
     Gtk.Grid coinGridHorizontal = new Gtk.Grid ();
 
     this.currentCoin.getCoinInfoFull(coinAbrv);
+    this.windowHeight = 600;
 
     Gtk.Label priceTitle = new Gtk.Label (coinAbrv
     .concat(": ",this.currentCoin.price.to_string()," | ",this.currentCoin.change24Hour.to_string(),
@@ -248,17 +251,17 @@ public class Crypt: Gtk.Window{
     verticalBoxSecondary.pack_start(totalVolume24Hour,false,false);
     verticalBoxSecondary.pack_start(totalVolume24HTo,false,false);
 
-    Caroline hourLineChart = drawClass.drawLargeChartHour(coinAbrv);
+    Caroline hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth / 2) - 50,(int)(this.windowHeight/2)-20);
     DrawingArea hourLineChartArea = hourLineChart.createGraph();
     hourLineChartArea.width_request = (int)(this.windowWidth/1.5);
     hourLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
 
-    Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv);
+    Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth / 2) - 50,(int)(this.windowHeight/2)-20);
     DrawingArea dayLineChartArea = dayLineChart.createGraph();
     dayLineChartArea.width_request = (int)(this.windowWidth/1.5);
     dayLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
 
-    Caroline weekLineChart = drawClass.drawLargeChartWeek(coinAbrv);
+    Caroline weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth / 2) - 50,(int)(this.windowHeight/2)-20);
     DrawingArea weekLineChartArea = weekLineChart.createGraph();
     weekLineChartArea.width_request = (int)(this.windowWidth/1.5);
     weekLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
@@ -277,7 +280,7 @@ public class Crypt: Gtk.Window{
     verticalBox.pack_start(coinGridHorizontal,false,false);
 
     Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
-    scrolled.set_min_content_width((int)(this.windowWidth/1.5));
+    scrolled.set_min_content_width((int)(this.windowWidth/1.7));
     scrolled.set_min_content_height((int)this.windowHeight/3);
     scrolled.add(verticalBox);
 
@@ -289,6 +292,43 @@ public class Crypt: Gtk.Window{
     Gtk.Label title = new Gtk.Label (coinAbrv);
     this.notebook.insert_page (horizontalBox, title,1);
     this.notebook.show_all();
+
+    this.window.configure_event.connect ((event) => {
+
+      this.signalDampenerSecondary = this.signalDampenerSecondary + 1;
+
+      if (this.signalDampenerSecondary == 2){
+
+        this.windowWidth = event.width;
+        this.windowHeight = event.height;
+        this.spinner.active = true;
+
+        scrolled.set_min_content_width((int)(this.windowWidth/1.7));
+        scrolled.set_min_content_height((int)this.windowHeight/3);
+
+        hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth / 2) - 50,425);
+        hourLineChartArea = hourLineChart.createGraph();
+        hourLineChartArea.width_request = (int)(this.windowWidth/2);
+        hourLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
+
+        dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth / 2) - 50,425);
+        dayLineChartArea = dayLineChart.createGraph();
+        dayLineChartArea.width_request = (int)(this.windowWidth/2);
+        dayLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
+
+        weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth / 2) - 50,425);
+        weekLineChartArea = weekLineChart.createGraph();
+        weekLineChartArea.width_request = (int)(this.windowWidth/2);
+        weekLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
+
+        this.signalDampenerSecondary = 0;
+
+      }
+
+      this.spinner.active = false;
+
+      return false;
+    });
 
     Timeout.add (60 * 1000, () => {
 
@@ -709,16 +749,20 @@ int main (string[] args){
 
   crypt.window.configure_event.connect ((event) => {
 
-    crypt.spinner.active = true;
+    crypt.signalDampener = crypt.signalDampener + 1;
 
-    //crypt.mainGrid.remove_row(0);
+    if (crypt.signalDampener == 2){
 
-    crypt.windowWidth = event.width;
-    crypt.windowHeight = event.height;
+      crypt.windowWidth = event.width;
+      crypt.windowHeight = event.height;
+      crypt.spinner.active = true;
+      crypt.refreshMainPageSmallCharts();
+      crypt.spinner.active = false;
 
-    //crypt.refreshMainPageSmallCharts();
+      crypt.signalDampener = 0;
 
-    crypt.spinner.active = false;
+    }
+
     return false;
   });
 
