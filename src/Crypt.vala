@@ -210,6 +210,13 @@ public class Crypt: Gtk.Window{
     Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
     Caroline weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
 
+    Timeout.add(500,()=>{
+      hourLineChart.queue_draw();
+      dayLineChart.queue_draw();
+      weekLineChart.queue_draw();
+      return true;
+    });
+
     Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
     chartBox.pack_start (hourLineChart);
@@ -708,6 +715,13 @@ int main (string[] args){
   Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
   Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
   Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
+
+  Timeout.add(500,()=>{
+    btcLineChart.queue_draw();
+    ltcLineChart.queue_draw();
+    ethLineChart.queue_draw();
+    return true;
+  });
 
   Gtk.Label chartHomeLabel = new Gtk.Label ("Last Hour");
   chartHomeLabel.get_style_context().add_class("title-text");

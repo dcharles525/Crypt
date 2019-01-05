@@ -216,12 +216,12 @@ public class Caroline : Gtk.DrawingArea {
 
       int fontw, fonth;
       this.layout = null;
-      this.layout = create_pango_layout ("Test");
+      this.layout = create_pango_layout ("");
       this.layout.get_pixel_size (out fontw, out fonth);
       cr.move_to ((this.labelPositionX - fontw),(this.labelPositionY - fonth));
       Pango.cairo_update_layout (cr, this.layout);
       Pango.cairo_show_layout (cr, this.layout);
-      //this.queue_draw();
+      this.queue_draw();
 
     }
 
@@ -229,7 +229,6 @@ public class Caroline : Gtk.DrawingArea {
       this.labelPositionX = event.x;
       this.labelPositionY = event.y;
       this.drawLabel = true;
-      draw(cr);
       return true;
     });
 
