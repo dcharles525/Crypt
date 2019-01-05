@@ -28,6 +28,12 @@
   </screenshots>
 
   ​<releases>
+    <release version="1.0.2" date="2019-01-01">
+      <description>
+        <p>Better window resizing</p>
+        <p>AppCenter fixes</p>
+      </description>
+    </release>
 
     <release version="1.0.0" date="2018-06-02">
       <description>
