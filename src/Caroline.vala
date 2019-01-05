@@ -215,11 +215,13 @@ public class Caroline : Gtk.DrawingArea {
     if (this.drawLabel){
 
       int fontw, fonth;
-      this.layout = create_pango_layout ("");
+      this.layout = null;
+      this.layout = create_pango_layout ("Test");
       this.layout.get_pixel_size (out fontw, out fonth);
       cr.move_to ((this.labelPositionX - fontw),(this.labelPositionY - fonth));
       Pango.cairo_update_layout (cr, this.layout);
       Pango.cairo_show_layout (cr, this.layout);
+      //this.queue_draw();
 
     }
 
