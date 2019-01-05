@@ -27,11 +27,9 @@ public class Crypt: Gtk.Window{
   public Gtk.Grid mainGrid = new Gtk.Grid ();
   public MainLoop m = new MainLoop();
   public Coin currentCoin = new Coin();
+  public Coin currentCoinHour = new Coin();
   public Draw drawClass = new Draw();
   public Gtk.Spinner spinner = new Gtk.Spinner();
-  public DrawingArea btcLineChartArea = new DrawingArea();
-  public DrawingArea ltcLineChartArea = new DrawingArea();
-  public DrawingArea ethLineChartArea = new DrawingArea();
   private double[] DATA = {};
   private double[] HIGH = {};
   private double[] LOW = {};
@@ -78,49 +76,6 @@ public class Crypt: Gtk.Window{
       color: #00aeae;
     }
   """;
-
-  public void refreshMainPageSmallCharts(){
-
-    this.chartGrid.remove_column(0);
-    this.chartGrid.remove_row(0);
-
-    Gtk.Label btcLabel = new Gtk.Label ("Bitcoin (BTC)");
-    Gtk.Label ltcLabel = new Gtk.Label ("Litecoin (LTC)");
-    Gtk.Label ethLabel = new Gtk.Label ("Etherum (ETH)");
-
-    Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth / 2) - 175,(int)this.windowHeight/3 - 80);
-    this.btcLineChartArea = btcLineChart.createGraph();
-    this.btcLineChartArea.width_request = ((int)this.windowWidth / 2) - 100;
-    this.btcLineChartArea.height_request = (int)this.windowHeight/3;
-
-    Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth / 2) - 175,(int)this.windowHeight/3 - 80);
-    this.ltcLineChartArea = ltcLineChart.createGraph();
-    this.ltcLineChartArea.width_request = ((int)this.windowWidth / 2) - 100;
-    this.ltcLineChartArea.height_request = (int)this.windowHeight/3;
-
-    Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth / 2) - 175,(int)this.windowHeight/3 - 80);
-    this.ethLineChartArea = ethLineChart.createGraph();
-    this.ethLineChartArea.width_request = ((int)this.windowWidth / 2) - 100;
-    this.ethLineChartArea.height_request = (int)this.windowHeight/3;
-
-    Gtk.Label chartHomeLabel = new Gtk.Label ("Last 24h");
-    chartHomeLabel.get_style_context().add_class("title-text");
-    chartHomeLabel.get_style_context().add_class("padding-top");
-
-    this.chartGrid = new Gtk.Grid ();
-    this.chartGrid.attach (chartHomeLabel, 0, 0, 2, 1);
-    this.chartGrid.attach (btcLineChartArea, 0, 1, 1, 1);
-    this.chartGrid.attach (btcLabel, 0, 2, 1, 1);
-    this.chartGrid.attach (ltcLineChartArea, 0, 3, 1, 1);
-    this.chartGrid.attach (ltcLabel, 0, 4, 1, 1);
-    this.chartGrid.attach (ethLineChartArea, 0, 5, 1, 1);
-    this.chartGrid.attach (ethLabel, 0, 6, 1, 1);
-    this.chartGrid.get_style_context().add_class("box");
-
-    this.mainGrid.attach(this.chartGrid,0,0,1,1);
-    this.notebook.show_all();
-
-  }
 
   public void getCoins(){
 
@@ -251,86 +206,47 @@ public class Crypt: Gtk.Window{
     verticalBoxSecondary.pack_start(totalVolume24Hour,false,false);
     verticalBoxSecondary.pack_start(totalVolume24HTo,false,false);
 
-    Caroline hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth / 2) - 50,(int)(this.windowHeight/2)-20);
-    DrawingArea hourLineChartArea = hourLineChart.createGraph();
-    hourLineChartArea.width_request = (int)(this.windowWidth/1.5);
-    hourLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
+    Caroline hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/2) - 50);
+    Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+    Caroline weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
 
-    Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth / 2) - 50,(int)(this.windowHeight/2)-20);
-    DrawingArea dayLineChartArea = dayLineChart.createGraph();
-    dayLineChartArea.width_request = (int)(this.windowWidth/1.5);
-    dayLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
+    Timeout.add(500,()=>{
+      hourLineChart.queue_draw();
+      dayLineChart.queue_draw();
+      weekLineChart.queue_draw();
+      this.notebook.show_all();
+      return true;
+    });
 
-    Caroline weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth / 2) - 50,(int)(this.windowHeight/2)-20);
-    DrawingArea weekLineChartArea = weekLineChart.createGraph();
-    weekLineChartArea.width_request = (int)(this.windowWidth/1.5);
-    weekLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
+    Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-    coinGridHorizontal.orientation = Gtk.Orientation.HORIZONTAL;
-    coinGridHorizontal.attach (hourLineChartArea, 0, 0, 1, 1);
-    coinGridHorizontal.attach (new Gtk.Label ("Minute"), 0, 1, 1, 1);
-    coinGridHorizontal.attach (dayLineChartArea, 0, 2, 1, 1);
-    coinGridHorizontal.attach (new Gtk.Label ("Day"), 0, 3, 1, 1);
-    coinGridHorizontal.attach (weekLineChartArea, 0, 4, 1, 1);
-    coinGridHorizontal.attach (new Gtk.Label ("Week"), 0, 5, 1, 1);
-
-    Gtk.Box horizontalBox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-
-    Gtk.Box verticalBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-    verticalBox.pack_start(coinGridHorizontal,false,false);
+    chartBox.pack_start (hourLineChart);
+    chartBox.pack_start (new Gtk.Label ("Minute"), false, false, 0);
+    chartBox.pack_start (dayLineChart);
+    chartBox.pack_start (new Gtk.Label ("Day"), false, false, 0);
+    chartBox.pack_start (weekLineChart);
+    chartBox.pack_start (new Gtk.Label ("Week"), false, false, 0);
+    chartBox.get_style_context().add_class("area");
 
     Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
     scrolled.set_min_content_width((int)(this.windowWidth/1.7));
     scrolled.set_min_content_height((int)this.windowHeight/3);
-    scrolled.add(verticalBox);
-
+    scrolled.add(chartBox);
     scrolled.get_style_context().add_class("area");
 
-    horizontalBox.pack_start(scrolled,false,false);
-    horizontalBox.pack_start(verticalBoxSecondary,false,false);
+    Gtk.Grid coinGrid = new Gtk.Grid ();
+    coinGrid.orientation = Gtk.Orientation.HORIZONTAL;
+    coinGrid.attach(scrolled,0,0,3,1);
+    coinGrid.attach(verticalBoxSecondary, 3,0,1,1);
+    coinGrid.get_style_context().add_class("box");
+    coinGrid.set_row_homogeneous(true);
+    coinGrid.set_column_homogeneous(true);
 
     Gtk.Label title = new Gtk.Label (coinAbrv);
-    this.notebook.insert_page (horizontalBox, title,1);
+    this.notebook.insert_page (coinGrid, title,1);
     this.notebook.show_all();
 
-    this.window.configure_event.connect ((event) => {
-
-      this.signalDampenerSecondary = this.signalDampenerSecondary + 1;
-
-      if (this.signalDampenerSecondary == 2){
-
-        this.windowWidth = event.width;
-        this.windowHeight = event.height;
-        this.spinner.active = true;
-
-        scrolled.set_min_content_width((int)(this.windowWidth/1.7));
-        scrolled.set_min_content_height((int)this.windowHeight/3);
-
-        hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth / 2) - 50,425);
-        hourLineChartArea = hourLineChart.createGraph();
-        hourLineChartArea.width_request = (int)(this.windowWidth/2);
-        hourLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
-
-        dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth / 2) - 50,425);
-        dayLineChartArea = dayLineChart.createGraph();
-        dayLineChartArea.width_request = (int)(this.windowWidth/2);
-        dayLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
-
-        weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth / 2) - 50,425);
-        weekLineChartArea = weekLineChart.createGraph();
-        weekLineChartArea.width_request = (int)(this.windowWidth/2);
-        weekLineChartArea.height_request = ((int)this.windowHeight/2) + 20;
-
-        this.signalDampenerSecondary = 0;
-
-      }
-
-      this.spinner.active = false;
-
-      return false;
-    });
-
-    Timeout.add (60 * 1000, () => {
+    Timeout.add (20 * 1000, () => {
 
       this.spinner.active = true;
 
@@ -370,21 +286,21 @@ public class Crypt: Gtk.Window{
       hourLineChart.DATA = currentCoin.DATA;
       hourLineChart.HIGH = currentCoin.HIGH;
       hourLineChart.LOW = currentCoin.LOW;
-      hourLineChartArea = hourLineChart.createGraph();
+      hourLineChart.calculations();
 
       currentCoin.getPriceDataDay(coinAbrv);
 
       dayLineChart.DATA = currentCoin.DATA;
       dayLineChart.HIGH = currentCoin.HIGH;
       dayLineChart.LOW = currentCoin.LOW;
-      dayLineChartArea = dayLineChart.createGraph();
+      dayLineChart.calculations();
 
       currentCoin.getPriceDataWeek(coinAbrv);
 
       weekLineChart.DATA = currentCoin.DATA;
       weekLineChart.HIGH = currentCoin.HIGH;
       weekLineChart.LOW = currentCoin.LOW;
-      weekLineChartArea = weekLineChart.createGraph();
+      weekLineChart.calculations();
 
       this.notebook.show_all();
       this.spinner.active = false;
@@ -432,9 +348,44 @@ public class Crypt: Gtk.Window{
         DateTime btcTimeObject = new DateTime.from_unix_utc (btcTime);
 
         Gtk.Label btcLabel = new Gtk.Label ("Bitcoin");
-        Gtk.Label btcPriceLabel = new Gtk.Label (" Current: $".concat(btcPrice.to_string().slice(0,6)));
-        Gtk.Label btcHighLabel = new Gtk.Label (" | High: $".concat(btcHigh.to_string().slice(0,6)));
-        Gtk.Label btcLowLabel = new Gtk.Label (" | Low: $".concat(btcLow.to_string().slice(0,6)));
+
+        Gtk.Label btcPriceLabel;
+
+        if (btcPrice.to_string().len() > 5){
+
+          btcPriceLabel = new Gtk.Label (" Current: $".concat(btcPrice.to_string().slice(0,6)));
+
+        }else{
+
+          btcPriceLabel = new Gtk.Label (" Current: Unavailable");
+
+        }
+
+        Gtk.Label btcHighLabel;
+
+        if (btcHigh.to_string().len() > 5){
+
+          btcHighLabel = new Gtk.Label (" | High: $".concat(btcHigh.to_string().slice(0,6)));
+
+        }else{
+
+          btcHighLabel = new Gtk.Label (" | High: Unavailable");
+
+        }
+
+
+        Gtk.Label btcLowLabel;
+
+        if (btcLow.to_string().len() > 5){
+
+          btcLowLabel = new Gtk.Label (" | Low: $".concat(btcLow.to_string().slice(0,6)));
+
+        }else{
+
+          btcLowLabel = new Gtk.Label (" | Low: Unavailable");
+
+        }
+
         Gtk.Label btcDateLabel = new Gtk.Label ("Last Update: ".concat(btcTimeObject.to_string()));
         btcLabel.get_style_context().add_class("large-text");
         btcPriceLabel.get_style_context().add_class("price-blue-text");
@@ -461,9 +412,44 @@ public class Crypt: Gtk.Window{
         DateTime bchTimeObject = new DateTime.from_unix_utc (bchTime);
 
         Gtk.Label bchLabel = new Gtk.Label ("Bitcoin Cash");
-        Gtk.Label bchPriceLabel = new Gtk.Label (" Current: $".concat(bchPrice.to_string().slice(0,5)));
-        Gtk.Label bchHighLabel = new Gtk.Label (" | High: $".concat(bchHigh.to_string().slice(0,5)));
-        Gtk.Label bchLowLabel = new Gtk.Label (" | Low: $".concat(bchLow.to_string().slice(0,5)));
+
+        Gtk.Label bchPriceLabel;
+
+        if (bchPrice.to_string().len() > 4){
+
+          bchPriceLabel = new Gtk.Label (" Current: $".concat(bchPrice.to_string().slice(0,5)));
+
+        }else{
+
+          bchPriceLabel = new Gtk.Label (" Current: Unavailable");
+
+        }
+
+        Gtk.Label bchHighLabel;
+
+        if (bchHigh.to_string().len() > 4){
+
+          bchHighLabel = new Gtk.Label (" | High: $".concat(bchHigh.to_string().slice(0,5)));
+
+        }else{
+
+          bchHighLabel = new Gtk.Label (" | High: Unavailable");
+
+        }
+
+
+        Gtk.Label bchLowLabel;
+
+        if (bchLow.to_string().len() > 4){
+
+          bchLowLabel = new Gtk.Label (" | Low: $".concat(bchLow.to_string().slice(0,5)));
+
+        }else{
+
+          bchLowLabel = new Gtk.Label (" | Low: Unavailable");
+
+        }
+
         Gtk.Label bchDateLabel = new Gtk.Label ("Last Update: ".concat(bchTimeObject.to_string()));
         bchLabel.get_style_context().add_class("large-text");
         bchPriceLabel.get_style_context().add_class("price-blue-text");
@@ -491,9 +477,44 @@ public class Crypt: Gtk.Window{
         DateTime ltcTimeObject = new DateTime.from_unix_utc ((int64)ltcTime);
 
         Gtk.Label ltcLabel = new Gtk.Label ("Litecoin");
-        Gtk.Label ltcPriceLabel = new Gtk.Label (" Current: $".concat(ltcPrice.to_string().slice(0,4)));
-        Gtk.Label ltcHighLabel = new Gtk.Label (" | High: $".concat(ltcHigh.to_string().slice(0,4)));
-        Gtk.Label ltcLowLabel = new Gtk.Label (" | Low: $".concat(ltcLow.to_string().slice(0,4)));
+
+        Gtk.Label ltcPriceLabel;
+
+        if (ltcPrice.to_string().len() > 3){
+
+          ltcPriceLabel = new Gtk.Label (" Current: $".concat(ltcPrice.to_string().slice(0,4)));
+
+        }else{
+
+          ltcPriceLabel = new Gtk.Label (" Current: Unavailable");
+
+        }
+
+        Gtk.Label ltcHighLabel;
+
+        if (ltcHigh.to_string().len() > 3){
+
+          ltcHighLabel = new Gtk.Label (" | High: $".concat(ltcHigh.to_string().slice(0,4)));
+
+        }else{
+
+          ltcHighLabel = new Gtk.Label (" | High: Unavailable");
+
+        }
+
+
+        Gtk.Label ltcLowLabel;
+
+        if (ltcLow.to_string().len() > 3){
+
+          ltcLowLabel = new Gtk.Label (" | Low: $".concat(ltcLow.to_string().slice(0,4)));
+
+        }else{
+
+          ltcLowLabel = new Gtk.Label (" | Low: Unavailable");
+
+        }
+
         Gtk.Label ltcDateLabel = new Gtk.Label ("Last Update: ".concat(ltcTimeObject.to_string()));
         ltcLabel.get_style_context().add_class("large-text");
         ltcPriceLabel.get_style_context().add_class("price-blue-text");
@@ -520,9 +541,44 @@ public class Crypt: Gtk.Window{
         DateTime ethTimeObject = new DateTime.from_unix_utc ((int64)ethTime);
 
         Gtk.Label ethLabel = new Gtk.Label ("Etherum");
-        Gtk.Label ethPriceLabel = new Gtk.Label (" Current: $".concat(ethPrice.to_string().slice(0,6)));
-        Gtk.Label ethHighLabel = new Gtk.Label (" | High: $".concat(ethHigh.to_string().slice(0,6)));
-        Gtk.Label ethLowLabel = new Gtk.Label (" | Low: $".concat(ethLow.to_string().slice(0,6)));
+
+        Gtk.Label ethPriceLabel;
+
+        if (ethPrice.to_string().len() > 5){
+
+          ethPriceLabel = new Gtk.Label (" Current: $".concat(ethPrice.to_string().slice(0,6)));
+
+        }else{
+
+          ethPriceLabel = new Gtk.Label (" Current: Unavailable");
+
+        }
+
+        Gtk.Label ethHighLabel;
+
+        if (ethHigh.to_string().len() > 5){
+
+          ethHighLabel = new Gtk.Label (" | High: $".concat(ethHigh.to_string().slice(0,6)));
+
+        }else{
+
+          ethHighLabel = new Gtk.Label (" | High: Unavailable");
+
+        }
+
+
+        Gtk.Label ethLowLabel;
+
+        if (ethLow.to_string().len() > 5){
+
+          ethLowLabel = new Gtk.Label (" | Low: $".concat(ethLow.to_string().slice(0,6)));
+
+        }else{
+
+          ethLowLabel = new Gtk.Label (" | Low: Unavailable");
+
+        }
+
         Gtk.Label ethDateLabel = new Gtk.Label ("Last Update: ".concat(ethTimeObject.to_string()));
         ethLabel.get_style_context().add_class("large-text");
         ethPriceLabel.get_style_context().add_class("price-blue-text");
@@ -645,53 +701,50 @@ int main (string[] args){
 
   crypt.spinner.active = true;
 
-  crypt.windowWidth = 1300;
+  crypt.windowWidth = 1200;
 
   var windowTitle = "Crypt";
   crypt.window.title = windowTitle;
+  crypt.window.set_default_size (1300,600);
   crypt.window.set_position (Gtk.WindowPosition.CENTER);
-  crypt.window.set_default_size (1300,850);
   Gtk.Label title = new Gtk.Label ("Home");
 
   Gtk.Label btcLabel = new Gtk.Label ("Bitcoin (BTC)");
   Gtk.Label ltcLabel = new Gtk.Label ("Litecoin (LTC)");
   Gtk.Label ethLabel = new Gtk.Label ("Etherum (ETH)");
 
-  Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",550,200);
-  crypt.btcLineChartArea = btcLineChart.createGraph();
-  crypt.btcLineChartArea.width_request = ((int)crypt.windowWidth / 2) - 50;
-  crypt.btcLineChartArea.height_request = 250;
+  Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
+  Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
+  Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
 
-  Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",550,200);
-  crypt.ltcLineChartArea = ltcLineChart.createGraph();
-  crypt.ltcLineChartArea.width_request = ((int)crypt.windowWidth / 2) - 50;
-  crypt.ltcLineChartArea.height_request = 250;
+  Timeout.add(500,()=>{
+    btcLineChart.queue_draw();
+    ltcLineChart.queue_draw();
+    ethLineChart.queue_draw();
+    crypt.notebook.show_all();
+    return true;
+  });
 
-  Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",550,200);
-  crypt.ethLineChartArea = ethLineChart.createGraph();
-  crypt.ethLineChartArea.width_request = ((int)crypt.windowWidth / 2) - 50;
-  crypt.ethLineChartArea.height_request = 250;
 
   Gtk.Label chartHomeLabel = new Gtk.Label ("Last Hour");
   chartHomeLabel.get_style_context().add_class("title-text");
-  chartHomeLabel.get_style_context().add_class("padding-top");
 
-  crypt.chartGrid.orientation = Gtk.Orientation.VERTICAL;
-  crypt.chartGrid.attach (chartHomeLabel, 0, 0, 2, 1);
-  crypt.chartGrid.attach (crypt.btcLineChartArea, 0, 1, 1, 1);
-  crypt.chartGrid.attach (btcLabel, 0, 2, 1, 1);
-  crypt.chartGrid.attach (crypt.ltcLineChartArea, 0, 3, 1, 1);
-  crypt.chartGrid.attach (ltcLabel, 0, 4, 1, 1);
-  crypt.chartGrid.attach (crypt.ethLineChartArea, 0, 5, 1, 1);
-  crypt.chartGrid.attach (ethLabel, 0, 6, 1, 1);
-  crypt.chartGrid.get_style_context().add_class("box");
+  Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+
+  chartBox.pack_start (chartHomeLabel, false, false, 0);
+  chartBox.pack_start (btcLineChart);
+  chartBox.pack_start (btcLabel, false, false, 0);
+  chartBox.pack_start (ltcLineChart);
+  chartBox.pack_start (ltcLabel, false, false, 0);
+  chartBox.pack_start (ethLineChart);
+  chartBox.pack_start (ethLabel, false, false, 0);
+  chartBox.get_style_context().add_class("area");
 
   crypt.getMainPageCoins();
   crypt.getNewsMainPage();
 
   crypt.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
-  crypt.mainGrid.attach(crypt.chartGrid,0,0,1,1);
-
+  crypt.mainGrid.attach(chartBox,0,0,1,1);
   crypt.mainGrid.attach(crypt.secondaryBox, 1,0,1,1);
   crypt.mainGrid.get_style_context().add_class("box");
   crypt.mainGrid.set_row_homogeneous(true);
@@ -699,8 +752,8 @@ int main (string[] args){
 
   Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
   scrolled.add(crypt.mainGrid);
-  scrolled.set_max_content_width(1300);
-  scrolled.set_min_content_height(600);
+  scrolled.set_max_content_width(1200);
+  scrolled.set_min_content_height(700);
 
   crypt.notebook.insert_page (scrolled, title,0);
 
@@ -730,11 +783,31 @@ int main (string[] args){
 
   crypt.spinner.active = false;
 
-  Timeout.add (60 * 1000, () => {
+  Timeout.add (30 * 1000, () => {
 
     crypt.spinner.active = true;
 
-    crypt.refreshMainPageSmallCharts();
+    crypt.currentCoinHour.getPriceDataHour("BTC");
+
+    btcLineChart.DATA = crypt.currentCoinHour.DATA;
+    btcLineChart.HIGH = crypt.currentCoinHour.HIGH;
+    btcLineChart.LOW = crypt.currentCoinHour.LOW;
+    btcLineChart.calculations();
+
+    crypt.currentCoinHour.getPriceDataHour("LTC");
+
+    ltcLineChart.DATA = crypt.currentCoinHour.DATA;
+    ltcLineChart.HIGH = crypt.currentCoinHour.HIGH;
+    ltcLineChart.LOW = crypt.currentCoinHour.LOW;
+    ltcLineChart.calculations();
+
+    crypt.currentCoinHour.getPriceDataHour("ETH");
+
+    ethLineChart.DATA = crypt.currentCoinHour.DATA;
+    ethLineChart.HIGH = crypt.currentCoinHour.HIGH;
+    ethLineChart.LOW = crypt.currentCoinHour.LOW;
+    ethLineChart.calculations();
+
     crypt.getMainPageCoins();
     crypt.getNewsMainPage();
 
@@ -745,25 +818,6 @@ int main (string[] args){
 
     return true;
 
-  });
-
-  crypt.window.configure_event.connect ((event) => {
-
-    crypt.signalDampener = crypt.signalDampener + 1;
-
-    if (crypt.signalDampener == 2){
-
-      crypt.windowWidth = event.width;
-      crypt.windowHeight = event.height;
-      crypt.spinner.active = true;
-      crypt.refreshMainPageSmallCharts();
-      crypt.spinner.active = false;
-
-      crypt.signalDampener = 0;
-
-    }
-
-    return false;
   });
 
   Gtk.main();

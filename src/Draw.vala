@@ -2,7 +2,6 @@ public class Draw: Gtk.Window{
 
   public double windowWidth;
   public double windowHeight;
-  Coin coin = new Coin();
 
   public Draw(){
 
@@ -12,6 +11,7 @@ public class Draw: Gtk.Window{
 
     var caroline = new Caroline();
 
+    Coin coin = new Coin();
     coin.getPriceDataHour(coinAbrv);
     caroline.width = width;
     caroline.height = height;
@@ -47,6 +47,7 @@ public class Draw: Gtk.Window{
 
     var caroline = new Caroline();
 
+    Coin coin = new Coin();
     coin.getPriceDataDay(coinAbrv);
     caroline.width = width;
     caroline.height = height;
@@ -82,6 +83,7 @@ public class Draw: Gtk.Window{
 
     var caroline = new Caroline();
 
+    Coin coin = new Coin();
     coin.getPriceDataWeek(coinAbrv);
     caroline.width = width;
     caroline.height = height;
@@ -117,6 +119,7 @@ public class Draw: Gtk.Window{
 
     var caroline = new Caroline();
 
+    Coin coin = new Coin();
     coin.getPriceDataHour(coinAbrv);
     caroline.width = width;
     caroline.height = height;
@@ -152,6 +155,7 @@ public class Draw: Gtk.Window{
 
     var caroline = new Caroline();
 
+    Coin coin = new Coin();
     coin.getPriceDataDay(coinAbrv);
 
     caroline.width = 550;
@@ -188,6 +192,7 @@ public class Draw: Gtk.Window{
 
     var caroline = new Caroline();
 
+    Coin coin = new Coin();
     coin.getPriceDataWeek(coinAbrv);
 
     caroline.width = 550;
