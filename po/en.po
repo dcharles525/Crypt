@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.dcharles525.crypt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-16 15:21-0500\n"
+"POT-Creation-Date: 2019-02-16 15:44-0500\n"
 "PO-Revision-Date: 2019-02-16 15:21-0500\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,100 +17,100 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Crypt.vala:113 src/Crypt.vala:325
+#: src/Crypt.vala:113 src/Crypt.vala:329
 msgid "Price: "
 msgstr "Price: "
 
-#: src/Crypt.vala:114 src/Crypt.vala:326 src/Crypt.vala:455 src/Crypt.vala:519
-#: src/Crypt.vala:584 src/Crypt.vala:648
+#: src/Crypt.vala:114 src/Crypt.vala:330 src/Crypt.vala:458 src/Crypt.vala:522
+#: src/Crypt.vala:586 src/Crypt.vala:650
 msgid "Last Update: "
 msgstr "Last Update: "
 
-#: src/Crypt.vala:115 src/Crypt.vala:327
+#: src/Crypt.vala:115 src/Crypt.vala:331
 msgid "Last Volume: "
 msgstr "Last Volume: "
 
-#: src/Crypt.vala:116 src/Crypt.vala:328
+#: src/Crypt.vala:116 src/Crypt.vala:332
 msgid "Last Volume To: "
 msgstr "Last Volume To: "
 
-#: src/Crypt.vala:117 src/Crypt.vala:329
+#: src/Crypt.vala:117 src/Crypt.vala:333
 msgid "Last TradeID: "
 msgstr "Last TradeID: "
 
-#: src/Crypt.vala:118 src/Crypt.vala:330
+#: src/Crypt.vala:118 src/Crypt.vala:334
 msgid "Volume Day: "
 msgstr "Volume Day: "
 
-#: src/Crypt.vala:119 src/Crypt.vala:331
+#: src/Crypt.vala:119 src/Crypt.vala:335
 msgid "Volume Day To: "
 msgstr "Volume Day To: "
 
-#: src/Crypt.vala:120 src/Crypt.vala:332
+#: src/Crypt.vala:120 src/Crypt.vala:336
 msgid "Volume 24 Hour: "
 msgstr "Volume 24 Hour: "
 
-#: src/Crypt.vala:121 src/Crypt.vala:333
+#: src/Crypt.vala:121 src/Crypt.vala:337
 msgid "Volume 24 Hour To: "
 msgstr "Volume 24 Hour To: "
 
-#: src/Crypt.vala:122 src/Crypt.vala:334
+#: src/Crypt.vala:122 src/Crypt.vala:338
 msgid "Open Day: "
 msgstr "Open Day: "
 
-#: src/Crypt.vala:123 src/Crypt.vala:335
+#: src/Crypt.vala:123 src/Crypt.vala:339
 msgid "Open High Day: "
 msgstr "Open High Day: "
 
-#: src/Crypt.vala:124 src/Crypt.vala:336
+#: src/Crypt.vala:124 src/Crypt.vala:340
 msgid "Open Low Day: "
 msgstr "Open Low Day: "
 
-#: src/Crypt.vala:125 src/Crypt.vala:337
+#: src/Crypt.vala:125 src/Crypt.vala:341
 msgid "Open 24h: "
 msgstr "Open 24h: "
 
-#: src/Crypt.vala:126 src/Crypt.vala:338
+#: src/Crypt.vala:126 src/Crypt.vala:342
 msgid "Open High 24h: "
 msgstr "Open High 24h: "
 
-#: src/Crypt.vala:127 src/Crypt.vala:339
+#: src/Crypt.vala:127 src/Crypt.vala:343
 msgid "Open Low 24h: "
 msgstr "Open Low 24h: "
 
-#: src/Crypt.vala:128 src/Crypt.vala:340
+#: src/Crypt.vala:128 src/Crypt.vala:344
 msgid "Last Market: "
 msgstr "Last Market: "
 
-#: src/Crypt.vala:129 src/Crypt.vala:341
+#: src/Crypt.vala:129 src/Crypt.vala:345
 msgid "Change Last 24h: "
 msgstr "Change Last 24h: "
 
-#: src/Crypt.vala:130 src/Crypt.vala:342
+#: src/Crypt.vala:130 src/Crypt.vala:346
 msgid "Change Percent Last 24h: "
 msgstr "Change Percent Last 24h: "
 
-#: src/Crypt.vala:131 src/Crypt.vala:343
+#: src/Crypt.vala:131 src/Crypt.vala:347
 msgid "Change Day: "
 msgstr "Change Day: "
 
-#: src/Crypt.vala:132 src/Crypt.vala:344
+#: src/Crypt.vala:132 src/Crypt.vala:348
 msgid "Change Percent Day: "
 msgstr "Change Percent Day: "
 
-#: src/Crypt.vala:133 src/Crypt.vala:345
+#: src/Crypt.vala:133 src/Crypt.vala:349
 msgid "Supply: "
 msgstr "Supply: "
 
-#: src/Crypt.vala:134 src/Crypt.vala:346
+#: src/Crypt.vala:134 src/Crypt.vala:350
 msgid "Market Cap: "
 msgstr "Market Cap: "
 
-#: src/Crypt.vala:135 src/Crypt.vala:347
+#: src/Crypt.vala:135 src/Crypt.vala:351
 msgid "Total Volume 24h: "
 msgstr "Total Volume 24h: "
 
-#: src/Crypt.vala:136 src/Crypt.vala:348
+#: src/Crypt.vala:136 src/Crypt.vala:352
 msgid "Total Volume 24h To: "
 msgstr "Total Volume 24h To: "
 
@@ -122,7 +122,7 @@ msgstr "Current "
 msgid " News"
 msgstr " News"
 
-#: src/Crypt.vala:265 src/Crypt.vala:734
+#: src/Crypt.vala:265 src/Crypt.vala:736
 msgid "Something is wrong in getNewsMainPage"
 msgstr "Something is wrong in getNewsMainPage"
 
@@ -138,87 +138,87 @@ msgstr "Day"
 msgid "Week"
 msgstr "Week"
 
-#: src/Crypt.vala:401
+#: src/Crypt.vala:405
 msgid "Current Coin Prices"
 msgstr "Current Coin Prices"
 
-#: src/Crypt.vala:422 src/Crypt.vala:486 src/Crypt.vala:551 src/Crypt.vala:615
+#: src/Crypt.vala:426 src/Crypt.vala:489 src/Crypt.vala:554 src/Crypt.vala:617
 msgid " Current: "
 msgstr " Current: "
 
-#: src/Crypt.vala:426 src/Crypt.vala:490 src/Crypt.vala:555 src/Crypt.vala:619
+#: src/Crypt.vala:430 src/Crypt.vala:493 src/Crypt.vala:558 src/Crypt.vala:621
 msgid " Current: Unavailable"
 msgstr " Current: Unavailable"
 
-#: src/Crypt.vala:434 src/Crypt.vala:498 src/Crypt.vala:563 src/Crypt.vala:627
+#: src/Crypt.vala:438 src/Crypt.vala:501 src/Crypt.vala:566 src/Crypt.vala:629
 msgid " | High: "
 msgstr " | High: "
 
-#: src/Crypt.vala:438 src/Crypt.vala:502 src/Crypt.vala:567 src/Crypt.vala:631
+#: src/Crypt.vala:442 src/Crypt.vala:505 src/Crypt.vala:570 src/Crypt.vala:633
 msgid " | High: Unavailable"
 msgstr " | High: Unavailable"
 
-#: src/Crypt.vala:447 src/Crypt.vala:511 src/Crypt.vala:576 src/Crypt.vala:640
+#: src/Crypt.vala:450 src/Crypt.vala:514 src/Crypt.vala:578 src/Crypt.vala:642
 msgid " | Low: "
 msgstr " | Low: "
 
-#: src/Crypt.vala:451 src/Crypt.vala:515 src/Crypt.vala:580 src/Crypt.vala:644
+#: src/Crypt.vala:454 src/Crypt.vala:518 src/Crypt.vala:582 src/Crypt.vala:646
 msgid " | Low: Unavailable"
 msgstr " | Low: Unavailable"
 
-#: src/Crypt.vala:480
+#: src/Crypt.vala:483
 msgid "Bitcoin Cash"
 msgstr "Bitcoin Cash"
 
-#: src/Crypt.vala:545
+#: src/Crypt.vala:548
 msgid "Litecoin"
 msgstr "Litecoin"
 
-#: src/Crypt.vala:609
+#: src/Crypt.vala:611
 msgid "Etherum"
 msgstr "Etherum"
 
-#: src/Crypt.vala:673
+#: src/Crypt.vala:675
 msgid "Something is wrong in getMainPageCoins"
 msgstr "Something is wrong in getMainPageCoins"
 
-#: src/Crypt.vala:694
+#: src/Crypt.vala:696
 msgid "Current News"
 msgstr "Current News"
 
-#: src/Crypt.vala:782
+#: src/Crypt.vala:784
 msgid "Bitcoin (BTC)"
 msgstr "Bitcoin (BTC)"
 
-#: src/Crypt.vala:783
+#: src/Crypt.vala:785
 msgid "Litecoin (LTC)"
 msgstr "Litecoin (LTC)"
 
-#: src/Crypt.vala:784
+#: src/Crypt.vala:786
 msgid "Etherum (ETH)"
 msgstr "Etherum (ETH)"
 
-#: src/Crypt.vala:797
+#: src/Crypt.vala:799
 msgid "Last Hour"
 msgstr "Last Hour"
 
-#: src/Crypt.vala:847
+#: src/Crypt.vala:849
 msgid "Set Default Currency (Tested with USD,GBP,EUR)"
 msgstr "Set Default Currency (Tested with USD,GBP,EUR)"
 
-#: src/Crypt.vala:853 src/Crypt.vala:866
+#: src/Crypt.vala:855 src/Crypt.vala:868
 msgid "Save"
 msgstr "Save"
 
-#: src/Crypt.vala:860
+#: src/Crypt.vala:862
 msgid "Set the refresh rate (in seconds)"
 msgstr "Set the refresh rate (in seconds)"
 
-#: src/Crypt.vala:889
+#: src/Crypt.vala:891
 msgid "Settings Saved! Restarting the app is recommended..."
 msgstr "Settings Saved! Restarting the app is recommended..."
 
-#: src/Crypt.vala:897
+#: src/Crypt.vala:899
 msgid "Refresh rate saved! Restarting the app is recommended..."
 msgstr "Refresh rate saved! Restarting the app is recommended..."
 
@@ -269,28 +269,59 @@ msgstr "View hourly, daily, and weekly charts!"
 msgid "View full coin information!"
 msgstr "View full coin information!"
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:34
-#: data/com.github.dcharles525.crypt.appdata.xml.in:41
+#: data/com.github.dcharles525.crypt.appdata.xml.in:15
+msgid "See information in USD, EUR, GBP, and more!!"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:16
+#, fuzzy
+msgid "Change refresh rate to save on data!"
+msgstr "Set the refresh rate (in seconds)"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:36
+msgid "Translations (Thanks to @NathanBrim for french translations!!)"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:37
+#, fuzzy
+msgid "Change refresh rate"
+msgstr "Change Percent Day: "
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:38
+#, fuzzy
+msgid "Change base currency"
+msgstr "Change Percent Day: "
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:39
+msgid "Coin specific news"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:40
+msgid "Close a coin tab with ctrl-w"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:46
+#: data/com.github.dcharles525.crypt.appdata.xml.in:53
 msgid "Complete rewrite of how charts work"
 msgstr "Complete rewrite of how charts work"
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:35
-#: data/com.github.dcharles525.crypt.appdata.xml.in:42
+#: data/com.github.dcharles525.crypt.appdata.xml.in:47
+#: data/com.github.dcharles525.crypt.appdata.xml.in:54
 msgid "*Slaps Crypt* This bad boy can fit so many bugs in it"
 msgstr "*Slaps Crypt* This bad boy can fit so many bugs in it"
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:48
+#: data/com.github.dcharles525.crypt.appdata.xml.in:60
 msgid "Better window resizing"
 msgstr "Better window resizing"
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:49
+#: data/com.github.dcharles525.crypt.appdata.xml.in:61
 msgid "AppCenter fixes"
 msgstr "AppCenter fixes"
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:55
+#: data/com.github.dcharles525.crypt.appdata.xml.in:67
 msgid "Initial release"
 msgstr "Initial release"
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:86
+#: data/com.github.dcharles525.crypt.appdata.xml.in:98
 msgid "David Johnson"
 msgstr "David Johnson"

@@ -223,7 +223,7 @@ public class Crypt: Gtk.Window{
     newsBox.set_spacing(10);
     Gtk.ScrolledWindow scrolledNews = new Gtk.ScrolledWindow (null, null);
 
-    Gtk.Label currentNewsLabel = new Gtk.Label (_("Current ").concat(coinAbrv,_(" News"))));
+    Gtk.Label currentNewsLabel = new Gtk.Label (_("Current ").concat(coinAbrv,_(" News")));
     currentNewsLabel.get_style_context().add_class("title-text");
     currentNewsLabel.get_style_context().add_class("padding-top");
 
@@ -312,7 +312,11 @@ public class Crypt: Gtk.Window{
     this.notebook.insert_page (coinGrid, title,1);
     this.notebook.show_all();
 
-    Timeout.add (20 * 1000, () => {
+    var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+    int refreshRate = 0;
+    settings.get ("refresh-rate", "i", out refreshRate);
+
+    Timeout.add (refreshRate * 1000, () => {
 
       this.spinner.active = true;
 
@@ -398,7 +402,7 @@ public class Crypt: Gtk.Window{
         var ltcData = root_object.get_object_member ("DISPLAY").get_object_member("LTC").get_object_member(this.defaultCoin);
         var ethData = root_object.get_object_member ("DISPLAY").get_object_member("ETH").get_object_member(this.defaultCoin);
 
-        Gtk.Label pricesHomeLabel = new Gtk.Label _("Current Coin Prices");
+        Gtk.Label pricesHomeLabel = new Gtk.Label (_("Current Coin Prices"));
         pricesHomeLabel.get_style_context().add_class("title-text");
         pricesHomeLabel.get_style_context().add_class("padding-top");
 
@@ -423,7 +427,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          btcPriceLabel = new Gtk.Label _(" Current: Unavailable");
+          btcPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
 
         }
 
@@ -435,10 +439,9 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          btcHighLabel = new Gtk.Label _(" | High: Unavailable");
+          btcHighLabel = new Gtk.Label (_(" | High: Unavailable"));
 
         }
-
 
         Gtk.Label btcLowLabel;
 
@@ -448,7 +451,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          btcLowLabel = new Gtk.Label _(" | Low: Unavailable");
+          btcLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
 
         }
 
@@ -477,7 +480,7 @@ public class Crypt: Gtk.Window{
         int64 bchTime = bchData.get_int_member("LASTUPDATE");
         DateTime bchTimeObject = new DateTime.from_unix_utc (bchTime);
 
-        Gtk.Label bchLabel = new Gtk.Label _("Bitcoin Cash");
+        Gtk.Label bchLabel = new Gtk.Label (_("Bitcoin Cash"));
 
         Gtk.Label bchPriceLabel;
 
@@ -487,7 +490,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          bchPriceLabel = new Gtk.Label _(" Current: Unavailable");
+          bchPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
 
         }
 
@@ -499,7 +502,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          bchHighLabel = new Gtk.Label _(" | High: Unavailable");
+          bchHighLabel = new Gtk.Label (_(" | High: Unavailable"));
 
         }
 
@@ -512,7 +515,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          bchLowLabel = new Gtk.Label _(" | Low: Unavailable");
+          bchLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
 
         }
 
@@ -542,7 +545,7 @@ public class Crypt: Gtk.Window{
         int64 ltcTime = ltcData.get_int_member("LASTUPDATE");
         DateTime ltcTimeObject = new DateTime.from_unix_utc ((int64)ltcTime);
 
-        Gtk.Label ltcLabel = new Gtk.Label _("Litecoin");
+        Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin"));
 
         Gtk.Label ltcPriceLabel;
 
@@ -552,7 +555,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          ltcPriceLabel = new Gtk.Label _(" Current: Unavailable");
+          ltcPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
 
         }
 
@@ -564,10 +567,9 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          ltcHighLabel = new Gtk.Label _(" | High: Unavailable");
+          ltcHighLabel = new Gtk.Label (_(" | High: Unavailable"));
 
         }
-
 
         Gtk.Label ltcLowLabel;
 
@@ -577,7 +579,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          ltcLowLabel = new Gtk.Label _(" | Low: Unavailable");
+          ltcLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
 
         }
 
@@ -606,7 +608,7 @@ public class Crypt: Gtk.Window{
         int64 ethTime = ethData.get_int_member("LASTUPDATE");
         DateTime ethTimeObject = new DateTime.from_unix_utc ((int64)ethTime);
 
-        Gtk.Label ethLabel = new Gtk.Label _("Etherum");
+        Gtk.Label ethLabel = new Gtk.Label (_("Etherum"));
 
         Gtk.Label ethPriceLabel;
 
@@ -616,7 +618,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          ethPriceLabel = new Gtk.Label _(" Current: Unavailable");
+          ethPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
 
         }
 
@@ -628,7 +630,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          ethHighLabel = new Gtk.Label _(" | High: Unavailable");
+          ethHighLabel = new Gtk.Label (_(" | High: Unavailable"));
 
         }
 
@@ -641,7 +643,7 @@ public class Crypt: Gtk.Window{
 
         }else{
 
-          ethLowLabel = new Gtk.Label _(" | Low: Unavailable");
+          ethLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
 
         }
 
@@ -670,7 +672,7 @@ public class Crypt: Gtk.Window{
 
       }catch (Error e) {
 
-        stderr.printf _("Something is wrong in getMainPageCoins");
+        stderr.printf (_("Something is wrong in getMainPageCoins"));
 
       }
 
@@ -691,7 +693,7 @@ public class Crypt: Gtk.Window{
     newsBox.set_spacing(10);
     Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
 
-    Gtk.Label currentNewsLabel = new Gtk.Label _("Current News");
+    Gtk.Label currentNewsLabel = new Gtk.Label (_("Current News"));
     currentNewsLabel.get_style_context().add_class("title-text");
     currentNewsLabel.get_style_context().add_class("padding-top");
 
@@ -731,7 +733,7 @@ public class Crypt: Gtk.Window{
 
     }catch (Error e) {
 
-      stderr.printf _("Something is wrong in getNewsMainPage");
+      stderr.printf (_("Something is wrong in getNewsMainPage"));
 
     }
 
@@ -777,11 +779,11 @@ int main (string[] args){
   crypt.window.title = windowTitle;
   crypt.window.set_default_size (1300,600);
   crypt.window.set_position (Gtk.WindowPosition.CENTER);
-  Gtk.Label title = new Gtk.Label ("Home");
+  Gtk.Label title = new Gtk.Label (_("Home"));
 
-  Gtk.Label btcLabel = new Gtk.Label _("Bitcoin (BTC)");
-  Gtk.Label ltcLabel = new Gtk.Label _("Litecoin (LTC)");
-  Gtk.Label ethLabel = new Gtk.Label _("Etherum (ETH)");
+  Gtk.Label btcLabel = new Gtk.Label (_("Bitcoin (BTC)"));
+  Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin (LTC)"));
+  Gtk.Label ethLabel = new Gtk.Label (_("Etherum (ETH)"));
 
   Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
   Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
@@ -794,7 +796,7 @@ int main (string[] args){
     return true;
   });
 
-  Gtk.Label chartHomeLabel = new Gtk.Label _("Last Hour");
+  Gtk.Label chartHomeLabel = new Gtk.Label (_("Last Hour"));
   chartHomeLabel.get_style_context().add_class("title-text");
 
   Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -844,26 +846,26 @@ int main (string[] args){
     var entry = new Entry ();
     entry.set_text(settings.get_value("main-coin").get_string());
 
-    Gtk.Label defaultCurrencyLabel = new Gtk.Label _("Set Default Currency (Tested with USD,GBP,EUR)");
+    Gtk.Label defaultCurrencyLabel = new Gtk.Label (_("Set Default Currency (Tested with USD,GBP,EUR)"));
     defaultCurrencyLabel.xalign = 0;
 
     Gtk.Label saveLabel = new Gtk.Label ("");
     defaultCurrencyLabel.xalign = 0;
 
-    Gtk.Button saveButton = new Gtk.Button.with_label _("Save");
+    Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
     saveButton.get_style_context().add_class("button-color");
 
     var refreshEntry = new Entry ();
     settings.get ("refresh-rate", "i", out refreshRate);
     refreshEntry.set_text(refreshRate.to_string());
 
-    Gtk.Label refreshLabel = new Gtk.Label _("Set the refresh rate (in seconds)");
+    Gtk.Label refreshLabel = new Gtk.Label (_("Set the refresh rate (in seconds)"));
     refreshLabel.xalign = 0;
 
     Gtk.Label saveRefreshLabel = new Gtk.Label ("");
     saveRefreshLabel.xalign = 0;
 
-    Gtk.Button saveRefreshButton = new Gtk.Button.with_label _("Save");
+    Gtk.Button saveRefreshButton = new Gtk.Button.with_label (_("Save"));
     saveRefreshButton.get_style_context().add_class("button-color");
 
     Gtk.Dialog dialog = new Gtk.Dialog ();
@@ -886,7 +888,7 @@ int main (string[] args){
 
       crypt.defaultCoin = entry.get_text();
       settings.set_value("main-coin",entry.get_text());
-      saveLabel.label = _("Settings Saved! Restarting the app is recommended...");
+      saveLabel.label = (_("Settings Saved! Restarting the app is recommended..."));
 
 		});
 
@@ -894,7 +896,7 @@ int main (string[] args){
 
       refreshRate = refreshEntry.get_text().to_int();
       settings.set_value("refresh-rate",refreshRate);
-      saveRefreshLabel.label = _("Refresh rate saved! Restarting the app is recommended...");
+      saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended..."));
 
 		});
 
