@@ -19,7 +19,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
-    caroline.dataTypeY = "$";
+    caroline.dataTypeY = "";
     caroline.dataTypeX = "";
     caroline.gap = 0;
     caroline.min = 0;
@@ -55,7 +55,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
-    caroline.dataTypeY = "$";
+    caroline.dataTypeY = "";
     caroline.dataTypeX = "";
     caroline.gap = 0;
     caroline.min = 0;
@@ -91,7 +91,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
-    caroline.dataTypeY = "$";
+    caroline.dataTypeY = "";
     caroline.dataTypeX = "";
     caroline.gap = 0;
     caroline.min = 0;
@@ -127,7 +127,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
-    caroline.dataTypeY = "$";
+    caroline.dataTypeY = "";
     caroline.dataTypeX = "";
     caroline.gap = 0;
     caroline.min = 0;
@@ -164,7 +164,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
-    caroline.dataTypeY = "$";
+    caroline.dataTypeY = "";
     caroline.dataTypeX = "";
     caroline.gap = 0;
     caroline.min = 0;
@@ -201,7 +201,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessTicks = 0.5;
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
-    caroline.dataTypeY = "$";
+    caroline.dataTypeY = "";
     caroline.dataTypeX = "";
     caroline.gap = 0;
     caroline.min = 0;

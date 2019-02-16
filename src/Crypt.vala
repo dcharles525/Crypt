@@ -35,6 +35,7 @@ public class Crypt: Gtk.Window{
   private double[] LOW = {};
   public int signalDampener = 0;
   public int signalDampenerSecondary = 0;
+  public string defaultCoin = "";
   public string CODE_STYLE = """
     .box{
       padding-left: 10px;
@@ -75,6 +76,10 @@ public class Crypt: Gtk.Window{
       font-size: 18px;
       color: #00aeae;
     }
+
+    .button-color{
+      background-image: linear-gradient( #1c9cc4, #1c8dc4);
+    }
   """;
 
   public void getCoins(){
@@ -103,7 +108,8 @@ public class Crypt: Gtk.Window{
     Gtk.Label priceTitle = new Gtk.Label (coinAbrv
     .concat(": ",this.currentCoin.price.to_string()," | ",this.currentCoin.change24Hour.to_string(),
     " | ",this.currentCoin.changeP24Hour.to_string()));
-    priceTitle.xalign = 0;
+    priceTitle.get_style_context().add_class("title-text");
+    priceTitle.get_style_context().add_class("padding-top");
     Gtk.Label price = new Gtk.Label ("Price: " + this.currentCoin.price);
     Gtk.Label lastUpdate = new Gtk.Label ("Last Update: " + this.currentCoin.lastUpdate);
     Gtk.Label lastVolume = new Gtk.Label ("Last Volume: " + this.currentCoin.lastVolume);
@@ -128,8 +134,6 @@ public class Crypt: Gtk.Window{
     Gtk.Label mCap = new Gtk.Label ("Market Cap: " + this.currentCoin.mCap);
     Gtk.Label totalVolume24Hour = new Gtk.Label ("Total Volume 24h: " + this.currentCoin.totalVolume24Hour);
     Gtk.Label totalVolume24HTo = new Gtk.Label ("Total Volume 24h To: " + this.currentCoin.totalVolume24HTo);
-    priceTitle.get_style_context().add_class("title-text");
-    priceTitle.xalign = 0;
     price.get_style_context().add_class("sub-text-coin-view");
     price.xalign = 0;
     lastUpdate.get_style_context().add_class("sub-text-coin-view");
@@ -180,31 +184,94 @@ public class Crypt: Gtk.Window{
     totalVolume24HTo.xalign = 0;
 
     Gtk.Box verticalBoxSecondary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-    verticalBoxSecondary.pack_start(priceTitle,false,false);
-    verticalBoxSecondary.pack_start(price,false,false);
-    verticalBoxSecondary.pack_start(lastUpdate,false,false);
-    verticalBoxSecondary.pack_start(lastVolume,false,false);
-    verticalBoxSecondary.pack_start(lastVolumeTo,false,false);
-    verticalBoxSecondary.pack_start(lastTradeID,false,false);
-    verticalBoxSecondary.pack_start(volumeDay,false,false);
-    verticalBoxSecondary.pack_start(volumeDayTo,false,false);
-    verticalBoxSecondary.pack_start(volume24Hour,false,false);
-    verticalBoxSecondary.pack_start(volume24HourTo,false,false);
-    verticalBoxSecondary.pack_start(openDay,false,false);
-    verticalBoxSecondary.pack_start(highDay,false,false);
-    verticalBoxSecondary.pack_start(lowDay,false,false);
-    verticalBoxSecondary.pack_start(open24Hour,false,false);
-    verticalBoxSecondary.pack_start(high24Hour,false,false);
-    verticalBoxSecondary.pack_start(low24Hour,false,false);
-    verticalBoxSecondary.pack_start(lastMarket,false,false);
-    verticalBoxSecondary.pack_start(change24Hour,false,false);
-    verticalBoxSecondary.pack_start(changeP24Hour,false,false);
-    verticalBoxSecondary.pack_start(changeDay,false,false);
-    verticalBoxSecondary.pack_start(changePDay,false,false);
-    verticalBoxSecondary.pack_start(supply,false,false);
-    verticalBoxSecondary.pack_start(mCap,false,false);
-    verticalBoxSecondary.pack_start(totalVolume24Hour,false,false);
-    verticalBoxSecondary.pack_start(totalVolume24HTo,false,false);
+    Gtk.Box verticalBoxSecondaryMain = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+    verticalBoxSecondaryMain.pack_start(priceTitle,false,false);
+    verticalBoxSecondaryMain.pack_start(price,false,false);
+    verticalBoxSecondaryMain.pack_start(lastUpdate,false,false);
+    verticalBoxSecondaryMain.pack_start(lastVolume,false,false);
+    verticalBoxSecondaryMain.pack_start(lastVolumeTo,false,false);
+    verticalBoxSecondaryMain.pack_start(lastTradeID,false,false);
+    verticalBoxSecondaryMain.pack_start(volumeDay,false,false);
+    verticalBoxSecondaryMain.pack_start(volumeDayTo,false,false);
+    verticalBoxSecondaryMain.pack_start(volume24Hour,false,false);
+    verticalBoxSecondaryMain.pack_start(volume24HourTo,false,false);
+    verticalBoxSecondaryMain.pack_start(openDay,false,false);
+    verticalBoxSecondaryMain.pack_start(highDay,false,false);
+    verticalBoxSecondaryMain.pack_start(lowDay,false,false);
+    verticalBoxSecondaryMain.pack_start(open24Hour,false,false);
+    verticalBoxSecondaryMain.pack_start(high24Hour,false,false);
+    verticalBoxSecondaryMain.pack_start(low24Hour,false,false);
+    verticalBoxSecondaryMain.pack_start(lastMarket,false,false);
+    verticalBoxSecondaryMain.pack_start(change24Hour,false,false);
+    verticalBoxSecondaryMain.pack_start(changeP24Hour,false,false);
+    verticalBoxSecondaryMain.pack_start(changeDay,false,false);
+    verticalBoxSecondaryMain.pack_start(changePDay,false,false);
+    verticalBoxSecondaryMain.pack_start(supply,false,false);
+    verticalBoxSecondaryMain.pack_start(mCap,false,false);
+    verticalBoxSecondaryMain.pack_start(totalVolume24Hour,false,false);
+    verticalBoxSecondaryMain.pack_start(totalVolume24HTo,false,false);
+
+    Gtk.ScrolledWindow scrolledStats = new Gtk.ScrolledWindow (null, null);
+    scrolledStats.set_max_content_width(200);
+    scrolledStats.set_min_content_height(300);
+    scrolledStats.add(verticalBoxSecondaryMain);
+
+    Soup.Session session = new Soup.Session();
+		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&categories=".concat(coinAbrv));
+		session.send_message (message);
+    Gtk.Box newsBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+    newsBox.set_spacing(10);
+    Gtk.ScrolledWindow scrolledNews = new Gtk.ScrolledWindow (null, null);
+
+    Gtk.Label currentNewsLabel = new Gtk.Label ("Current ".concat(coinAbrv," News"));
+    currentNewsLabel.get_style_context().add_class("title-text");
+    currentNewsLabel.get_style_context().add_class("padding-top");
+
+    newsBox.pack_start(currentNewsLabel);
+
+		try {
+
+			var parser = new Json.Parser ();
+      parser.load_from_data((string) message.response_body.flatten().data, -1);
+      var root_object = parser.get_root ().get_object ();
+      var response = root_object.get_array_member("Data");
+
+      foreach (var news in response.get_elements()) {
+
+        var newsObject = news.get_object();
+
+        Gtk.Label titleLabel = new Gtk.Label (newsObject.get_string_member("title"));
+        Gtk.Label linkLabel = new Gtk.Label (newsObject.get_string_member("url"));
+        linkLabel.set_markup("<a href='".concat(newsObject.get_string_member("url"),"'>",newsObject.get_string_member("url"),"</a>"));
+        titleLabel.set_alignment(0,0);
+        titleLabel.set_line_wrap(true);
+        titleLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
+        titleLabel.set_max_width_chars(100);
+        linkLabel.set_alignment(0,0);
+        linkLabel.set_use_markup(true);
+        linkLabel.set_line_wrap(true);
+        linkLabel.set_selectable(true);
+        linkLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
+        linkLabel.set_max_width_chars(100);
+
+        newsBox.pack_start(titleLabel);
+        newsBox.pack_start(linkLabel);
+        newsBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
+
+      }
+
+    }catch (Error e) {
+
+      stderr.printf ("Something is wrong in getNewsMainPage");
+
+    }
+
+    scrolledNews.set_max_content_width(200);
+    scrolledNews.set_min_content_height(300);
+    scrolledNews.add(newsBox);
+
+    verticalBoxSecondary.pack_end(scrolledNews);
+    verticalBoxSecondary.pack_end(scrolledStats);
 
     Caroline hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/2) - 50);
     Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
@@ -317,7 +384,7 @@ public class Crypt: Gtk.Window{
     MainLoop loop = new MainLoop ();
 
     Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,BCH,LTC,ETH&tsyms=USD");
+		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,BCH,LTC,ETH&tsyms=".concat(this.defaultCoin));
 
     session.queue_message (message, (sess, message) => {
 
@@ -326,10 +393,10 @@ public class Crypt: Gtk.Window{
 			  var parser = new Json.Parser ();
         parser.load_from_data((string) message.response_body.flatten().data, -1);
         var root_object = parser.get_root ().get_object ();
-        var btcData = root_object.get_object_member ("RAW").get_object_member("BTC").get_object_member("USD");
-        var bchData = root_object.get_object_member ("RAW").get_object_member("BCH").get_object_member("USD");
-        var ltcData = root_object.get_object_member ("RAW").get_object_member("LTC").get_object_member("USD");
-        var ethData = root_object.get_object_member ("RAW").get_object_member("ETH").get_object_member("USD");
+        var btcData = root_object.get_object_member ("DISPLAY").get_object_member("BTC").get_object_member(this.defaultCoin);
+        var bchData = root_object.get_object_member ("DISPLAY").get_object_member("BCH").get_object_member(this.defaultCoin);
+        var ltcData = root_object.get_object_member ("DISPLAY").get_object_member("LTC").get_object_member(this.defaultCoin);
+        var ethData = root_object.get_object_member ("DISPLAY").get_object_member("ETH").get_object_member(this.defaultCoin);
 
         Gtk.Label pricesHomeLabel = new Gtk.Label ("Current Coin Prices");
         pricesHomeLabel.get_style_context().add_class("title-text");
@@ -340,9 +407,9 @@ public class Crypt: Gtk.Window{
         verticalGridBox.set_spacing(10);
         verticalGridBox.pack_start(pricesHomeLabel);
 
-        double btcPrice = btcData.get_double_member("PRICE");
-        double btcHigh = btcData.get_double_member("HIGH24HOUR");
-        double btcLow = btcData.get_double_member("LOW24HOUR");
+        string btcPrice = btcData.get_string_member("PRICE");
+        string btcHigh = btcData.get_string_member("HIGH24HOUR");
+        string btcLow = btcData.get_string_member("LOW24HOUR");
         int64 btcTime = btcData.get_int_member("LASTUPDATE");
         DateTime btcTimeObject = new DateTime.from_unix_utc (btcTime);
 
@@ -350,9 +417,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label btcPriceLabel;
 
-        if (btcPrice.to_string().len() > 5){
+        if (btcPrice.length > 5){
 
-          btcPriceLabel = new Gtk.Label (" Current: $".concat(btcPrice.to_string().slice(0,6)));
+          btcPriceLabel = new Gtk.Label (" Current: ".concat(btcPrice));
 
         }else{
 
@@ -362,9 +429,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label btcHighLabel;
 
-        if (btcHigh.to_string().len() > 5){
+        if (btcHigh.length > 5){
 
-          btcHighLabel = new Gtk.Label (" | High: $".concat(btcHigh.to_string().slice(0,6)));
+          btcHighLabel = new Gtk.Label (" | High: ".concat(btcHigh));
 
         }else{
 
@@ -375,9 +442,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label btcLowLabel;
 
-        if (btcLow.to_string().len() > 5){
+        if (btcLow.length > 5){
 
-          btcLowLabel = new Gtk.Label (" | Low: $".concat(btcLow.to_string().slice(0,6)));
+          btcLowLabel = new Gtk.Label (" | Low: ".concat(btcLow));
 
         }else{
 
@@ -404,9 +471,9 @@ public class Crypt: Gtk.Window{
         verticalGridBox.pack_start(btcGrid,false,false);
         verticalGridBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
 
-        double bchPrice = bchData.get_double_member("PRICE");
-        double bchHigh = bchData.get_double_member("HIGH24HOUR");
-        double bchLow = bchData.get_double_member("LOW24HOUR");
+        string bchPrice = bchData.get_string_member("PRICE");
+        string bchHigh = bchData.get_string_member("HIGH24HOUR");
+        string bchLow = bchData.get_string_member("LOW24HOUR");
         int64 bchTime = bchData.get_int_member("LASTUPDATE");
         DateTime bchTimeObject = new DateTime.from_unix_utc (bchTime);
 
@@ -414,9 +481,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label bchPriceLabel;
 
-        if (bchPrice.to_string().len() > 4){
+        if (bchPrice.length > 4){
 
-          bchPriceLabel = new Gtk.Label (" Current: $".concat(bchPrice.to_string().slice(0,5)));
+          bchPriceLabel = new Gtk.Label (" Current: ".concat(bchPrice));
 
         }else{
 
@@ -426,9 +493,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label bchHighLabel;
 
-        if (bchHigh.to_string().len() > 4){
+        if (bchHigh.length > 4){
 
-          bchHighLabel = new Gtk.Label (" | High: $".concat(bchHigh.to_string().slice(0,5)));
+          bchHighLabel = new Gtk.Label (" | High: ".concat(bchHigh));
 
         }else{
 
@@ -439,9 +506,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label bchLowLabel;
 
-        if (bchLow.to_string().len() > 4){
+        if (bchLow.length > 4){
 
-          bchLowLabel = new Gtk.Label (" | Low: $".concat(bchLow.to_string().slice(0,5)));
+          bchLowLabel = new Gtk.Label (" | Low: ".concat(bchLow));
 
         }else{
 
@@ -469,19 +536,19 @@ public class Crypt: Gtk.Window{
         verticalGridBox.pack_start(bchGrid,false,false);
         verticalGridBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
 
-        double ltcPrice = ltcData.get_double_member("PRICE");
-        double ltcHigh = ltcData.get_double_member("HIGH24HOUR");
-        double ltcLow = ltcData.get_double_member("LOW24HOUR");
-        double ltcTime = ltcData.get_double_member("LASTUPDATE");
+        string ltcPrice = ltcData.get_string_member("PRICE");
+        string ltcHigh = ltcData.get_string_member("HIGH24HOUR");
+        string ltcLow = ltcData.get_string_member("LOW24HOUR");
+        int64 ltcTime = ltcData.get_int_member("LASTUPDATE");
         DateTime ltcTimeObject = new DateTime.from_unix_utc ((int64)ltcTime);
 
         Gtk.Label ltcLabel = new Gtk.Label ("Litecoin");
 
         Gtk.Label ltcPriceLabel;
 
-        if (ltcPrice.to_string().len() > 3){
+        if (ltcPrice.length > 3){
 
-          ltcPriceLabel = new Gtk.Label (" Current: $".concat(ltcPrice.to_string().slice(0,4)));
+          ltcPriceLabel = new Gtk.Label (" Current: ".concat(ltcPrice));
 
         }else{
 
@@ -491,9 +558,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label ltcHighLabel;
 
-        if (ltcHigh.to_string().len() > 3){
+        if (ltcHigh.length > 3){
 
-          ltcHighLabel = new Gtk.Label (" | High: $".concat(ltcHigh.to_string().slice(0,4)));
+          ltcHighLabel = new Gtk.Label (" | High: ".concat(ltcHigh));
 
         }else{
 
@@ -504,9 +571,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label ltcLowLabel;
 
-        if (ltcLow.to_string().len() > 3){
+        if (ltcLow.length > 3){
 
-          ltcLowLabel = new Gtk.Label (" | Low: $".concat(ltcLow.to_string().slice(0,4)));
+          ltcLowLabel = new Gtk.Label (" | Low: ".concat(ltcLow));
 
         }else{
 
@@ -533,19 +600,19 @@ public class Crypt: Gtk.Window{
         verticalGridBox.pack_start(ltcGrid,false,false);
         verticalGridBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
 
-        double ethPrice = ethData.get_double_member("PRICE");
-        double ethHigh = ethData.get_double_member("HIGH24HOUR");
-        double ethLow = ethData.get_double_member("LOW24HOUR");
-        double ethTime = ethData.get_double_member("LASTUPDATE");
+        string ethPrice = ethData.get_string_member("PRICE");
+        string ethHigh = ethData.get_string_member("HIGH24HOUR");
+        string ethLow = ethData.get_string_member("LOW24HOUR");
+        int64 ethTime = ethData.get_int_member("LASTUPDATE");
         DateTime ethTimeObject = new DateTime.from_unix_utc ((int64)ethTime);
 
         Gtk.Label ethLabel = new Gtk.Label ("Etherum");
 
         Gtk.Label ethPriceLabel;
 
-        if (ethPrice.to_string().len() > 5){
+        if (ethPrice.length > 5){
 
-          ethPriceLabel = new Gtk.Label (" Current: $".concat(ethPrice.to_string().slice(0,6)));
+          ethPriceLabel = new Gtk.Label (" Current: ".concat(ethPrice));
 
         }else{
 
@@ -555,9 +622,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label ethHighLabel;
 
-        if (ethHigh.to_string().len() > 5){
+        if (ethHigh.length > 5){
 
-          ethHighLabel = new Gtk.Label (" | High: $".concat(ethHigh.to_string().slice(0,6)));
+          ethHighLabel = new Gtk.Label (" | High: ".concat(ethHigh));
 
         }else{
 
@@ -568,9 +635,9 @@ public class Crypt: Gtk.Window{
 
         Gtk.Label ethLowLabel;
 
-        if (ethLow.to_string().len() > 5){
+        if (ethLow.length > 5){
 
-          ethLowLabel = new Gtk.Label (" | Low: $".concat(ethLow.to_string().slice(0,6)));
+          ethLowLabel = new Gtk.Label (" | Low: ".concat(ethLow));
 
         }else{
 
@@ -698,8 +765,10 @@ int main (string[] args){
 
   Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme", true);
 
-  crypt.spinner.active = true;
+  var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+  crypt.defaultCoin = settings.get_value("main-coin").get_string();
 
+  crypt.spinner.active = true;
   crypt.windowWidth = 1200;
 
   var windowTitle = "Crypt";
@@ -763,11 +832,53 @@ int main (string[] args){
 
   });
 
+  Gtk.Image settingsImage = new Gtk.Image.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+  settingsImage.pixel_size = 16;
+  Gtk.ToolButton settingsButton = new Gtk.ToolButton (settingsImage, null);
+  settingsButton.clicked.connect (() => {
+
+    settings = new GLib.Settings ("com.github.dcharles525.crypt");
+
+    var entry = new Entry ();
+    entry.set_text(settings.get_value("main-coin").get_string());
+
+    Gtk.Label defaultCurrencyLabel = new Gtk.Label ("Set Default Currency (Tested with USD,GBP,EUR)");
+    defaultCurrencyLabel.xalign = 0;
+
+    Gtk.Label saveLabel = new Gtk.Label ("");
+    defaultCurrencyLabel.xalign = 0;
+
+    Gtk.Button saveButton = new Gtk.Button.with_label ("Save");
+    saveButton.get_style_context().add_class("button-color");
+
+    Gtk.Dialog dialog = new Gtk.Dialog ();
+    dialog.width_request = 500;
+    dialog.get_content_area ().spacing = 7;
+    dialog.get_content_area ().border_width = 10;
+    dialog.get_content_area ().pack_start (defaultCurrencyLabel,false,false);
+    dialog.get_content_area ().pack_start (entry,false,false);
+    dialog.get_content_area ().pack_start (saveButton,false,false);
+    dialog.get_content_area ().pack_start (saveLabel,false,false);
+    dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
+    dialog.set_default_response (Gtk.ResponseType.OK);
+    dialog.show_all ();
+
+    saveButton.clicked.connect (() => {
+
+      crypt.defaultCoin = entry.get_text();
+      settings.set_value("main-coin",entry.get_text());
+      saveLabel.label = "Settings Saved! Restarting the app is recommended...";
+
+		});
+
+  });
+
   var header = new Gtk.HeaderBar ();
   header.show_close_button = true;
   header.title = windowTitle;
   header.pack_start (crypt.comboBox);
   header.pack_start (addCoinButton);
+  header.pack_end (settingsButton);
   header.pack_end (crypt.spinner);
   header.show_all();
   crypt.window.set_titlebar(header);
@@ -779,6 +890,41 @@ int main (string[] args){
   });
 
   crypt.spinner.active = false;
+  bool ctrBool = false;
+  bool wBool = false;
+
+  crypt.window.key_press_event.connect ((event) => {
+
+    if (event.keyval == Gdk.Key.Control_L){
+
+      ctrBool = true;
+
+    }
+
+    if (event.keyval == Gdk.Key.w){
+
+      wBool = true;
+
+    }
+
+    if (ctrBool && wBool){
+
+      int currentPage = crypt.notebook.get_current_page();
+
+      if (currentPage != 0){
+
+        crypt.notebook.remove_page(currentPage);
+
+      }
+
+      ctrBool = false;
+      wBool = false;
+
+    }
+
+    return false;
+
+  });
 
   Timeout.add (30 * 1000, () => {
 

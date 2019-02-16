@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema path="/com/github/dcharles525/crypt/" id="com.github.dcharles525.crypt">
+    <key name="main-coin" type="s">
+      <default>"USD"</default>
+      <summary>Currency Settings</summary>
+      <description>So people who don't use USD can understand prices</description>
+    </key>
+  </schema>
+</schemalist>

@@ -39,9 +39,11 @@ public class Coin{
   public void getCoinInfoFull(string coinAbrv){
 
     MainLoop loop = new MainLoop ();
+    var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+    string defaultCoin = settings.get_value("main-coin").get_string();
 
     Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(coinAbrv,"&tsyms=USD"));
+		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(coinAbrv,"&tsyms=",defaultCoin));
 
     session.queue_message (message, (sess, message) => {
 
@@ -50,7 +52,7 @@ public class Coin{
 			  var parser = new Json.Parser ();
         parser.load_from_data((string) message.response_body.flatten().data, -1);
         var root_object = parser.get_root ().get_object ();
-        var data = root_object.get_object_member ("DISPLAY").get_object_member(coinAbrv).get_object_member("USD");
+        var data = root_object.get_object_member ("DISPLAY").get_object_member(coinAbrv).get_object_member(defaultCoin);
 
         this.assumedAbbrv = coinAbrv;
         this.abbrv = data.get_string_member("FROMSYMBOL");
@@ -96,9 +98,11 @@ public class Coin{
   public void getPriceDataHour(string coin){
 
     MainLoop loop = new MainLoop ();
-
+    var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+    string defaultCoin = settings.get_value("main-coin").get_string();
+    stdout.printf("%s\n",defaultCoin);
     Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histominute?fsym=".concat(coin,"&tsym=USD&limit=30"));
+		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histominute?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=30"));
 
     session.queue_message (message, (sess, message) => {
 
@@ -147,9 +151,11 @@ public class Coin{
   public void getPriceDataDay(string coin){
 
     MainLoop loop = new MainLoop ();
+    var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+    string defaultCoin = settings.get_value("main-coin").get_string();
 
     Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histohour?fsym=".concat(coin,"&tsym=USD&limit=24"));
+		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histohour?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=24"));
 
     session.queue_message (message, (sess, message) => {
 
@@ -198,9 +204,11 @@ public class Coin{
   public void getPriceDataWeek(string coin){
 
     MainLoop loop = new MainLoop ();
+    var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+    string defaultCoin = settings.get_value("main-coin").get_string();
 
     Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histoday?fsym=".concat(coin,"&tsym=USD&limit=7"));
+		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histoday?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=7"));
 
     session.queue_message (message, (sess, message) => {
 

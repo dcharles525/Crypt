@@ -18,9 +18,12 @@ executable(
       dependency('gee-0.8'),
       dependency('gstreamer-1.0'),
       dependency('clutter-gst-3.0'),
-      dependency('clutter-gtk-1.0')
+      dependency('clutter-gtk-1.0'),
+      dependency('granite')
     ],
     install: true
 )
 
 subdir ('data')
+
+meson.add_install_script('meson/post_install.py')
