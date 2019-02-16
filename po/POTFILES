@@ -1,0 +1,6 @@
+src/Crypt.vala
+src/Caroline.vala
+src/Coin.vala
+src/Draw.vala
+data/com.github.dcharles525.crypt.desktop.in
+data/com.github.dcharles525.crypt.appdata.xml.in

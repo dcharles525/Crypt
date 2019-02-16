@@ -12,12 +12,12 @@ foreach i : icon_sizes
 endforeach
 
 install_data (
-  meson.project_name () + '.desktop',
+  meson.project_name () + '.desktop.in',
   install_dir: join_paths (get_option ('datadir'), 'applications')
 )
 
 install_data (
-  meson.project_name () + '.appdata.xml',
+  meson.project_name () + '.appdata.xml.in',
   install_dir: join_paths (get_option ('datadir'), 'metainfo')
 )
 
