@@ -6,5 +6,10 @@
       <summary>Currency Settings</summary>
       <description>So people who don't use USD can understand prices</description>
     </key>
+    <key name="refresh-rate" type="i">
+      <default>30</default>
+      <summary>Refresh Rate</summary>
+      <description>Refresh rate for metered connections</description>
+    </key>
   </schema>
 </schemalist>

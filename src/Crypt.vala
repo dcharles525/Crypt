@@ -767,6 +767,8 @@ int main (string[] args){
 
   var settings = new GLib.Settings ("com.github.dcharles525.crypt");
   crypt.defaultCoin = settings.get_value("main-coin").get_string();
+  int refreshRate = 0;
+  settings.get ("refresh-rate", "i", out refreshRate);
 
   crypt.spinner.active = true;
   crypt.windowWidth = 1200;
@@ -851,6 +853,19 @@ int main (string[] args){
     Gtk.Button saveButton = new Gtk.Button.with_label ("Save");
     saveButton.get_style_context().add_class("button-color");
 
+    var refreshEntry = new Entry ();
+    settings.get ("refresh-rate", "i", out refreshRate);
+    refreshEntry.set_text(refreshRate.to_string());
+
+    Gtk.Label refreshLabel = new Gtk.Label ("Set the refresh rate (in seconds)");
+    refreshLabel.xalign = 0;
+
+    Gtk.Label saveRefreshLabel = new Gtk.Label ("");
+    saveRefreshLabel.xalign = 0;
+
+    Gtk.Button saveRefreshButton = new Gtk.Button.with_label ("Save");
+    saveRefreshButton.get_style_context().add_class("button-color");
+
     Gtk.Dialog dialog = new Gtk.Dialog ();
     dialog.width_request = 500;
     dialog.get_content_area ().spacing = 7;
@@ -859,6 +874,10 @@ int main (string[] args){
     dialog.get_content_area ().pack_start (entry,false,false);
     dialog.get_content_area ().pack_start (saveButton,false,false);
     dialog.get_content_area ().pack_start (saveLabel,false,false);
+    dialog.get_content_area ().pack_start (refreshLabel,false,false);
+    dialog.get_content_area ().pack_start (refreshEntry,false,false);
+    dialog.get_content_area ().pack_start (saveRefreshButton,false,false);
+    dialog.get_content_area ().pack_start (saveRefreshLabel,false,false);
     dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
     dialog.set_default_response (Gtk.ResponseType.OK);
     dialog.show_all ();
@@ -868,6 +887,14 @@ int main (string[] args){
       crypt.defaultCoin = entry.get_text();
       settings.set_value("main-coin",entry.get_text());
       saveLabel.label = "Settings Saved! Restarting the app is recommended...";
+
+		});
+
+    saveRefreshButton.clicked.connect (() => {
+
+      refreshRate = refreshEntry.get_text().to_int();
+      settings.set_value("refresh-rate",refreshRate);
+      saveRefreshLabel.label = "Refresh rate saved! Restarting the app is recommended...";
 
 		});
 
@@ -926,7 +953,7 @@ int main (string[] args){
 
   });
 
-  Timeout.add (30 * 1000, () => {
+  Timeout.add (refreshRate * 1000, () => {
 
     crypt.spinner.active = true;
 
