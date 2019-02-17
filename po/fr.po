@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: com.github.dcharles525.crypt\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-02-16 16:10-0500\n"
-"PO-Revision-Date: 2019-02-16 15:21-0500\n"
+"PO-Revision-Date: 2019-02-17 11:14+0100\n"
 "Last-Translator: NathanBnm\n"
 "Language-Team: Français\n"
 "Language: fr\n"
@@ -219,11 +219,11 @@ msgid "Set the refresh rate (in seconds)"
 msgstr "Définit le taux de rafraichissement (en secondes)"
 
 #: src/Crypt.vala:891
-msgid "Settings Saved! Restarting the app is recommended..."
+msgid "Settings Saved! Restarting the app is recommended…"
 msgstr "Paramètres enregistrés ! Il est recommandé de relancer l'application…"
 
 #: src/Crypt.vala:899
-msgid "Refresh rate saved! Restarting the app is recommended..."
+msgid "Refresh rate saved! Restarting the app is recommended…"
 msgstr "Taux de rafraîchissement enregistré ! Il est recommandé de relancer l'application…"
 
 #: data/com.github.dcharles525.crypt.desktop:3
@@ -282,7 +282,7 @@ msgid "Change refresh rate to save on data!"
 msgstr "Modifiez le taux de rafraîchissement pour économiser des données !"
 
 #: data/com.github.dcharles525.crypt.appdata.xml:36
-msgid "Translations (Thanks to @NathanBrim for french translations!!)"
+msgid "Translations (Thanks to @NathanBnm for French translations!)"
 msgstr "Traductions (Merci à @NathanBnm pour les traductions françaises !)"
 
 #: data/com.github.dcharles525.crypt.appdata.xml:37
