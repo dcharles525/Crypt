@@ -14,7 +14,7 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/Crypt.vala:113 src/Crypt.vala:329
@@ -219,11 +219,11 @@ msgid "Set the refresh rate (in seconds)"
 msgstr ""
 
 #: src/Crypt.vala:891
-msgid "Settings Saved! Restarting the app is recommended..."
+msgid "Settings Saved! Restarting the app is recommended…"
 msgstr ""
 
 #: src/Crypt.vala:899
-msgid "Refresh rate saved! Restarting the app is recommended..."
+msgid "Refresh rate saved! Restarting the app is recommended…"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.desktop:3
@@ -279,7 +279,7 @@ msgid "Change refresh rate to save on data!"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.appdata.xml:36
-msgid "Translations (Thanks to @NathanBrim for french translations!!)"
+msgid "Translations (Thanks to @NathanBnm for French translations!)"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.appdata.xml:37
