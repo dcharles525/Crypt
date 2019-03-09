@@ -1,7 +1,5 @@
 <div align="center">
-  <span align="center">
-    <img width="64" height="64" src="https://github.com/dcharles525/crypt/blob/master/data/icons/64/com.github.dcharles525.crypt.svg" alt="Icon">
-  </span>
+    <img width="24" height="24" src="icon.svg" alt="Icon">
   <h1 align="center">Crypt</h1>
   <h3 align="center">View and Watch Crypto Currency With Ease!</h3>
   
