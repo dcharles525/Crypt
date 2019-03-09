@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.dcharles525.crypt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-16 16:10-0500\n"
+"POT-Creation-Date: 2019-03-09 10:58-0500\n"
 "PO-Revision-Date: 2019-02-16 15:21-0500\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -236,7 +236,8 @@ msgid "Crypto Market Watcher"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.desktop:5
-msgid "Crypto Trading Made Even More Cryptic!"
+#: data/com.github.dcharles525.crypt.appdata.xml:8
+msgid "View and Watch Crypto Currency With Ease!"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.desktop:8
@@ -245,10 +246,6 @@ msgstr ""
 
 #: data/com.github.dcharles525.crypt.desktop:12
 msgid "crypto;bitcoin;litecoin;coin;bit;trading;money;"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml:8
-msgid "Making the crypto market more cryptic!"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.appdata.xml:10

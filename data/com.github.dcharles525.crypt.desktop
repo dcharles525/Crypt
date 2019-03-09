@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Crypt
 GenericName=Crypto Market Watcher
-Comment=Crypto Trading Made Even More Cryptic!
+Comment=View and Watch Crypto Currency With Ease!
 Categories=GNOME;GTK;Network;Finance;Office;
 Exec=com.github.dcharles525.crypt
 Icon=com.github.dcharles525.crypt

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.dcharles525.crypt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-16 16:10-0500\n"
+"POT-Creation-Date: 2019-03-09 10:58-0500\n"
 "PO-Revision-Date: 2019-02-17 11:14+0100\n"
 "Last-Translator: NathanBnm\n"
 "Language-Team: Français\n"
@@ -224,7 +224,9 @@ msgstr "Paramètres enregistrés ! Il est recommandé de relancer l'application�
 
 #: src/Crypt.vala:899
 msgid "Refresh rate saved! Restarting the app is recommended…"
-msgstr "Taux de rafraîchissement enregistré ! Il est recommandé de relancer l'application…"
+msgstr ""
+"Taux de rafraîchissement enregistré ! Il est recommandé de relancer "
+"l'application…"
 
 #: data/com.github.dcharles525.crypt.desktop:3
 #: data/com.github.dcharles525.crypt.appdata.xml:7
@@ -236,7 +238,8 @@ msgid "Crypto Market Watcher"
 msgstr "Visualisateur de marché des cryptomonnaies"
 
 #: data/com.github.dcharles525.crypt.desktop:5
-msgid "Crypto Trading Made Even More Cryptic!"
+#: data/com.github.dcharles525.crypt.appdata.xml:8
+msgid "View and Watch Crypto Currency With Ease!"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.desktop:8
@@ -247,19 +250,16 @@ msgstr "com.github.dcharles525.crypt"
 msgid "crypto;bitcoin;litecoin;coin;bit;trading;money;"
 msgstr "cryptomonnaie;bitcoin;litecoin;monnaie;bit;bourse;argent;"
 
-#: data/com.github.dcharles525.crypt.appdata.xml:8
-msgid "Making the crypto market more cryptic!"
-msgstr ""
-
 #: data/com.github.dcharles525.crypt.appdata.xml:10
 msgid ""
 "Ever want to view the crypto market in native Vala/GTK? Well look no more "
 "Crypt is all you need to look at charts, prices, and other information while "
 "using less than 50mb of RAM."
 msgstr ""
-"Vous voulez voir le marché de la cryptographie en Vala/GTK natif ? Et bien, ne cherchez plus "
-"Crypt est tout ce dont vous avez besoin pour regarder les graphiques, les prix, et d'autres informations tout "
-"en utilisant moins de 50 Mo de RAM."
+"Vous voulez voir le marché de la cryptographie en Vala/GTK natif ? Et bien, "
+"ne cherchez plus Crypt est tout ce dont vous avez besoin pour regarder les "
+"graphiques, les prix, et d'autres informations tout en utilisant moins de 50 "
+"Mo de RAM."
 
 #: data/com.github.dcharles525.crypt.appdata.xml:12
 msgid "Data refreshes every minute!"
