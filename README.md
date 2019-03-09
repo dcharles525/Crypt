@@ -6,6 +6,6 @@
   <a href="https://appcenter.elementary.io/com.github.dcharles525.crypt">
     <img src="https://appcenter.elementary.io/badge.svg?new" alt="Get it on AppCenter" />
   </a>
+  
+  <img src="https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot.png" alt="Crypt Screenshot">
 </div>
-
-![Crypt Screenshot](https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot.png "Crypt")
