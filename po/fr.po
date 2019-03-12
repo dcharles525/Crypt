@@ -168,7 +168,7 @@ msgstr " | Bas : Indisponible"
 
 #: src/Crypt.vala:483
 msgid "Bitcoin Cash"
-msgstr "Bitcoin"
+msgstr "Bitcoin Cash"
 
 #: src/Crypt.vala:548
 msgid "Litecoin"
@@ -240,7 +240,7 @@ msgstr "Visualisateur de marché des cryptomonnaies"
 #: data/com.github.dcharles525.crypt.desktop:5
 #: data/com.github.dcharles525.crypt.appdata.xml:8
 msgid "View and Watch Crypto Currency With Ease!"
-msgstr ""
+msgstr "Visualiser et surveiller les cryptomonnaies avec facilité !"
 
 #: data/com.github.dcharles525.crypt.desktop:8
 msgid "com.github.dcharles525.crypt"
