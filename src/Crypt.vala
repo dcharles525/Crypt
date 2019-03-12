@@ -414,8 +414,7 @@ public class Crypt: Gtk.Window{
         string btcPrice = btcData.get_string_member("PRICE");
         string btcHigh = btcData.get_string_member("HIGH24HOUR");
         string btcLow = btcData.get_string_member("LOW24HOUR");
-        int64 btcTime = btcData.get_int_member("LASTUPDATE");
-        DateTime btcTimeObject = new DateTime.from_unix_utc (btcTime);
+        string btcTime = btcData.get_string_member("LASTUPDATE");
 
         Gtk.Label btcLabel = new Gtk.Label ("Bitcoin");
 
@@ -455,7 +454,7 @@ public class Crypt: Gtk.Window{
 
         }
 
-        Gtk.Label btcDateLabel = new Gtk.Label (_("Last Update: ").concat(btcTimeObject.to_string()));
+        Gtk.Label btcDateLabel = new Gtk.Label (_("Last Update: ").concat(btcTime));
         btcLabel.get_style_context().add_class("large-text");
         btcPriceLabel.get_style_context().add_class("price-blue-text");
         btcHighLabel.get_style_context().add_class("price-text");
@@ -477,8 +476,7 @@ public class Crypt: Gtk.Window{
         string bchPrice = bchData.get_string_member("PRICE");
         string bchHigh = bchData.get_string_member("HIGH24HOUR");
         string bchLow = bchData.get_string_member("LOW24HOUR");
-        int64 bchTime = bchData.get_int_member("LASTUPDATE");
-        DateTime bchTimeObject = new DateTime.from_unix_utc (bchTime);
+        string bchTime = bchData.get_string_member("LASTUPDATE");
 
         Gtk.Label bchLabel = new Gtk.Label (_("Bitcoin Cash"));
 
@@ -519,7 +517,7 @@ public class Crypt: Gtk.Window{
 
         }
 
-        Gtk.Label bchDateLabel = new Gtk.Label (_("Last Update: ").concat(bchTimeObject.to_string()));
+        Gtk.Label bchDateLabel = new Gtk.Label (_("Last Update: ").concat(bchTime));
         bchLabel.get_style_context().add_class("large-text");
         bchPriceLabel.get_style_context().add_class("price-blue-text");
         bchHighLabel.get_style_context().add_class("price-text");
@@ -542,8 +540,7 @@ public class Crypt: Gtk.Window{
         string ltcPrice = ltcData.get_string_member("PRICE");
         string ltcHigh = ltcData.get_string_member("HIGH24HOUR");
         string ltcLow = ltcData.get_string_member("LOW24HOUR");
-        int64 ltcTime = ltcData.get_int_member("LASTUPDATE");
-        DateTime ltcTimeObject = new DateTime.from_unix_utc ((int64)ltcTime);
+        string ltcTime = ltcData.get_string_member("LASTUPDATE");
 
         Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin"));
 
@@ -583,7 +580,7 @@ public class Crypt: Gtk.Window{
 
         }
 
-        Gtk.Label ltcDateLabel = new Gtk.Label (_("Last Update: ").concat(ltcTimeObject.to_string()));
+        Gtk.Label ltcDateLabel = new Gtk.Label (_("Last Update: ").concat(ltcTime));
         ltcLabel.get_style_context().add_class("large-text");
         ltcPriceLabel.get_style_context().add_class("price-blue-text");
         ltcHighLabel.get_style_context().add_class("price-text");
@@ -605,8 +602,7 @@ public class Crypt: Gtk.Window{
         string ethPrice = ethData.get_string_member("PRICE");
         string ethHigh = ethData.get_string_member("HIGH24HOUR");
         string ethLow = ethData.get_string_member("LOW24HOUR");
-        int64 ethTime = ethData.get_int_member("LASTUPDATE");
-        DateTime ethTimeObject = new DateTime.from_unix_utc ((int64)ethTime);
+        string ethTime = ethData.get_string_member("LASTUPDATE");
 
         Gtk.Label ethLabel = new Gtk.Label (_("Etherum"));
 
@@ -647,7 +643,7 @@ public class Crypt: Gtk.Window{
 
         }
 
-        Gtk.Label ethDateLabel = new Gtk.Label (_("Last Update: ").concat(ethTimeObject.to_string()));
+        Gtk.Label ethDateLabel = new Gtk.Label (_("Last Update: ").concat(ethTime));
         ethLabel.get_style_context().add_class("large-text");
         ethPriceLabel.get_style_context().add_class("price-blue-text");
         ethHighLabel.get_style_context().add_class("price-text");

@@ -144,7 +144,7 @@ public class Caroline : Gtk.DrawingArea {
 
     spreadFinal = width/this.DATA.length;
 
-    for (int i = 1; i < this.DATA.length+1; i++){
+    for (int i = 0; i < this.DATA.length; i++){
 
       cr.move_to (15+spreadFinal*i, height+20);
       cr.line_to (15+spreadFinal*i, height+5);
