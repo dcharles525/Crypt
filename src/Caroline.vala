@@ -265,12 +265,12 @@ public class Caroline : Gtk.DrawingArea {
       int fontw, fonth;
       string tempFinal = "";
 
-      cr.set_source_rgba (0, 0, 0,0.8);
+      cr.set_source_rgba (0, 0, 0,0.4);
       cr.rectangle (40, 0, 117, 68);
       cr.fill();
       cr.stroke();
 
-      cr.set_source_rgba (0, 255, 0,0.65);
+      cr.set_source_rgba (0, 255, 0,1);
       this.layout = null;
       string temp = "High: ".concat(this.HIGH[this.orderPosition].to_string());
       string[] tempArray = temp.split(".");
@@ -293,7 +293,7 @@ public class Caroline : Gtk.DrawingArea {
       Pango.cairo_show_layout (cr, this.layout);
       this.queue_draw();
 
-      cr.set_source_rgba (255, 0, 0,0.65);
+      cr.set_source_rgba (255, 0, 0,1);
       this.layout = null;
       temp = "Low: ".concat(this.LOW[this.orderPosition].to_string());
       tempArray = temp.split(".");
@@ -316,7 +316,7 @@ public class Caroline : Gtk.DrawingArea {
       Pango.cairo_show_layout (cr, this.layout);
       this.queue_draw();
 
-      cr.set_source_rgba (255, 255, 255,0.65);
+      cr.set_source_rgba (255, 255, 255,1);
       this.layout = null;
       temp = "Current: ".concat(this.DATA[this.orderPosition].to_string());
       tempArray = temp.split(".");
