@@ -884,7 +884,7 @@ int main (string[] args){
 
       crypt.defaultCoin = entry.get_text();
       settings.set_value("main-coin",entry.get_text());
-      saveLabel.label = (_("Settings Saved! Restarting the app is recommended…"));
+      saveLabel.label = (_("Settings Saved! Restarting the app is recommended!"));
 
 		});
 
@@ -892,7 +892,7 @@ int main (string[] args){
 
       refreshRate = refreshEntry.get_text().to_int();
       settings.set_value("refresh-rate",refreshRate);
-      saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended…"));
+      saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended!"));
 
 		});
 

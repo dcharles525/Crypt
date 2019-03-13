@@ -11,6 +11,7 @@
     <ul>
       <li>Data refreshes every minute!</li>
       <li>View hourly, daily, and weekly charts!</li>
+      <li>Click on candles to inspect information!</li>
       <li>View full coin information!</li>
       <li>See information in USD, EUR, GBP, and more!!</li>
       <li>Change refresh rate to save on data!</li>
@@ -30,6 +31,13 @@
   </screenshots>
 
   ​<releases>
+
+    <release version="1.3.0" date="2019-03-13">
+      <description>
+        <p>Fixed tons of bugs with help from @NathanBnm</p>
+        <p>Click on candles to see information for that time period</p>
+      </description>
+    </release>
 
     <release version="1.2.0" date="2019-02-16">
       <description>
