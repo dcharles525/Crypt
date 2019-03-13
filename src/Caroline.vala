@@ -6,8 +6,10 @@ public class Caroline : Gtk.DrawingArea {
 
   private Pango.Layout layout;
   private bool drawLabel { get; set; }
-  private double labelPositionX { get; set; }
-  private double labelPositionY { get; set;}
+  private int orderPosition { get; set; }
+  private double[] candlePositionX = {};
+  private double[] candlePositionY = {};
+  private double[] candleHeight = {};
 
   public double[] DATA { get; set; }
   public double[] HIGH { get; set; }
@@ -80,6 +82,44 @@ public class Caroline : Gtk.DrawingArea {
         this.labelYList.add(label.to_string());
 
       }
+
+    }
+
+  }
+
+  private void calculateClickableArea(){
+
+    int width = get_allocated_width () - 50;
+    int height = get_allocated_height () - 50;
+
+    double scalerCandleH = 0;
+    double candleChangeH = 0;
+
+    double scalerCandleL = 0;
+    double candleChangeL = 0;
+
+    double finalCandleScaler = 0;
+
+    double spreadFinalX = width/this.DATA.length;
+    double spreadFinalY = height/this.spreadY;
+
+    this.candlePositionX = {};
+    this.candlePositionY = {};
+    this.candleHeight = {};
+
+    for (int i = 0; i < this.DATA.length; i++){
+
+      scalerCandleH = (this.HIGH[i] - this.min) / (this.max - this.min);
+      scalerCandleH = scalerCandleH * this.spreadY;
+
+      scalerCandleL = (this.LOW[i] - this.min) / (this.max - this.min);
+      scalerCandleL = scalerCandleL * this.spreadY;
+
+      double yUpdated = ((height+15)-((spreadFinalY*scalerCandleH)))-((height+15)-((spreadFinalY*scalerCandleL)));
+
+      this.candlePositionX += (17.5+spreadFinalX*(i+1))-7.5;
+      this.candlePositionY += ((height+15)-((spreadFinalY*scalerCandleL)));
+      this.candleHeight += yUpdated;
 
     }
 
@@ -187,6 +227,10 @@ public class Caroline : Gtk.DrawingArea {
 
     double finalCandleScaler = 0;
 
+    this.candlePositionX = {};
+    this.candlePositionY = {};
+    this.candleHeight = {};
+
     for (int i = 0; i < this.DATA.length; i++){
 
       if (this.DATA[i] > this.DATA[i-1]){
@@ -208,17 +252,89 @@ public class Caroline : Gtk.DrawingArea {
       double yUpdated = ((height+15)-((spreadFinalY*scalerCandleH)))-((height+15)-((spreadFinalY*scalerCandleL)));
       cr.rectangle ((17.5+spreadFinalX*(i+1))-7.5, ((height+15)-((spreadFinalY*scalerCandleL))), 10, yUpdated);
 
-      cr.stroke  ();
+      candlePositionX += (17.5+spreadFinalX*(i+1))-7.5;
+      candlePositionY += ((height+15)-((spreadFinalY*scalerCandleL)));
+      candleHeight += yUpdated;
+
+      cr.stroke ();
 
     }
 
     if (this.drawLabel){
 
       int fontw, fonth;
+      string tempFinal = "";
+
+      cr.set_source_rgba (0, 0, 0,0.8);
+      cr.rectangle (40, 0, 117, 68);
+      cr.fill();
+      cr.stroke();
+
+      cr.set_source_rgba (0, 255, 0,0.65);
       this.layout = null;
-      this.layout = create_pango_layout ("");
+      string temp = "High: ".concat(this.HIGH[this.orderPosition].to_string());
+      string[] tempArray = temp.split(".");
+
+      if (tempArray[1].length > 2){
+
+        tempFinal = tempArray[0].concat(".",tempArray[1].substring(0,2));
+
+      }else{
+
+        tempFinal = tempArray[0].concat(".",tempArray[1]);
+
+      }
+
+      this.layout = create_pango_layout (tempFinal);
       this.layout.get_pixel_size (out fontw, out fonth);
-      cr.move_to ((this.labelPositionX - fontw),(this.labelPositionY - fonth));
+
+      cr.move_to (55,10);
+      Pango.cairo_update_layout (cr, this.layout);
+      Pango.cairo_show_layout (cr, this.layout);
+      this.queue_draw();
+
+      cr.set_source_rgba (255, 0, 0,0.65);
+      this.layout = null;
+      temp = "Low: ".concat(this.LOW[this.orderPosition].to_string());
+      tempArray = temp.split(".");
+
+      if (tempArray[1].length > 2){
+
+        tempFinal = tempArray[0].concat(".",tempArray[1].substring(0,2));
+
+      }else{
+
+        tempFinal = tempArray[0].concat(".",tempArray[1]);
+
+      }
+
+      this.layout = create_pango_layout (tempFinal);
+      this.layout.get_pixel_size (out fontw, out fonth);
+
+      cr.move_to (55,25);
+      Pango.cairo_update_layout (cr, this.layout);
+      Pango.cairo_show_layout (cr, this.layout);
+      this.queue_draw();
+
+      cr.set_source_rgba (255, 255, 255,0.65);
+      this.layout = null;
+      temp = "Current: ".concat(this.DATA[this.orderPosition].to_string());
+      tempArray = temp.split(".");
+
+      if (tempArray[1].length > 2){
+
+        tempFinal = tempArray[0].concat(".",tempArray[1].substring(0,2));
+
+      }else{
+
+        tempFinal = tempArray[0].concat(".",tempArray[1]);
+
+      }
+
+      this.layout = create_pango_layout (tempFinal);
+      this.layout.get_pixel_size (out fontw, out fonth);
+
+      cr.move_to (55,40);
       Pango.cairo_update_layout (cr, this.layout);
       Pango.cairo_show_layout (cr, this.layout);
       this.queue_draw();
@@ -226,9 +342,31 @@ public class Caroline : Gtk.DrawingArea {
     }
 
     this.button_press_event.connect ((event) => {
-      this.labelPositionX = event.x;
-      this.labelPositionY = event.y;
-      this.drawLabel = true;
+
+      int found = 0;
+
+      for (int g = 0; g < this.DATA.length; g++){
+
+        if (event.x >= candlePositionX[g] && event.x <= (candlePositionX[g] + 10)){
+
+          if (event.y >= (candlePositionY[g] + candleHeight[g]) && event.y <= (candlePositionY[g])){
+
+            this.orderPosition = g;
+            this.drawLabel = true;
+            found = 1;
+
+          }
+
+        }
+
+      }
+
+      if (found == 0){
+
+        this.drawLabel = false;
+
+      }
+
       return true;
     });
 
@@ -238,6 +376,7 @@ public class Caroline : Gtk.DrawingArea {
 
   public override void size_allocate (Gtk.Allocation allocation) {
 
+    this.calculateClickableArea();
     this.drawLabel = false;
     this.layout = create_pango_layout ("");
     base.size_allocate (allocation);

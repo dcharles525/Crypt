@@ -769,11 +769,11 @@ int main (string[] args){
   settings.get ("refresh-rate", "i", out refreshRate);
 
   crypt.spinner.active = true;
-  crypt.windowWidth = 1200;
+  crypt.windowWidth = 1100;
 
   var windowTitle = "Crypt";
   crypt.window.title = windowTitle;
-  crypt.window.set_default_size (1300,600);
+  crypt.window.set_default_size (1200,500);
   crypt.window.set_position (Gtk.WindowPosition.CENTER);
   Gtk.Label title = new Gtk.Label (_("Home"));
 
@@ -819,7 +819,7 @@ int main (string[] args){
   Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
   scrolled.add(crypt.mainGrid);
   scrolled.set_max_content_width(1200);
-  scrolled.set_min_content_height(700);
+  scrolled.set_min_content_height(500);
 
   crypt.notebook.insert_page (scrolled, title,0);
 
