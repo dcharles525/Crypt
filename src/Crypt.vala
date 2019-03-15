@@ -326,30 +326,30 @@ public class Crypt: Gtk.Window{
       .concat(": ",this.currentCoin.price.to_string()," | ",this.currentCoin.change24Hour.to_string(),
       " | ",this.currentCoin.changeP24Hour.to_string());
       priceTitle.xalign = 0;
-      price.label = _("Price: ") + this.currentCoin.price;
-      lastUpdate.label = _("Last Update: ") + this.currentCoin.lastUpdate;
-      lastVolume.label = _("Last Volume: ") + this.currentCoin.lastVolume;
-      lastVolumeTo.label = _("Last Volume To: ") + this.currentCoin.lastVolumeTo;
-      lastTradeID.label = _("Last TradeID: ") + this.currentCoin.lastTradeID;
-      volumeDay.label = _("Volume Day: ") + this.currentCoin.volumeDay;
-      volumeDayTo.label = _("Volume Day To: ") + this.currentCoin.volumeDayTo;
-      volume24Hour.label = _("Volume 24 Hour: ") + this.currentCoin.volume24Hour;
-      volume24HourTo.label = _("Volume 24 Hour To: ") + this.currentCoin.volume24HourTo;
-      openDay.label = _("Open Day: ") + this.currentCoin.openDay;
-      highDay.label = _("Open High Day: ") + this.currentCoin.highDay;
-      lowDay.label = _("Open Low Day: ") + this.currentCoin.lowDay;
-      open24Hour.label = _("Open 24h: ") + this.currentCoin.open24Hour;
-      high24Hour.label = _("Open High 24h: ") + this.currentCoin.high24Hour;
-      low24Hour.label = _("Open Low 24h: ") + this.currentCoin.low24Hour;
-      lastMarket.label = _("Last Market: ") + this.currentCoin.lastMarket;
-      change24Hour.label = _("Change Last 24h: ") + this.currentCoin.change24Hour;
-      changeP24Hour.label = _("Change Percent Last 24h: ") + this.currentCoin.changeP24Hour;
-      changeDay.label = _("Change Day: ") + this.currentCoin.changeDay;
-      changePDay.label = _("Change Percent Day: ") + this.currentCoin.changePDay;
-      supply.label = _("Supply: ") + this.currentCoin.supply;
-      mCap.label = _("Market Cap: ") + this.currentCoin.mCap;
-      totalVolume24Hour.label = _("Total Volume 24h: ") + this.currentCoin.totalVolume24Hour;
-      totalVolume24HTo.label = _("Total Volume 24h To: ") + this.currentCoin.totalVolume24HTo;
+      price.label = (_("Price: ")) + this.currentCoin.price;
+      lastUpdate.label = (_("Last Update: ")) + this.currentCoin.lastUpdate;
+      lastVolume.label = (_("Last Volume: ")) + this.currentCoin.lastVolume;
+      lastVolumeTo.label = (_("Last Volume To: ")) + this.currentCoin.lastVolumeTo;
+      volumeDay.label = (_("Volume Day: ")) + this.currentCoin.volumeDay;
+      lastTradeID.label = (_("Last TradeID: ")) + this.currentCoin.lastTradeID;
+      volumeDayTo.label = (_("Volume Day To: ")) + this.currentCoin.volumeDayTo;
+      volume24HourTo.label = (_("Volume 24 Hour To: ")) + this.currentCoin.volume24HourTo;
+      volume24Hour.label = (_("Volume 24 Hour: ")) + this.currentCoin.volume24Hour;
+      openDay.label = (_("Open Day: ")) + this.currentCoin.openDay;
+      highDay.label = (_("Open High Day: ")) + this.currentCoin.highDay;
+      lowDay.label = (_("Open Low Day: ")) + this.currentCoin.lowDay;
+      open24Hour.label = (_("Open 24h: ")) + this.currentCoin.open24Hour;
+      high24Hour.label = (_("Open High 24h: ")) + this.currentCoin.high24Hour;
+      low24Hour.label = (_("Open Low 24h: ")) + this.currentCoin.low24Hour;
+      lastMarket.label = (_("Last Market: ")) + this.currentCoin.lastMarket;
+      change24Hour.label = (_("Change Last 24h: ")) + this.currentCoin.change24Hour;
+      changeP24Hour.label = (_("Change Percent Last 24h: ")) + this.currentCoin.changeP24Hour;
+      changeDay.label = (_("Change Day: ")) + this.currentCoin.changeDay;
+      changePDay.label = (_("Change Percent Day: ")) + this.currentCoin.changePDay;
+      supply.label = (_("Supply: ")) + this.currentCoin.supply;
+      mCap.label = (_("Market Cap: ")) + this.currentCoin.mCap;
+      totalVolume24Hour.label = (_("Total Volume 24h: ")) + this.currentCoin.totalVolume24Hour;
+      totalVolume24HTo.label = (_("Total Volume 24h To: ")) + this.currentCoin.totalVolume24HTo;
 
       currentCoin.getPriceDataHour(coinAbrv);
 
@@ -839,62 +839,77 @@ int main (string[] args){
 
     settings = new GLib.Settings ("com.github.dcharles525.crypt");
 
-    var entry = new Entry ();
-    entry.set_text(settings.get_value("main-coin").get_string());
+    if (settings != null){
 
-    Gtk.Label defaultCurrencyLabel = new Gtk.Label (_("Set Default Currency (Tested with USD,GBP,EUR)"));
-    defaultCurrencyLabel.xalign = 0;
+      var entry = new Entry ();
+      entry.set_text(settings.get_value("main-coin").get_string());
 
-    Gtk.Label saveLabel = new Gtk.Label ("");
-    defaultCurrencyLabel.xalign = 0;
+      Gtk.Label defaultCurrencyLabel = new Gtk.Label (_("Set Default Currency (Tested with USD,GBP,EUR)"));
+      defaultCurrencyLabel.xalign = 0;
 
-    Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
-    saveButton.get_style_context().add_class("button-color");
+      Gtk.Label saveLabel = new Gtk.Label ("");
+      defaultCurrencyLabel.xalign = 0;
 
-    var refreshEntry = new Entry ();
-    settings.get ("refresh-rate", "i", out refreshRate);
-    refreshEntry.set_text(refreshRate.to_string());
+      Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
+      saveButton.get_style_context().add_class("button-color");
 
-    Gtk.Label refreshLabel = new Gtk.Label (_("Set the refresh rate (in seconds)"));
-    refreshLabel.xalign = 0;
+      var refreshEntry = new Entry ();
+      settings.get ("refresh-rate", "i", out refreshRate);
+      refreshEntry.set_text(refreshRate.to_string());
 
-    Gtk.Label saveRefreshLabel = new Gtk.Label ("");
-    saveRefreshLabel.xalign = 0;
+      Gtk.Label refreshLabel = new Gtk.Label (_("Set the refresh rate (in seconds)"));
+      refreshLabel.xalign = 0;
 
-    Gtk.Button saveRefreshButton = new Gtk.Button.with_label (_("Save"));
-    saveRefreshButton.get_style_context().add_class("button-color");
+      Gtk.Label saveRefreshLabel = new Gtk.Label ("");
+      saveRefreshLabel.xalign = 0;
 
-    Gtk.Dialog dialog = new Gtk.Dialog ();
-    dialog.width_request = 500;
-    dialog.get_content_area ().spacing = 7;
-    dialog.get_content_area ().border_width = 10;
-    dialog.get_content_area ().pack_start (defaultCurrencyLabel,false,false);
-    dialog.get_content_area ().pack_start (entry,false,false);
-    dialog.get_content_area ().pack_start (saveButton,false,false);
-    dialog.get_content_area ().pack_start (saveLabel,false,false);
-    dialog.get_content_area ().pack_start (refreshLabel,false,false);
-    dialog.get_content_area ().pack_start (refreshEntry,false,false);
-    dialog.get_content_area ().pack_start (saveRefreshButton,false,false);
-    dialog.get_content_area ().pack_start (saveRefreshLabel,false,false);
-    dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
-    dialog.set_default_response (Gtk.ResponseType.OK);
-    dialog.show_all ();
+      Gtk.Button saveRefreshButton = new Gtk.Button.with_label (_("Save"));
+      saveRefreshButton.get_style_context().add_class("button-color");
 
-    saveButton.clicked.connect (() => {
+      Gtk.Dialog dialog = new Gtk.Dialog ();
+      dialog.width_request = 500;
+      dialog.get_content_area ().spacing = 7;
+      dialog.get_content_area ().border_width = 10;
+      dialog.get_content_area ().pack_start (defaultCurrencyLabel,false,false);
+      dialog.get_content_area ().pack_start (entry,false,false);
+      dialog.get_content_area ().pack_start (saveButton,false,false);
+      dialog.get_content_area ().pack_start (saveLabel,false,false);
+      dialog.get_content_area ().pack_start (refreshLabel,false,false);
+      dialog.get_content_area ().pack_start (refreshEntry,false,false);
+      dialog.get_content_area ().pack_start (saveRefreshButton,false,false);
+      dialog.get_content_area ().pack_start (saveRefreshLabel,false,false);
+      dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
+      dialog.set_default_response (Gtk.ResponseType.OK);
+      dialog.show_all ();
 
-      crypt.defaultCoin = entry.get_text();
-      settings.set_value("main-coin",entry.get_text());
-      saveLabel.label = (_("Settings Saved! Restarting the app is recommended!"));
+      saveButton.clicked.connect (() => {
 
-		});
+        crypt.defaultCoin = entry.get_text();
+        settings.set_value("main-coin",entry.get_text());
+        saveLabel.label = (_("Settings Saved! Restarting the app is recommended!"));
 
-    saveRefreshButton.clicked.connect (() => {
+  		});
 
-      refreshRate = refreshEntry.get_text().to_int();
-      settings.set_value("refresh-rate",refreshRate);
-      saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended!"));
+      saveRefreshButton.clicked.connect (() => {
 
-		});
+        refreshRate = refreshEntry.get_text().to_int();
+        settings.set_value("refresh-rate",refreshRate);
+        saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended!"));
+
+  		});
+
+    }else{
+
+      Gtk.Dialog dialog = new Gtk.Dialog ();
+      dialog.width_request = 500;
+      dialog.get_content_area ().spacing = 7;
+      dialog.get_content_area ().border_width = 10;
+      dialog.get_content_area ().pack_start (new Gtk.Label ("Settings schema isn't installed properly, reinstall app."),false,false);
+      dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
+      dialog.set_default_response (Gtk.ResponseType.OK);
+      dialog.show_all ();
+
+    }
 
   });
 
