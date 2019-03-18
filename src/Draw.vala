@@ -29,7 +29,7 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("h"));
+    caroline.labelXList.add(1.to_string().concat("m"));
 
     for (int i = 0; i < caroline.DATA.length; i++){
 
@@ -101,7 +101,7 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("h"));
+    caroline.labelXList.add(1.to_string().concat("d"));
 
     for (int i = 0; i < caroline.DATA.length; i++){
 
@@ -137,7 +137,7 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("h"));
+    caroline.labelXList.add(1.to_string().concat("m"));
 
     for (int i = 0; i < caroline.DATA.length; i++){
 
@@ -178,7 +178,7 @@ public class Draw: Gtk.Window{
 
     for (int i = 1; i < caroline.DATA.length+1; i++){
 
-      caroline.labelXList.add((2*i).to_string().concat("m"));
+      caroline.labelXList.add((2*i).to_string().concat("h"));
 
     }
 
@@ -211,11 +211,11 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("h"));
+    caroline.labelXList.add(1.to_string().concat("d"));
 
     for (int i = 1; i < caroline.DATA.length+1; i++){
 
-      caroline.labelXList.add((2*i).to_string().concat("m"));
+      caroline.labelXList.add((2*i).to_string().concat("d"));
 
     }
 
