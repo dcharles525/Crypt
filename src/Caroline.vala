@@ -50,11 +50,35 @@ public class Caroline : Gtk.DrawingArea {
     tempDATAH = arraySortInt(tempDATAH);
     tempDATAL = arraySortInt(tempDATAL);
     double label;
+    double scaler;
 
-    double temp = tempDATAH[tempDATAH.length-1];
-    this.max = temp + 0.5;
+    if (tempDATAH[0] >= 1000){
+
+      scaler = 0.001;
+
+    }else if (tempDATAH[0] > 100 && tempDATAH[0] < 1000){
+
+      scaler = 0.004;
+
+    }else if(tempDATAH[0] > 1 && tempDATAH[0] < 100){
+
+      scaler = 0.006;
+
+    }else if(tempDATAH[0] < 1){
+
+      scaler = 0.01;
+
+    }else{
+
+      scaler = 0.01;
+
+    }
+
+    double temp = tempDATAH[0];
+    stdout.printf("%f\n",scaler);
+    this.max = temp + (tempDATAH[0] * scaler);
     temp = tempDATAL[0];
-    this.min = temp - 0.5;
+    this.min = temp - (tempDATAL[0] * scaler);
     double difference = this.max - this.min;
     this.gap = difference / this.spreadY;
     label = this.min;

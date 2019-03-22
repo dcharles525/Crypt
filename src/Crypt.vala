@@ -18,11 +18,13 @@ public class Crypt: Gtk.Window{
   public double windowHeight;
   public Gtk.Window window = new Gtk.Window();
   public Gtk.Notebook notebook = new Gtk.Notebook();
+  public Gtk.Notebook notebookSecondary = new Gtk.Notebook();
   public Gtk.ComboBoxText comboBox = new Gtk.ComboBoxText();
   public Caroline caroline = new Caroline();
   public Gtk.CssProvider provider = new Gtk.CssProvider();
   public Gtk.Box box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
   public Gtk.Box secondaryBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+  public Gtk.Box deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
   public Gtk.Grid chartGrid = new Gtk.Grid ();
   public Gtk.Grid mainGrid = new Gtk.Grid ();
   public MainLoop m = new MainLoop();
@@ -33,9 +35,11 @@ public class Crypt: Gtk.Window{
   private double[] DATA = {};
   private double[] HIGH = {};
   private double[] LOW = {};
+  public Gtk.TreeView mainAreaTreeView;
   public int signalDampener = 0;
   public int signalDampenerSecondary = 0;
   public string defaultCoin = "";
+  public bool networkAccess = false;
   public string CODE_STYLE = """
     .box{
       padding-left: 10px;
@@ -80,11 +84,17 @@ public class Crypt: Gtk.Window{
     .button-color{
       background-image: linear-gradient( #1c9cc4, #1c8dc4);
     }
+
+    .table{
+      padding: 5px;
+      border-bottom-color: #1d1d1d;
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+    }
   """;
 
   public void getCoins(){
 
-    this.comboBox = new Gtk.ComboBoxText ();
     this.comboBox.append("0","BTC");
     this.comboBox.append("1","LTC");
     this.comboBox.append("2","ETH");
@@ -93,6 +103,11 @@ public class Crypt: Gtk.Window{
     this.comboBox.append("5","DASH");
     this.comboBox.append("6","ZEC");
     this.comboBox.append("7","ETC");
+    this.comboBox.append("8","EOS");
+    this.comboBox.append("9","XRP");
+    this.comboBox.append("10","BNB");
+    this.comboBox.append("11","TRX");
+    this.comboBox.append("12","DOGE");
     this.comboBox.active = 0;
 
   }
@@ -385,298 +400,180 @@ public class Crypt: Gtk.Window{
 
   public void getMainPageCoins(){
 
-    MainLoop loop = new MainLoop ();
+    ArrayList<string> coinNames = new ArrayList<string>();
+    ArrayList<string> coinAbbrevs = new ArrayList<string>();
 
-    Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC,BCH,LTC,ETH&tsyms=".concat(this.defaultCoin));
+    coinNames.add("Bitcoin"); coinNames.add("Litecoin"); coinNames.add("Bitcoin Cash");
+    coinNames.add("Etherum"); coinNames.add("Dogecoin"); coinNames.add("Tron");
+    coinNames.add("EOS"); coinNames.add("NEO"); coinNames.add("Okex");
+    coinNames.add("Dash"); coinNames.add("Monero"); coinNames.add("Binance Coin");
 
-    session.queue_message (message, (sess, message) => {
+    coinAbbrevs.add("BTC"); coinAbbrevs.add("LTC"); coinAbbrevs.add("BCH");
+    coinAbbrevs.add("ETH"); coinAbbrevs.add("DOGE"); coinAbbrevs.add("TRX");
+    coinAbbrevs.add("EOS"); coinAbbrevs.add("NEO"); coinAbbrevs.add("OKB");
+    coinAbbrevs.add("DASH"); coinAbbrevs.add("XMR"); coinAbbrevs.add("BNB");
 
-		  try {
+    Gtk.Box verticalGridBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+    verticalGridBox.get_style_context().add_class("area");
+    verticalGridBox.set_spacing(10);
+    //verticalGridBox.pack_start(pricesHomeLabel);
 
-			  var parser = new Json.Parser ();
-        parser.load_from_data((string) message.response_body.flatten().data, -1);
-        var root_object = parser.get_root ().get_object ();
-        var btcData = root_object.get_object_member ("DISPLAY").get_object_member("BTC").get_object_member(this.defaultCoin);
-        var bchData = root_object.get_object_member ("DISPLAY").get_object_member("BCH").get_object_member(this.defaultCoin);
-        var ltcData = root_object.get_object_member ("DISPLAY").get_object_member("LTC").get_object_member(this.defaultCoin);
-        var ethData = root_object.get_object_member ("DISPLAY").get_object_member("ETH").get_object_member(this.defaultCoin);
+    this.mainAreaTreeView = new TreeView ();
+    this.mainAreaTreeView.get_style_context().add_class("table");
 
-        Gtk.Label pricesHomeLabel = new Gtk.Label (_("Current Coin Prices"));
-        pricesHomeLabel.get_style_context().add_class("title-text");
-        pricesHomeLabel.get_style_context().add_class("padding-top");
+    var listModel = new Gtk.ListStore (7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
+    this.mainAreaTreeView.set_model (listModel);
 
-        Gtk.Box verticalGridBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-        verticalGridBox.get_style_context().add_class("area");
-        verticalGridBox.set_spacing(10);
-        verticalGridBox.pack_start(pricesHomeLabel);
+    var text = new CellRendererText ();
 
-        string btcPrice = btcData.get_string_member("PRICE");
-        string btcHigh = btcData.get_string_member("HIGH24HOUR");
-        string btcLow = btcData.get_string_member("LOW24HOUR");
-        string btcTime = btcData.get_string_member("LASTUPDATE");
+    var coinColumn = new Gtk.TreeViewColumn ();
+    coinColumn.set_title (_("Coin"));
+    coinColumn.max_width = -1;
+    coinColumn.min_width = 150;
+    coinColumn.pack_start (text, false);
+    coinColumn.resizable = true;
+    coinColumn.reorderable = true;
+    coinColumn.sort_column_id = 0;
+    coinColumn.set_attributes ( text, "text", 0);
+    coinColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-        Gtk.Label btcLabel = new Gtk.Label ("Bitcoin");
+    this.mainAreaTreeView.append_column(coinColumn);
 
-        Gtk.Label btcPriceLabel;
+    var currentText = new CellRendererText ();
 
-        if (btcPrice.length > 5){
+    var currentColumn = new Gtk.TreeViewColumn ();
+    currentColumn.set_title (_("Current"));
+    currentColumn.max_width = -1;
+    currentColumn.min_width = 100;
+    currentColumn.pack_start (currentText, false);
+    currentColumn.resizable = true;
+    currentColumn.reorderable = true;
+    currentColumn.sort_column_id = 0;
+    currentColumn.set_attributes (currentText, "text", 1);
+    currentColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-          btcPriceLabel = new Gtk.Label (_(" Current: ").concat(btcPrice));
+    this.mainAreaTreeView.append_column(currentColumn);
 
-        }else{
+    var highText = new CellRendererText ();
 
-          btcPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
+    var highColumn = new Gtk.TreeViewColumn ();
+    highColumn.set_title (_("High"));
+    highColumn.max_width = -1;
+    highColumn.min_width = 100;
+    highColumn.pack_start (highText, false);
+    highColumn.resizable = true;
+    highColumn.reorderable = true;
+    highColumn.sort_column_id = 0;
+    highColumn.set_attributes (highText, "text", 2);
+    highColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-        }
+    this.mainAreaTreeView.append_column(highColumn);
 
-        Gtk.Label btcHighLabel;
+    var lowText = new CellRendererText ();
 
-        if (btcHigh.length > 5){
+    var lowColumn = new Gtk.TreeViewColumn ();
+    lowColumn.set_title (_("Low"));
+    lowColumn.max_width = -1;
+    lowColumn.min_width = 100;
+    lowColumn.pack_start (lowText, false);
+    lowColumn.resizable = true;
+    lowColumn.reorderable = true;
+    lowColumn.sort_column_id = 0;
+    lowColumn.set_attributes (lowText, "text", 3);
+    lowColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-          btcHighLabel = new Gtk.Label (_(" | High: ").concat(btcHigh));
+    this.mainAreaTreeView.append_column(lowColumn);
 
-        }else{
+    var changeText = new CellRendererText ();
 
-          btcHighLabel = new Gtk.Label (_(" | High: Unavailable"));
+    var changeColumn = new Gtk.TreeViewColumn ();
+    changeColumn.set_title (_("Change Price (DAY)"));
+    changeColumn.max_width = -1;
+    changeColumn.min_width = 100;
+    changeColumn.pack_start (changeText, false);
+    changeColumn.resizable = true;
+    changeColumn.reorderable = true;
+    changeColumn.sort_column_id = 0;
+    changeColumn.set_attributes (changeText, "text", 4);
+    changeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-        }
+    this.mainAreaTreeView.append_column(changeColumn);
 
-        Gtk.Label btcLowLabel;
+    var changePText = new CellRendererText ();
 
-        if (btcLow.length > 5){
+    var changePColumn = new Gtk.TreeViewColumn ();
+    changePColumn.set_title (_("Change Percent (DAY)"));
+    changePColumn.max_width = -1;
+    changePColumn.min_width = 100;
+    changePColumn.pack_start (changePText, false);
+    changePColumn.resizable = true;
+    changePColumn.reorderable = true;
+    changePColumn.sort_column_id = 0;
+    changePColumn.set_attributes (changePText, "text", 5);
+    changePColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-          btcLowLabel = new Gtk.Label (_(" | Low: ").concat(btcLow));
+    this.mainAreaTreeView.append_column(changePColumn);
 
-        }else{
+    var lastExchange = new CellRendererText ();
 
-          btcLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
+    var lastExchangeColumn = new Gtk.TreeViewColumn ();
+    lastExchangeColumn.set_title (_("Last Market"));
+    lastExchangeColumn.max_width = -1;
+    lastExchangeColumn.min_width = 100;
+    lastExchangeColumn.pack_start (lastExchange, false);
+    lastExchangeColumn.resizable = true;
+    lastExchangeColumn.reorderable = true;
+    lastExchangeColumn.sort_column_id = 0;
+    lastExchangeColumn.set_attributes (lastExchange, "text", 6);
+    lastExchangeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-        }
+    this.mainAreaTreeView.append_column(lastExchangeColumn);
 
-        Gtk.Label btcDateLabel = new Gtk.Label (_("Last Update: ").concat(btcTime));
-        btcLabel.get_style_context().add_class("large-text");
-        btcPriceLabel.get_style_context().add_class("price-blue-text");
-        btcHighLabel.get_style_context().add_class("price-text");
-        btcLowLabel.get_style_context().add_class("price-red-text");
-        btcLabel.set_alignment(0,0);
-        btcDateLabel.set_alignment(0,0);
+    for (int i = 0; coinAbbrevs.size > i; i++){
 
-        var btcGrid = new Gtk.Grid ();
-        btcGrid.orientation = Gtk.Orientation.HORIZONTAL;
-        btcGrid.attach (btcLabel,      0, 0, 1, 1);
-        btcGrid.attach (btcPriceLabel, 1, 0, 1, 1);
-        btcGrid.attach (btcHighLabel,  2, 0, 1, 1);
-        btcGrid.attach (btcLowLabel,   3, 0, 1, 1);
-        btcGrid.attach (btcDateLabel,  0, 1, 1, 1);
+      MainLoop loop = new MainLoop ();
 
-        verticalGridBox.pack_start(btcGrid,false,false);
-        verticalGridBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
+      Soup.Session session = new Soup.Session();
+  		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(coinAbbrevs.get(i),"&tsyms=",this.defaultCoin));
 
-        string bchPrice = bchData.get_string_member("PRICE");
-        string bchHigh = bchData.get_string_member("HIGH24HOUR");
-        string bchLow = bchData.get_string_member("LOW24HOUR");
-        string bchTime = bchData.get_string_member("LASTUPDATE");
+      session.queue_message (message, (sess, message) => {
 
-        Gtk.Label bchLabel = new Gtk.Label (_("Bitcoin Cash"));
+  		  try {
 
-        Gtk.Label bchPriceLabel;
+  			  var parser = new Json.Parser ();
+          parser.load_from_data((string) message.response_body.flatten().data, -1);
+          var root_object = parser.get_root ().get_object ();
+          var data = root_object.get_object_member ("DISPLAY").get_object_member(coinAbbrevs.get(i)).get_object_member(this.defaultCoin);
 
-        if (bchPrice.length > 4){
+          string price = data.get_string_member("PRICE");
+          string high = data.get_string_member("HIGH24HOUR");
+          string low = data.get_string_member("LOW24HOUR");
+          string time = data.get_string_member("LASTUPDATE");
+          string changeDay = data.get_string_member("CHANGEDAY");
+          string changePDay = data.get_string_member("CHANGEPCTDAY");
+          string lastMarket = data.get_string_member("LASTMARKET");
 
-          bchPriceLabel = new Gtk.Label (_(" Current: ").concat(bchPrice));
+          TreeIter iter;
+          listModel.append (out iter);
+          listModel.set(iter, 0, coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
 
-        }else{
+        }catch (Error e) {
 
-          bchPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
-
-        }
-
-        Gtk.Label bchHighLabel;
-
-        if (bchHigh.length > 4){
-
-          bchHighLabel = new Gtk.Label (_(" | High: ").concat(bchHigh));
-
-        }else{
-
-          bchHighLabel = new Gtk.Label (_(" | High: Unavailable"));
-
-        }
-
-
-        Gtk.Label bchLowLabel;
-
-        if (bchLow.length > 4){
-
-          bchLowLabel = new Gtk.Label (_(" | Low: ").concat(bchLow));
-
-        }else{
-
-          bchLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
-
-        }
-
-        Gtk.Label bchDateLabel = new Gtk.Label (_("Last Update: ").concat(bchTime));
-        bchLabel.get_style_context().add_class("large-text");
-        bchPriceLabel.get_style_context().add_class("price-blue-text");
-        bchHighLabel.get_style_context().add_class("price-text");
-        bchLowLabel.get_style_context().add_class("price-red-text");
-        bchLabel.set_alignment(0,0);
-        bchDateLabel.set_alignment(0,0);
-
-        var bchGrid = new Gtk.Grid ();
-        bchGrid.orientation = Gtk.Orientation.HORIZONTAL;
-        bchGrid.attach (bchLabel,      0, 0, 1, 1);
-        bchGrid.attach (bchPriceLabel, 1, 0, 1, 1);
-        bchGrid.attach (bchHighLabel,  2, 0, 1, 1);
-        bchGrid.attach (bchLowLabel,   3, 0, 1, 1);
-        bchGrid.attach (bchDateLabel,  0, 1, 1, 1);
-        bchGrid.get_style_context().add_class("off-row-color");
-
-        verticalGridBox.pack_start(bchGrid,false,false);
-        verticalGridBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
-
-        string ltcPrice = ltcData.get_string_member("PRICE");
-        string ltcHigh = ltcData.get_string_member("HIGH24HOUR");
-        string ltcLow = ltcData.get_string_member("LOW24HOUR");
-        string ltcTime = ltcData.get_string_member("LASTUPDATE");
-
-        Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin"));
-
-        Gtk.Label ltcPriceLabel;
-
-        if (ltcPrice.length > 3){
-
-          ltcPriceLabel = new Gtk.Label (_(" Current: ").concat(ltcPrice));
-
-        }else{
-
-          ltcPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
+          stderr.printf (_("Something is wrong in getMainPageCoins"));
 
         }
 
-        Gtk.Label ltcHighLabel;
+        loop.quit();
 
-        if (ltcHigh.length > 3){
+      });
 
-          ltcHighLabel = new Gtk.Label (_(" | High: ").concat(ltcHigh));
+      loop.run();
 
-        }else{
+    }
 
-          ltcHighLabel = new Gtk.Label (_(" | High: Unavailable"));
-
-        }
-
-        Gtk.Label ltcLowLabel;
-
-        if (ltcLow.length > 3){
-
-          ltcLowLabel = new Gtk.Label (_(" | Low: ").concat(ltcLow));
-
-        }else{
-
-          ltcLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
-
-        }
-
-        Gtk.Label ltcDateLabel = new Gtk.Label (_("Last Update: ").concat(ltcTime));
-        ltcLabel.get_style_context().add_class("large-text");
-        ltcPriceLabel.get_style_context().add_class("price-blue-text");
-        ltcHighLabel.get_style_context().add_class("price-text");
-        ltcLowLabel.get_style_context().add_class("price-red-text");
-        ltcLabel.set_alignment(0,0);
-        ltcDateLabel.set_alignment(0,0);
-
-        var ltcGrid = new Gtk.Grid ();
-        ltcGrid.orientation = Gtk.Orientation.HORIZONTAL;
-        ltcGrid.attach (ltcLabel,      0, 0, 1, 1);
-        ltcGrid.attach (ltcPriceLabel, 1, 0, 1, 1);
-        ltcGrid.attach (ltcHighLabel,  2, 0, 1, 1);
-        ltcGrid.attach (ltcLowLabel,   3, 0, 1, 1);
-        ltcGrid.attach (ltcDateLabel,  0, 1, 1, 1);
-
-        verticalGridBox.pack_start(ltcGrid,false,false);
-        verticalGridBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
-
-        string ethPrice = ethData.get_string_member("PRICE");
-        string ethHigh = ethData.get_string_member("HIGH24HOUR");
-        string ethLow = ethData.get_string_member("LOW24HOUR");
-        string ethTime = ethData.get_string_member("LASTUPDATE");
-
-        Gtk.Label ethLabel = new Gtk.Label (_("Etherum"));
-
-        Gtk.Label ethPriceLabel;
-
-        if (ethPrice.length > 5){
-
-          ethPriceLabel = new Gtk.Label (_(" Current: ").concat(ethPrice));
-
-        }else{
-
-          ethPriceLabel = new Gtk.Label (_(" Current: Unavailable"));
-
-        }
-
-        Gtk.Label ethHighLabel;
-
-        if (ethHigh.length > 5){
-
-          ethHighLabel = new Gtk.Label (_(" | High: ").concat(ethHigh));
-
-        }else{
-
-          ethHighLabel = new Gtk.Label (_(" | High: Unavailable"));
-
-        }
-
-
-        Gtk.Label ethLowLabel;
-
-        if (ethLow.length > 5){
-
-          ethLowLabel = new Gtk.Label (_(" | Low: ").concat(ethLow));
-
-        }else{
-
-          ethLowLabel = new Gtk.Label (_(" | Low: Unavailable"));
-
-        }
-
-        Gtk.Label ethDateLabel = new Gtk.Label (_("Last Update: ").concat(ethTime));
-        ethLabel.get_style_context().add_class("large-text");
-        ethPriceLabel.get_style_context().add_class("price-blue-text");
-        ethHighLabel.get_style_context().add_class("price-text");
-        ethLowLabel.get_style_context().add_class("price-red-text");
-        ethLabel.set_alignment(0,0);
-        ethDateLabel.set_alignment(0,0);
-
-        var ethGrid = new Gtk.Grid ();
-        ethGrid.orientation = Gtk.Orientation.HORIZONTAL;
-        ethGrid.attach (ethLabel,      0, 0, 1, 1);
-        ethGrid.attach (ethPriceLabel, 1, 0, 1, 1);
-        ethGrid.attach (ethHighLabel,  2, 0, 1, 1);
-        ethGrid.attach (ethLowLabel,   3, 0, 1, 1);
-        ethGrid.attach (ethDateLabel,  0, 1, 1, 1);
-        ethGrid.get_style_context().add_class("off-row-color");
-
-        verticalGridBox.pack_start(ethGrid,false,false);
-        verticalGridBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
-
-        this.secondaryBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-        this.secondaryBox.pack_start(verticalGridBox,false,false);
-
-      }catch (Error e) {
-
-        stderr.printf (_("Something is wrong in getMainPageCoins"));
-
-      }
-
-      loop.quit();
-
-    });
-
-    loop.run();
+    verticalGridBox.pack_start(this.mainAreaTreeView);
+    this.secondaryBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+    this.secondaryBox.pack_start(verticalGridBox,false,false);
 
   }
 
@@ -741,6 +638,187 @@ public class Crypt: Gtk.Window{
 
   }
 
+  public bool checkNetworkStatus(){
+
+    try {
+
+      var resolver = Resolver.get_default ();
+      var addresses = resolver.lookup_by_name ("www.elementary.io", null);
+      var address = addresses.nth_data (0);
+
+      return true;
+
+    }catch (Error e) {
+
+      try {
+
+        var resolver = Resolver.get_default ();
+        var addresses = resolver.lookup_by_name ("www.duckduckgo.com", null);
+        var address = addresses.nth_data (0);
+
+        return true;
+
+      }catch (Error e) {
+
+        return false;
+
+      }
+
+    }
+
+  }
+
+  public void loadMainPage(){
+
+    if (this.checkNetworkStatus()){
+
+      this.networkAccess = true;
+
+      var welcome = new Granite.Widgets.Welcome ("Welcome to Crypt!", "Just downloading the latest data, this could take a second or two.");
+
+      this.deleteBox.pack_start(welcome);
+      this.window.add(this.deleteBox);
+      this.window.show_all();
+
+      var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+      this.defaultCoin = settings.get_value("main-coin").get_string();
+      int refreshRate = 0;
+      settings.get ("refresh-rate", "i", out refreshRate);
+
+      Gtk.Label title = new Gtk.Label (_("Home"));
+
+      Gtk.Label btcLabel = new Gtk.Label (_("Bitcoin (BTC)"));
+      Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin (LTC)"));
+      Gtk.Label ethLabel = new Gtk.Label (_("Etherum (ETH)"));
+
+      Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+
+      Timeout.add(500,()=>{
+        btcLineChart.queue_draw();
+        ltcLineChart.queue_draw();
+        ethLineChart.queue_draw();
+        return true;
+      });
+
+      Gtk.Label chartHomeLabel = new Gtk.Label (_("Last Hour"));
+      chartHomeLabel.get_style_context().add_class("title-text");
+
+      Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+
+      chartBox.pack_start (chartHomeLabel, false, false, 0);
+      chartBox.pack_start (btcLineChart);
+      chartBox.pack_start (btcLabel, false, false, 0);
+      chartBox.pack_start (ltcLineChart);
+      chartBox.pack_start (ltcLabel, false, false, 0);
+      chartBox.pack_start (ethLineChart);
+      chartBox.pack_start (ethLabel, false, false, 0);
+      chartBox.get_style_context().add_class("area");
+
+      this.getMainPageCoins();
+      this.getNewsMainPage();
+
+      this.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
+      this.mainGrid.attach(chartBox,0,0,1,1);
+      this.mainGrid.attach(this.secondaryBox, 1,0,1,1);
+      this.mainGrid.get_style_context().add_class("box");
+      this.mainGrid.set_row_homogeneous(true);
+      this.mainGrid.set_column_homogeneous(true);
+
+      Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
+      scrolled.add(this.mainGrid);
+      scrolled.set_max_content_width(1200);
+      scrolled.set_min_content_height(500);
+
+      this.notebook.insert_page (scrolled, title,0);
+
+      this.getCoins();
+
+      Timeout.add (refreshRate * 1000, () => {
+
+        if (this.checkNetworkStatus()){
+
+          if (!this.networkAccess){
+
+            this.notebook = this.notebookSecondary;
+            this.window.remove (this.deleteBox);
+            this.window.add(this.notebook);
+            this.networkAccess = true;
+
+          }
+
+          this.spinner.active = true;
+
+          this.currentCoinHour.getPriceDataHour("BTC");
+
+          btcLineChart.DATA = this.currentCoinHour.DATA;
+          btcLineChart.HIGH = this.currentCoinHour.HIGH;
+          btcLineChart.LOW = this.currentCoinHour.LOW;
+          btcLineChart.calculations();
+
+          this.currentCoinHour.getPriceDataHour("LTC");
+
+          ltcLineChart.DATA = this.currentCoinHour.DATA;
+          ltcLineChart.HIGH = this.currentCoinHour.HIGH;
+          ltcLineChart.LOW = this.currentCoinHour.LOW;
+          ltcLineChart.calculations();
+
+          this.currentCoinHour.getPriceDataHour("ETH");
+
+          ethLineChart.DATA = this.currentCoinHour.DATA;
+          ethLineChart.HIGH = this.currentCoinHour.HIGH;
+          ethLineChart.LOW = this.currentCoinHour.LOW;
+          ethLineChart.calculations();
+
+          this.getMainPageCoins();
+          this.getNewsMainPage();
+
+          this.mainGrid.remove_column(1);
+          this.mainGrid.attach(this.secondaryBox,1,0,1,1);
+          this.notebook.show_all();
+          this.spinner.active = false;
+
+        }else{
+
+          this.notebookSecondary = this.notebook;
+
+          this.networkAccess = false;
+          this.window.remove (this.deleteBox);
+          this.window.remove (this.notebook);
+          this.comboBox = new Gtk.ComboBoxText();
+          welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, reconnect and restart the app!");
+          this.deleteBox.pack_start(welcome);
+          this.window.add(this.deleteBox);
+          this.window.show_all();
+
+        }
+
+        return true;
+
+      });
+
+      this.window.remove (this.deleteBox);
+
+      this.window.add(this.notebook);
+      this.window.show_all();
+
+    }else{
+
+      this.networkAccess = false;
+      this.window.remove (this.deleteBox);
+      this.window.remove (this.notebook);
+      this.comboBox = new Gtk.ComboBoxText();
+      var welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, reconnect and restart the app!");
+      this.window.add(welcome);
+      this.window.show_all();
+
+    }
+
+    this.spinner.active = false;
+
+  }
+
 }
 
 int main (string[] args){
@@ -773,57 +851,8 @@ int main (string[] args){
 
   var windowTitle = "Crypt";
   crypt.window.title = windowTitle;
-  crypt.window.set_default_size (1200,500);
+  crypt.window.set_default_size (1200,600);
   crypt.window.set_position (Gtk.WindowPosition.CENTER);
-  Gtk.Label title = new Gtk.Label (_("Home"));
-
-  Gtk.Label btcLabel = new Gtk.Label (_("Bitcoin (BTC)"));
-  Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin (LTC)"));
-  Gtk.Label ethLabel = new Gtk.Label (_("Etherum (ETH)"));
-
-  Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
-  Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
-  Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)crypt.windowWidth) - 50,(int)(crypt.windowHeight/3) - 50);
-
-  Timeout.add(500,()=>{
-    btcLineChart.queue_draw();
-    ltcLineChart.queue_draw();
-    ethLineChart.queue_draw();
-    return true;
-  });
-
-  Gtk.Label chartHomeLabel = new Gtk.Label (_("Last Hour"));
-  chartHomeLabel.get_style_context().add_class("title-text");
-
-  Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-
-  chartBox.pack_start (chartHomeLabel, false, false, 0);
-  chartBox.pack_start (btcLineChart);
-  chartBox.pack_start (btcLabel, false, false, 0);
-  chartBox.pack_start (ltcLineChart);
-  chartBox.pack_start (ltcLabel, false, false, 0);
-  chartBox.pack_start (ethLineChart);
-  chartBox.pack_start (ethLabel, false, false, 0);
-  chartBox.get_style_context().add_class("area");
-
-  crypt.getMainPageCoins();
-  crypt.getNewsMainPage();
-
-  crypt.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
-  crypt.mainGrid.attach(chartBox,0,0,1,1);
-  crypt.mainGrid.attach(crypt.secondaryBox, 1,0,1,1);
-  crypt.mainGrid.get_style_context().add_class("box");
-  crypt.mainGrid.set_row_homogeneous(true);
-  crypt.mainGrid.set_column_homogeneous(true);
-
-  Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
-  scrolled.add(crypt.mainGrid);
-  scrolled.set_max_content_width(1200);
-  scrolled.set_min_content_height(500);
-
-  crypt.notebook.insert_page (scrolled, title,0);
-
-  crypt.getCoins();
 
   Gtk.Button addCoinButton = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
   addCoinButton.clicked.connect (() => {
@@ -888,7 +917,7 @@ int main (string[] args){
         settings.set_value("main-coin",entry.get_text());
         saveLabel.label = (_("Settings Saved! Restarting the app is recommended!"));
 
-  		});
+      });
 
       saveRefreshButton.clicked.connect (() => {
 
@@ -896,7 +925,7 @@ int main (string[] args){
         settings.set_value("refresh-rate",refreshRate);
         saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended!"));
 
-  		});
+      });
 
     }else{
 
@@ -922,14 +951,13 @@ int main (string[] args){
   header.pack_end (crypt.spinner);
   header.show_all();
   crypt.window.set_titlebar(header);
-  crypt.window.add(crypt.notebook);
   crypt.window.show_all();
   crypt.window.destroy.connect(()=>{
     crypt.m.quit();
     Gtk.main_quit();
   });
 
-  crypt.spinner.active = false;
+  crypt.spinner.active = true;
   bool ctrBool = false;
   bool wBool = false;
 
@@ -966,42 +994,7 @@ int main (string[] args){
 
   });
 
-  Timeout.add (refreshRate * 1000, () => {
-
-    crypt.spinner.active = true;
-
-    crypt.currentCoinHour.getPriceDataHour("BTC");
-
-    btcLineChart.DATA = crypt.currentCoinHour.DATA;
-    btcLineChart.HIGH = crypt.currentCoinHour.HIGH;
-    btcLineChart.LOW = crypt.currentCoinHour.LOW;
-    btcLineChart.calculations();
-
-    crypt.currentCoinHour.getPriceDataHour("LTC");
-
-    ltcLineChart.DATA = crypt.currentCoinHour.DATA;
-    ltcLineChart.HIGH = crypt.currentCoinHour.HIGH;
-    ltcLineChart.LOW = crypt.currentCoinHour.LOW;
-    ltcLineChart.calculations();
-
-    crypt.currentCoinHour.getPriceDataHour("ETH");
-
-    ethLineChart.DATA = crypt.currentCoinHour.DATA;
-    ethLineChart.HIGH = crypt.currentCoinHour.HIGH;
-    ethLineChart.LOW = crypt.currentCoinHour.LOW;
-    ethLineChart.calculations();
-
-    crypt.getMainPageCoins();
-    crypt.getNewsMainPage();
-
-    crypt.mainGrid.remove_column(1);
-    crypt.mainGrid.attach(crypt.secondaryBox,1,0,1,1);
-    crypt.notebook.show_all();
-    crypt.spinner.active = false;
-
-    return true;
-
-  });
+  crypt.loadMainPage();
 
   Gtk.main();
   return 0;
