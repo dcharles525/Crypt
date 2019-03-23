@@ -11,9 +11,9 @@ public class Caroline : Gtk.DrawingArea {
   private double[] candlePositionY = {};
   private double[] candleHeight = {};
 
-  public double[] DATA { get; set; }
-  public double[] HIGH { get; set; }
-  public double[] LOW { get; set; }
+  public double[] DATA = {};
+  public double[] HIGH = {};
+  public double[] LOW = {};
   public int width { get; set; }
   public int height { get; set; }
   public double lineThicknessTicks { get; set; }
@@ -91,14 +91,8 @@ public class Caroline : Gtk.DrawingArea {
 
     int width = get_allocated_width () - 50;
     int height = get_allocated_height () - 50;
-
     double scalerCandleH = 0;
-    double candleChangeH = 0;
-
     double scalerCandleL = 0;
-    double candleChangeL = 0;
-
-    double finalCandleScaler = 0;
 
     double spreadFinalX = width/this.DATA.length;
     double spreadFinalY = height/this.spreadY;
@@ -220,12 +214,7 @@ public class Caroline : Gtk.DrawingArea {
     cr.stroke ();
 
     double scalerCandleH = 0;
-    double candleChangeH = 0;
-
     double scalerCandleL = 0;
-    double candleChangeL = 0;
-
-    double finalCandleScaler = 0;
 
     this.candlePositionX = {};
     this.candlePositionY = {};

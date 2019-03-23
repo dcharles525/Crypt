@@ -32,9 +32,6 @@ public class Crypt: Gtk.Window{
   public Coin currentCoinHour = new Coin();
   public Draw drawClass = new Draw();
   public Gtk.Spinner spinner = new Gtk.Spinner();
-  private double[] DATA = {};
-  private double[] HIGH = {};
-  private double[] LOW = {};
   public Gtk.TreeView mainAreaTreeView;
   public int signalDampener = 0;
   public int signalDampenerSecondary = 0;
@@ -115,7 +112,6 @@ public class Crypt: Gtk.Window{
   public void addCoinTab(string coinAbrv){
 
     this.spinner.active = true;
-    Gtk.Grid coinGridHorizontal = new Gtk.Grid ();
 
     this.currentCoin.getCoinInfoFull(coinAbrv);
     this.windowHeight = 600;
@@ -419,6 +415,7 @@ public class Crypt: Gtk.Window{
     //verticalGridBox.pack_start(pricesHomeLabel);
 
     this.mainAreaTreeView = new TreeView ();
+    this.mainAreaTreeView.enable_search = true;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
     var listModel = new Gtk.ListStore (7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
@@ -548,7 +545,6 @@ public class Crypt: Gtk.Window{
           string price = data.get_string_member("PRICE");
           string high = data.get_string_member("HIGH24HOUR");
           string low = data.get_string_member("LOW24HOUR");
-          string time = data.get_string_member("LASTUPDATE");
           string changeDay = data.get_string_member("CHANGEDAY");
           string changePDay = data.get_string_member("CHANGEPCTDAY");
           string lastMarket = data.get_string_member("LASTMARKET");
@@ -643,8 +639,7 @@ public class Crypt: Gtk.Window{
     try {
 
       var resolver = Resolver.get_default ();
-      var addresses = resolver.lookup_by_name ("www.elementary.io", null);
-      var address = addresses.nth_data (0);
+      resolver.lookup_by_name ("www.elementary.io", null);
 
       return true;
 
@@ -653,8 +648,7 @@ public class Crypt: Gtk.Window{
       try {
 
         var resolver = Resolver.get_default ();
-        var addresses = resolver.lookup_by_name ("www.duckduckgo.com", null);
-        var address = addresses.nth_data (0);
+        resolver.lookup_by_name ("www.duckduckgo.com", null);
 
         return true;
 
@@ -674,7 +668,7 @@ public class Crypt: Gtk.Window{
 
       this.networkAccess = true;
 
-      var welcome = new Granite.Widgets.Welcome (_("Welcome to Crypt!", "Just downloading the latest data, this could take a second or two."));
+      var welcome = new Granite.Widgets.Welcome ("Welcome to Crypt!", "Just downloading the latest data, this could take a second or two.");
 
       this.deleteBox.pack_start(welcome);
       this.window.add(this.deleteBox);
@@ -788,7 +782,7 @@ public class Crypt: Gtk.Window{
           this.window.remove (this.notebook);
           this.comboBox = new Gtk.ComboBoxText();
           this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-          welcome = new Granite.Widgets.Welcome (_("Whoops!", "Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!"));
+          welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!");
           this.deleteBox.pack_start(welcome);
           this.window.add(this.deleteBox);
           this.window.show_all();
@@ -811,7 +805,7 @@ public class Crypt: Gtk.Window{
       this.window.remove (this.notebook);
       this.comboBox = new Gtk.ComboBoxText();
       this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      var welcome = new Granite.Widgets.Welcome (_("Whoops!", "Looks like you're not connected to a network, restart the app after reconnecting!"));
+      var welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, restart the app after reconnecting!");
       this.window.add(welcome);
       this.window.show_all();
 
@@ -827,7 +821,6 @@ int main (string[] args){
   Gtk.init (ref args);
 
   Crypt crypt = new Crypt();
-  Draw drawClass = new Draw();
 
   try {
 
@@ -923,7 +916,7 @@ int main (string[] args){
 
       saveRefreshButton.clicked.connect (() => {
 
-        refreshRate = refreshEntry.get_text().to_int();
+        refreshRate = int.parse(refreshEntry.get_text());
         settings.set_value("refresh-rate",refreshRate);
         saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended!"));
 
@@ -935,7 +928,7 @@ int main (string[] args){
       dialog.width_request = 500;
       dialog.get_content_area ().spacing = 7;
       dialog.get_content_area ().border_width = 10;
-      dialog.get_content_area ().pack_start (new Gtk.Label (_("Settings schema isn't installed properly, reinstall app."),false,false));
+      dialog.get_content_area ().pack_start (new Gtk.Label ("Settings schema isn't installed properly, reinstall app."),false,false);
       dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
       dialog.set_default_response (Gtk.ResponseType.OK);
       dialog.show_all ();
