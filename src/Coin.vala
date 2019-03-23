@@ -100,7 +100,7 @@ public class Coin{
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
     string defaultCoin = settings.get_value("main-coin").get_string();
-    
+
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histominute?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=30"));
 
@@ -208,7 +208,7 @@ public class Coin{
     string defaultCoin = settings.get_value("main-coin").get_string();
 
     Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histoday?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=7"));
+		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histoday?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=6"));
 
     session.queue_message (message, (sess, message) => {
 

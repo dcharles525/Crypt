@@ -39,6 +39,7 @@ public class Crypt: Gtk.Window{
   public bool networkAccess = false;
   public ArrayList<string> coinNames = new ArrayList<string>();
   public ArrayList<string> coinAbbrevs = new ArrayList<string>();
+  public int refreshRate = 30;
   public string CODE_STYLE = """
     .box{
       padding-left: 10px;
@@ -325,11 +326,7 @@ public class Crypt: Gtk.Window{
     this.notebook.insert_page (coinGrid, title,1);
     this.notebook.show_all();
 
-    var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-    int refreshRate = 0;
-    settings.get ("refresh-rate", "i", out refreshRate);
-
-    Timeout.add (refreshRate * 1000, () => {
+    Timeout.add (this.refreshRate * 1000, () => {
 
       this.spinner.active = true;
 
@@ -398,10 +395,14 @@ public class Crypt: Gtk.Window{
 
   public void getMainPageCoins(){
 
+    this.coinNames.clear();
+
     this.coinNames.add("Bitcoin"); this.coinNames.add("Litecoin"); this.coinNames.add("Bitcoin Cash");
     this.coinNames.add("Etherum"); this.coinNames.add("Dogecoin"); this.coinNames.add("Tron");
     this.coinNames.add("EOS"); this.coinNames.add("NEO"); this.coinNames.add("Okex");
     this.coinNames.add("Dash"); this.coinNames.add("Monero"); this.coinNames.add("Binance Coin");
+
+    this.coinAbbrevs.clear();
 
     this.coinAbbrevs.add("BTC"); this.coinAbbrevs.add("LTC"); this.coinAbbrevs.add("BCH");
     this.coinAbbrevs.add("ETH"); this.coinAbbrevs.add("DOGE"); this.coinAbbrevs.add("TRX");
@@ -709,11 +710,6 @@ public class Crypt: Gtk.Window{
       this.window.add(this.deleteBox);
       this.window.show_all();
 
-      var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-      this.defaultCoin = settings.get_value("main-coin").get_string();
-      int refreshRate = 0;
-      settings.get ("refresh-rate", "i", out refreshRate);
-
       Gtk.Label title = new Gtk.Label (_("Home"));
 
       Gtk.Label btcLabel = new Gtk.Label (_("Bitcoin (BTC)"));
@@ -872,9 +868,19 @@ int main (string[] args){
   Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme", true);
 
   var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-  crypt.defaultCoin = settings.get_value("main-coin").get_string();
-  int refreshRate = 0;
-  settings.get ("refresh-rate", "i", out refreshRate);
+
+  if (settings != null){
+
+    crypt.defaultCoin = settings.get_value("main-coin").get_string();
+    crypt.refreshRate = 0;
+    settings.get ("refresh-rate", "i", out crypt.refreshRate);
+
+  }else{
+
+    crypt.defaultCoin = "USD";
+    crypt.refreshRate = 30;
+
+  }
 
   crypt.spinner.active = true;
   crypt.windowWidth = 1100;
@@ -913,8 +919,8 @@ int main (string[] args){
       saveButton.get_style_context().add_class("button-color");
 
       var refreshEntry = new Entry ();
-      settings.get ("refresh-rate", "i", out refreshRate);
-      refreshEntry.set_text(refreshRate.to_string());
+      settings.get ("refresh-rate", "i", out crypt.refreshRate);
+      refreshEntry.set_text(crypt.refreshRate.to_string());
 
       Gtk.Label refreshLabel = new Gtk.Label (_("Set the refresh rate (in seconds)"));
       refreshLabel.xalign = 0;
@@ -951,8 +957,8 @@ int main (string[] args){
 
       saveRefreshButton.clicked.connect (() => {
 
-        refreshRate = int.parse(refreshEntry.get_text());
-        settings.set_value("refresh-rate",refreshRate);
+        crypt.refreshRate = int.parse(refreshEntry.get_text());
+        settings.set_value("refresh-rate",crypt.refreshRate);
         saveRefreshLabel.label = (_("Refresh rate saved! Restarting the app is recommended!"));
 
       });

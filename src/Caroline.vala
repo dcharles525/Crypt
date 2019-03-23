@@ -340,7 +340,7 @@ public class Caroline : Gtk.DrawingArea {
         if (event.x >= candlePositionX[g] && event.x <= (candlePositionX[g] + 10)){
 
           if (event.y >= (candlePositionY[g] + candleHeight[g]) && event.y <= (candlePositionY[g])){
-
+            //stdout.printf("%i\n",g);
             this.orderPosition = g;
             this.drawLabel = true;
             found = 1;

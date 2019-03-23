@@ -100,10 +100,9 @@ public class Draw: Gtk.Window{
     caroline.HIGH = coin.HIGH;
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
-
     caroline.labelXList.add(1.to_string().concat("d"));
 
-    for (int i = 0; i < caroline.DATA.length; i++){
+    for (int i = 1; i < caroline.DATA.length + 1; i++){
 
       caroline.labelXList.add((i).to_string().concat("d"));
 
