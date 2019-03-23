@@ -674,7 +674,7 @@ public class Crypt: Gtk.Window{
 
       this.networkAccess = true;
 
-      var welcome = new Granite.Widgets.Welcome ("Welcome to Crypt!", "Just downloading the latest data, this could take a second or two.");
+      var welcome = new Granite.Widgets.Welcome (_("Welcome to Crypt!", "Just downloading the latest data, this could take a second or two."));
 
       this.deleteBox.pack_start(welcome);
       this.window.add(this.deleteBox);
@@ -788,7 +788,7 @@ public class Crypt: Gtk.Window{
           this.window.remove (this.notebook);
           this.comboBox = new Gtk.ComboBoxText();
           this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-          welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!");
+          welcome = new Granite.Widgets.Welcome (_("Whoops!", "Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!"));
           this.deleteBox.pack_start(welcome);
           this.window.add(this.deleteBox);
           this.window.show_all();
@@ -811,7 +811,7 @@ public class Crypt: Gtk.Window{
       this.window.remove (this.notebook);
       this.comboBox = new Gtk.ComboBoxText();
       this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      var welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, restart the app after reconnecting!");
+      var welcome = new Granite.Widgets.Welcome (_("Whoops!", "Looks like you're not connected to a network, restart the app after reconnecting!"));
       this.window.add(welcome);
       this.window.show_all();
 
@@ -935,7 +935,7 @@ int main (string[] args){
       dialog.width_request = 500;
       dialog.get_content_area ().spacing = 7;
       dialog.get_content_area ().border_width = 10;
-      dialog.get_content_area ().pack_start (new Gtk.Label ("Settings schema isn't installed properly, reinstall app."),false,false);
+      dialog.get_content_area ().pack_start (new Gtk.Label (_("Settings schema isn't installed properly, reinstall app."),false,false));
       dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
       dialog.set_default_response (Gtk.ResponseType.OK);
       dialog.show_all ();
