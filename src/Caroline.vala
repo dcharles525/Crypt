@@ -52,7 +52,6 @@ public class Caroline : Gtk.DrawingArea {
     double label;
 
     double temp = tempDATAH[tempDATAH.length-1];
-    stdout.printf("%f\n",temp);
     this.max = temp + (temp * 0.001);
     temp = tempDATAL[0];
     this.min = temp - (temp * 0.001);
@@ -173,7 +172,7 @@ public class Caroline : Gtk.DrawingArea {
 
     double spreadFinal = height/this.spreadY;
 
-    for (int i = 0; i < this.spreadY + 1; i++){
+    for (int i = 1; i < this.spreadY + 1; i++){
 
       cr.move_to (-10, height+15-(spreadFinal*i));
       cr.line_to (25, height+15-(spreadFinal*i));
@@ -185,7 +184,7 @@ public class Caroline : Gtk.DrawingArea {
 
     spreadFinal = width/this.DATA.length;
 
-    for (int i = 0; i < this.DATA.length; i++){
+    for (int i = 1; i < this.DATA.length + 1; i++){
 
       cr.move_to (15+spreadFinal*i, height+20);
       cr.line_to (15+spreadFinal*i, height+5);
@@ -250,7 +249,8 @@ public class Caroline : Gtk.DrawingArea {
       scalerCandleL = (this.LOW[i] - this.min) / (this.max - this.min);
       scalerCandleL = scalerCandleL * this.spreadY;
 
-      double yUpdated = ((height+15)-((spreadFinalY*scalerCandleH)))-((height+15)-((spreadFinalY*scalerCandleL)));
+      double yUpdated = 0;
+
       cr.rectangle ((17.5+spreadFinalX*(i+1))-7.5, ((height+15)-((spreadFinalY*scalerCandleL))), 10, yUpdated);
 
       candlePositionX += (17.5+spreadFinalX*(i+1))-7.5;

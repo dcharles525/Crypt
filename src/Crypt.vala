@@ -788,7 +788,7 @@ public class Crypt: Gtk.Window{
           this.window.remove (this.notebook);
           this.comboBox = new Gtk.ComboBoxText();
           this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-          welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, reconnect and restart the app!");
+          welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!");
           this.deleteBox.pack_start(welcome);
           this.window.add(this.deleteBox);
           this.window.show_all();
@@ -811,7 +811,7 @@ public class Crypt: Gtk.Window{
       this.window.remove (this.notebook);
       this.comboBox = new Gtk.ComboBoxText();
       this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      var welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, reconnect and restart the app!");
+      var welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, restart the app after reconnecting!");
       this.window.add(welcome);
       this.window.show_all();
 
