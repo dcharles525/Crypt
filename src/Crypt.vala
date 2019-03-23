@@ -787,6 +787,7 @@ public class Crypt: Gtk.Window{
           this.window.remove (this.deleteBox);
           this.window.remove (this.notebook);
           this.comboBox = new Gtk.ComboBoxText();
+          this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
           welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, reconnect and restart the app!");
           this.deleteBox.pack_start(welcome);
           this.window.add(this.deleteBox);
@@ -809,6 +810,7 @@ public class Crypt: Gtk.Window{
       this.window.remove (this.deleteBox);
       this.window.remove (this.notebook);
       this.comboBox = new Gtk.ComboBoxText();
+      this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
       var welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, reconnect and restart the app!");
       this.window.add(welcome);
       this.window.show_all();
