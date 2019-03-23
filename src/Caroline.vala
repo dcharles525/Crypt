@@ -241,7 +241,7 @@ public class Caroline : Gtk.DrawingArea {
       double yUpdated = 0;
 
       cr.rectangle ((17.5+spreadFinalX*(i+1))-7.5, ((height+15)-((spreadFinalY*scalerCandleL))), 10, yUpdated);
-
+      stdout.printf("%f\n",height);
       candlePositionX += (17.5+spreadFinalX*(i+1))-7.5;
       candlePositionY += ((height+15)-((spreadFinalY*scalerCandleL)));
       candleHeight += yUpdated;
