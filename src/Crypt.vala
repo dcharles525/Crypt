@@ -37,6 +37,8 @@ public class Crypt: Gtk.Window{
   public int signalDampenerSecondary = 0;
   public string defaultCoin = "";
   public bool networkAccess = false;
+  public ArrayList<string> coinNames = new ArrayList<string>();
+  public ArrayList<string> coinAbbrevs = new ArrayList<string>();
   public string CODE_STYLE = """
     .box{
       padding-left: 10px;
@@ -396,26 +398,27 @@ public class Crypt: Gtk.Window{
 
   public void getMainPageCoins(){
 
-    ArrayList<string> coinNames = new ArrayList<string>();
-    ArrayList<string> coinAbbrevs = new ArrayList<string>();
+    this.coinNames.add("Bitcoin"); this.coinNames.add("Litecoin"); this.coinNames.add("Bitcoin Cash");
+    this.coinNames.add("Etherum"); this.coinNames.add("Dogecoin"); this.coinNames.add("Tron");
+    this.coinNames.add("EOS"); this.coinNames.add("NEO"); this.coinNames.add("Okex");
+    this.coinNames.add("Dash"); this.coinNames.add("Monero"); this.coinNames.add("Binance Coin");
 
-    coinNames.add("Bitcoin"); coinNames.add("Litecoin"); coinNames.add("Bitcoin Cash");
-    coinNames.add("Etherum"); coinNames.add("Dogecoin"); coinNames.add("Tron");
-    coinNames.add("EOS"); coinNames.add("NEO"); coinNames.add("Okex");
-    coinNames.add("Dash"); coinNames.add("Monero"); coinNames.add("Binance Coin");
-
-    coinAbbrevs.add("BTC"); coinAbbrevs.add("LTC"); coinAbbrevs.add("BCH");
-    coinAbbrevs.add("ETH"); coinAbbrevs.add("DOGE"); coinAbbrevs.add("TRX");
-    coinAbbrevs.add("EOS"); coinAbbrevs.add("NEO"); coinAbbrevs.add("OKB");
-    coinAbbrevs.add("DASH"); coinAbbrevs.add("XMR"); coinAbbrevs.add("BNB");
+    this.coinAbbrevs.add("BTC"); this.coinAbbrevs.add("LTC"); this.coinAbbrevs.add("BCH");
+    this.coinAbbrevs.add("ETH"); this.coinAbbrevs.add("DOGE"); this.coinAbbrevs.add("TRX");
+    this.coinAbbrevs.add("EOS"); this.coinAbbrevs.add("NEO"); this.coinAbbrevs.add("OKB");
+    this.coinAbbrevs.add("DASH"); this.coinAbbrevs.add("XMR"); this.coinAbbrevs.add("BNB");
 
     Gtk.Box verticalGridBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     verticalGridBox.get_style_context().add_class("area");
     verticalGridBox.set_spacing(10);
-    //verticalGridBox.pack_start(pricesHomeLabel);
+    Gtk.Label pricesLabel = new Gtk.Label ("Quick Price Lookup");
+    pricesLabel.get_style_context().add_class("title-text");
+    verticalGridBox.pack_start(pricesLabel);
 
     this.mainAreaTreeView = new TreeView ();
+    mainAreaTreeView.cursor_changed.connect(rowClick);
     this.mainAreaTreeView.enable_search = true;
+    this.mainAreaTreeView.search_column = 0;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
     var listModel = new Gtk.ListStore (7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
@@ -526,12 +529,12 @@ public class Crypt: Gtk.Window{
 
     this.mainAreaTreeView.append_column(lastExchangeColumn);
 
-    for (int i = 0; coinAbbrevs.size > i; i++){
+    for (int i = 0; this.coinAbbrevs.size > i; i++){
 
       MainLoop loop = new MainLoop ();
 
       Soup.Session session = new Soup.Session();
-  		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(coinAbbrevs.get(i),"&tsyms=",this.defaultCoin));
+  		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(this.coinAbbrevs.get(i),"&tsyms=",this.defaultCoin));
 
       session.queue_message (message, (sess, message) => {
 
@@ -540,7 +543,7 @@ public class Crypt: Gtk.Window{
   			  var parser = new Json.Parser ();
           parser.load_from_data((string) message.response_body.flatten().data, -1);
           var root_object = parser.get_root ().get_object ();
-          var data = root_object.get_object_member ("DISPLAY").get_object_member(coinAbbrevs.get(i)).get_object_member(this.defaultCoin);
+          var data = root_object.get_object_member ("DISPLAY").get_object_member(this.coinAbbrevs.get(i)).get_object_member(this.defaultCoin);
 
           string price = data.get_string_member("PRICE");
           string high = data.get_string_member("HIGH24HOUR");
@@ -551,7 +554,7 @@ public class Crypt: Gtk.Window{
 
           TreeIter iter;
           listModel.append (out iter);
-          listModel.set(iter, 0, coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
+          listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
 
         }catch (Error e) {
 
@@ -567,9 +570,41 @@ public class Crypt: Gtk.Window{
 
     }
 
-    verticalGridBox.pack_start(this.mainAreaTreeView);
+
+    Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow (null, null);
+    scroll.min_content_height = (int)(800 / 2);
+    scroll.add (this.mainAreaTreeView);
+    scroll.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+    verticalGridBox.pack_start(scroll);
     this.secondaryBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     this.secondaryBox.pack_start(verticalGridBox,false,false);
+
+  }
+
+  public void rowClick(){
+
+    var index = this.get_selected();
+
+    if (index >= 0) {
+      this.addCoinTab(this.coinAbbrevs.get(index));
+    }
+
+  }
+
+  public int get_selected () {
+
+    var selection = this.mainAreaTreeView.get_selection();
+    selection.set_mode(SelectionMode.SINGLE);
+
+    TreeModel model;
+    TreeIter iter;
+
+    if (!selection.get_selected(out model, out iter)) {
+      return -1;
+    }
+
+    TreePath path = model.get_path(iter);
+    return int.parse(path.to_string());
 
   }
 

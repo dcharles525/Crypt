@@ -238,10 +238,10 @@ public class Caroline : Gtk.DrawingArea {
       scalerCandleL = (this.LOW[i] - this.min) / (this.max - this.min);
       scalerCandleL = scalerCandleL * this.spreadY;
 
-      double yUpdated = 0;
+      double yUpdated = ((height+15)-((spreadFinalY*scalerCandleH)))-((height+15)-((spreadFinalY*scalerCandleL)));
 
       cr.rectangle ((17.5+spreadFinalX*(i+1))-7.5, ((height+15)-((spreadFinalY*scalerCandleL))), 10, yUpdated);
-      stdout.printf("%f\n",height);
+
       candlePositionX += (17.5+spreadFinalX*(i+1))-7.5;
       candlePositionY += ((height+15)-((spreadFinalY*scalerCandleL)));
       candleHeight += yUpdated;
