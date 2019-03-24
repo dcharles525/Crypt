@@ -124,30 +124,30 @@ public class Crypt: Gtk.Window{
     " | ",this.currentCoin.changeP24Hour.to_string()));
     priceTitle.get_style_context().add_class("title-text");
     priceTitle.get_style_context().add_class("padding-top");
-    Gtk.Label price = new Gtk.Label (_("Price: " + this.currentCoin.price));
-    Gtk.Label lastUpdate = new Gtk.Label (_("Last Update: " + this.currentCoin.lastUpdate));
-    Gtk.Label lastVolume = new Gtk.Label (_("Last Volume: " + this.currentCoin.lastVolume));
-    Gtk.Label lastVolumeTo = new Gtk.Label (_("Last Volume To: " + this.currentCoin.lastVolumeTo));
-    Gtk.Label lastTradeID = new Gtk.Label (_("Last TradeID: " + this.currentCoin.lastTradeID));
-    Gtk.Label volumeDay = new Gtk.Label (_("Volume Day: " + this.currentCoin.volumeDay));
-    Gtk.Label volumeDayTo = new Gtk.Label (_("Volume Day To: " + this.currentCoin.volumeDayTo));
-    Gtk.Label volume24Hour = new Gtk.Label (_("Volume 24 Hour: " + this.currentCoin.volume24Hour));
-    Gtk.Label volume24HourTo = new Gtk.Label (_("Volume 24 Hour To: " + this.currentCoin.volume24HourTo));
-    Gtk.Label openDay = new Gtk.Label (_("Open Day: " + this.currentCoin.openDay));
-    Gtk.Label highDay = new Gtk.Label (_("Open High Day: " + this.currentCoin.highDay));
-    Gtk.Label lowDay = new Gtk.Label (_("Open Low Day: " + this.currentCoin.lowDay));
-    Gtk.Label open24Hour = new Gtk.Label (_("Open 24h: " + this.currentCoin.open24Hour));
-    Gtk.Label high24Hour = new Gtk.Label (_("Open High 24h: " + this.currentCoin.high24Hour));
-    Gtk.Label low24Hour = new Gtk.Label (_("Open Low 24h: " + this.currentCoin.high24Hour));
-    Gtk.Label lastMarket = new Gtk.Label (_("Last Market: " + this.currentCoin.lastMarket));
-    Gtk.Label change24Hour = new Gtk.Label (_("Change Last 24h: " + this.currentCoin.change24Hour));
-    Gtk.Label changeP24Hour = new Gtk.Label (_("Change Percent Last 24h: " + this.currentCoin.changeP24Hour));
-    Gtk.Label changeDay = new Gtk.Label (_("Change Day: " + this.currentCoin.changeDay));
-    Gtk.Label changePDay = new Gtk.Label (_("Change Percent Day: " + this.currentCoin.changePDay));
-    Gtk.Label supply = new Gtk.Label (_("Supply: " + this.currentCoin.supply));
-    Gtk.Label mCap = new Gtk.Label (_("Market Cap: " + this.currentCoin.mCap));
-    Gtk.Label totalVolume24Hour = new Gtk.Label (_("Total Volume 24h: " + this.currentCoin.totalVolume24Hour));
-    Gtk.Label totalVolume24HTo = new Gtk.Label (_("Total Volume 24h To: " + this.currentCoin.totalVolume24HTo));
+    Gtk.Label price = new Gtk.Label (_("Price: ") + this.currentCoin.price);
+    Gtk.Label lastUpdate = new Gtk.Label (_("Last Update: ") + this.currentCoin.lastUpdate);
+    Gtk.Label lastVolume = new Gtk.Label (_("Last Volume: ") + this.currentCoin.lastVolume);
+    Gtk.Label lastVolumeTo = new Gtk.Label (_("Last Volume To: ") + this.currentCoin.lastVolumeTo);
+    Gtk.Label lastTradeID = new Gtk.Label (_("Last TradeID: ") + this.currentCoin.lastTradeID);
+    Gtk.Label volumeDay = new Gtk.Label (_("Volume Day: ") + this.currentCoin.volumeDay);
+    Gtk.Label volumeDayTo = new Gtk.Label (_("Volume Day To: ") + this.currentCoin.volumeDayTo);
+    Gtk.Label volume24Hour = new Gtk.Label (_("Volume 24 Hour: ") + this.currentCoin.volume24Hour);
+    Gtk.Label volume24HourTo = new Gtk.Label (_("Volume 24 Hour To: ") + this.currentCoin.volume24HourTo);
+    Gtk.Label openDay = new Gtk.Label (_("Open Day: ") + this.currentCoin.openDay);
+    Gtk.Label highDay = new Gtk.Label (_("Open High Day: ") + this.currentCoin.highDay);
+    Gtk.Label lowDay = new Gtk.Label (_("Open Low Day: ") + this.currentCoin.lowDay);
+    Gtk.Label open24Hour = new Gtk.Label (_("Open 24h: ") + this.currentCoin.open24Hour);
+    Gtk.Label high24Hour = new Gtk.Label (_("Open High 24h: ") + this.currentCoin.high24Hour);
+    Gtk.Label low24Hour = new Gtk.Label (_("Open Low 24h: ") + this.currentCoin.high24Hour);
+    Gtk.Label lastMarket = new Gtk.Label (_("Last Market: ") + this.currentCoin.lastMarket);
+    Gtk.Label change24Hour = new Gtk.Label (_("Change Last 24h: ") + this.currentCoin.change24Hour);
+    Gtk.Label changeP24Hour = new Gtk.Label (_("Change Percent Last 24h: ") + this.currentCoin.changeP24Hour);
+    Gtk.Label changeDay = new Gtk.Label (_("Change Day: ") + this.currentCoin.changeDay);
+    Gtk.Label changePDay = new Gtk.Label (_("Change Percent Day: ") + this.currentCoin.changePDay);
+    Gtk.Label supply = new Gtk.Label (_("Supply: ") + this.currentCoin.supply);
+    Gtk.Label mCap = new Gtk.Label (_("Market Cap: ") + this.currentCoin.mCap);
+    Gtk.Label totalVolume24Hour = new Gtk.Label (_("Total Volume 24h: ") + this.currentCoin.totalVolume24Hour);
+    Gtk.Label totalVolume24HTo = new Gtk.Label (_("Total Volume 24h To: ") + this.currentCoin.totalVolume24HTo);
     price.get_style_context().add_class("sub-text-coin-view");
     price.xalign = 0;
     lastUpdate.get_style_context().add_class("sub-text-coin-view");
@@ -237,7 +237,7 @@ public class Crypt: Gtk.Window{
     newsBox.set_spacing(10);
     Gtk.ScrolledWindow scrolledNews = new Gtk.ScrolledWindow (null, null);
 
-    Gtk.Label currentNewsLabel = new Gtk.Label (_("Current ").concat(coinAbrv,_(" News")));
+    Gtk.Label currentNewsLabel = new Gtk.Label ((_("Current News")) + " (" + coinAbrv + ")");
     currentNewsLabel.get_style_context().add_class("title-text");
     currentNewsLabel.get_style_context().add_class("padding-top");
 
@@ -276,7 +276,7 @@ public class Crypt: Gtk.Window{
 
     }catch (Error e) {
 
-      stderr.printf (_("Something is wrong in getNewsMainPage"));
+      stderr.printf ("Something is wrong in getNewsMainPage");
 
     }
 
@@ -412,7 +412,7 @@ public class Crypt: Gtk.Window{
     Gtk.Box verticalGridBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     verticalGridBox.get_style_context().add_class("area");
     verticalGridBox.set_spacing(10);
-    Gtk.Label pricesLabel = new Gtk.Label ("Quick Price Lookup");
+    Gtk.Label pricesLabel = new Gtk.Label (_("Quick Price Lookup"));
     pricesLabel.get_style_context().add_class("title-text");
     verticalGridBox.pack_start(pricesLabel);
 
@@ -559,7 +559,7 @@ public class Crypt: Gtk.Window{
 
         }catch (Error e) {
 
-          stderr.printf (_("Something is wrong in getMainPageCoins"));
+          stderr.printf ("Something is wrong in getMainPageCoins");
 
         }
 
@@ -658,7 +658,7 @@ public class Crypt: Gtk.Window{
 
     }catch (Error e) {
 
-      stderr.printf (_("Something is wrong in getNewsMainPage"));
+      stderr.printf ("Something is wrong in getNewsMainPage");
 
     }
 
@@ -704,7 +704,7 @@ public class Crypt: Gtk.Window{
 
       this.networkAccess = true;
 
-      var welcome = new Granite.Widgets.Welcome ("Welcome to Crypt!", "Just downloading the latest data, this could take a second or two.");
+      var welcome = new Granite.Widgets.Welcome (_("Welcome to Crypt!"), _("Just downloading the latest data, this could take a second or two."));
 
       this.deleteBox.pack_start(welcome);
       this.window.add(this.deleteBox);
@@ -813,7 +813,7 @@ public class Crypt: Gtk.Window{
           this.window.remove (this.notebook);
           this.comboBox = new Gtk.ComboBoxText();
           this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-          welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!");
+          welcome = new Granite.Widgets.Welcome (_("Whoops!"), _("Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!"));
           this.deleteBox.pack_start(welcome);
           this.window.add(this.deleteBox);
           this.window.show_all();
@@ -836,7 +836,7 @@ public class Crypt: Gtk.Window{
       this.window.remove (this.notebook);
       this.comboBox = new Gtk.ComboBoxText();
       this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      var welcome = new Granite.Widgets.Welcome ("Whoops!", "Looks like you're not connected to a network, restart the app after reconnecting!");
+      var welcome = new Granite.Widgets.Welcome (_("Whoops!"), _("Looks like you're not connected to a network, restart the app after reconnecting!"));
       this.window.add(welcome);
       this.window.show_all();
 
@@ -885,12 +885,13 @@ int main (string[] args){
   crypt.spinner.active = true;
   crypt.windowWidth = 1100;
 
-  var windowTitle = "Crypt";
+  var windowTitle = _("Crypt");
   crypt.window.title = windowTitle;
   crypt.window.set_default_size (1200,600);
   crypt.window.set_position (Gtk.WindowPosition.CENTER);
 
   Gtk.Button addCoinButton = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+  addCoinButton.set_tooltip_markup(_("Add"));
   addCoinButton.clicked.connect (() => {
 
     crypt.addCoinTab(crypt.comboBox.get_active_text());
@@ -900,6 +901,7 @@ int main (string[] args){
   Gtk.Image settingsImage = new Gtk.Image.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
   settingsImage.pixel_size = 16;
   Gtk.ToolButton settingsButton = new Gtk.ToolButton (settingsImage, null);
+  settingsButton.set_tooltip_markup(_("Preferences"));
   settingsButton.clicked.connect (() => {
 
     settings = new GLib.Settings ("com.github.dcharles525.crypt");
@@ -969,7 +971,7 @@ int main (string[] args){
       dialog.width_request = 500;
       dialog.get_content_area ().spacing = 7;
       dialog.get_content_area ().border_width = 10;
-      dialog.get_content_area ().pack_start (new Gtk.Label ("Settings schema isn't installed properly, reinstall app."),false,false);
+      dialog.get_content_area ().pack_start (new Gtk.Label (_("Settings schema isn't installed properly, reinstall app.")),false,false);
       dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
       dialog.set_default_response (Gtk.ResponseType.OK);
       dialog.show_all ();

@@ -262,7 +262,7 @@ public class Caroline : Gtk.DrawingArea {
 
       cr.set_source_rgba (0, 255, 0,1);
       this.layout = null;
-      string temp = "High: ".concat(this.HIGH[this.orderPosition].to_string());
+      string temp = _("High: ").concat(this.HIGH[this.orderPosition].to_string());
       string[] tempArray = temp.split(".");
 
       if (tempArray[1].length > 2){
@@ -285,7 +285,7 @@ public class Caroline : Gtk.DrawingArea {
 
       cr.set_source_rgba (255, 0, 0,1);
       this.layout = null;
-      temp = "Low: ".concat(this.LOW[this.orderPosition].to_string());
+      temp = _("Low: ").concat(this.LOW[this.orderPosition].to_string());
       tempArray = temp.split(".");
 
       if (tempArray[1].length > 2){
@@ -308,7 +308,7 @@ public class Caroline : Gtk.DrawingArea {
 
       cr.set_source_rgba (255, 255, 255,1);
       this.layout = null;
-      temp = "Current: ".concat(this.DATA[this.orderPosition].to_string());
+      temp = _("Current: ").concat(this.DATA[this.orderPosition].to_string());
       tempArray = temp.split(".");
 
       if (tempArray[1].length > 2){
