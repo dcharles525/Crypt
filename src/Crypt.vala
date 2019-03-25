@@ -417,9 +417,8 @@ public class Crypt: Gtk.Window{
     verticalGridBox.pack_start(pricesLabel);
 
     this.mainAreaTreeView = new TreeView ();
-    mainAreaTreeView.cursor_changed.connect(rowClick);
-    this.mainAreaTreeView.enable_search = true;
-    this.mainAreaTreeView.search_column = 0;
+    this.mainAreaTreeView.get_selection().changed.connect(rowClick);
+    this.mainAreaTreeView.activate_on_single_click = false;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
     var listModel = new Gtk.ListStore (7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
@@ -530,6 +529,10 @@ public class Crypt: Gtk.Window{
 
     this.mainAreaTreeView.append_column(lastExchangeColumn);
 
+    TreeIter iter;
+    listModel.append (out iter);
+    listModel.set(iter, 0, "...", 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0);
+
     for (int i = 0; this.coinAbbrevs.size > i; i++){
 
       MainLoop loop = new MainLoop ();
@@ -553,7 +556,6 @@ public class Crypt: Gtk.Window{
           string changePDay = data.get_string_member("CHANGEPCTDAY");
           string lastMarket = data.get_string_member("LASTMARKET");
 
-          TreeIter iter;
           listModel.append (out iter);
           listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
 
@@ -586,7 +588,7 @@ public class Crypt: Gtk.Window{
 
     var index = this.get_selected();
 
-    if (index >= 0) {
+    if (index >= 1) {
       this.addCoinTab(this.coinAbbrevs.get(index));
     }
 
