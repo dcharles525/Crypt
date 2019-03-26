@@ -589,7 +589,7 @@ public class Crypt: Gtk.Window{
     var index = this.get_selected();
 
     if (index >= 1) {
-      this.addCoinTab(this.coinAbbrevs.get(index));
+      this.addCoinTab(this.coinAbbrevs.get(index-1));
     }
 
   }
