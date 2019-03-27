@@ -16,6 +16,7 @@ public class Crypt: Gtk.Window{
 
   public double windowWidth;
   public double windowHeight;
+  public new Granite.Widgets.Toast toastNetwork = new Granite.Widgets.Toast (_("A coin is already loading, wait till that finishes!"));
   public Gtk.Window window = new Gtk.Window();
   public Gtk.Notebook notebook = new Gtk.Notebook();
   public Gtk.Notebook notebookSecondary = new Gtk.Notebook();
@@ -114,282 +115,290 @@ public class Crypt: Gtk.Window{
 
   public void addCoinTab(string coinAbrv){
 
-    this.spinner.active = true;
-
-    this.currentCoin.getCoinInfoFull(coinAbrv);
-    this.windowHeight = 600;
-
-    Gtk.Label priceTitle = new Gtk.Label (coinAbrv
-    .concat(": ",this.currentCoin.price.to_string()," | ",this.currentCoin.change24Hour.to_string(),
-    " | ",this.currentCoin.changeP24Hour.to_string()));
-    priceTitle.get_style_context().add_class("title-text");
-    priceTitle.get_style_context().add_class("padding-top");
-    Gtk.Label price = new Gtk.Label (_("Price: ") + this.currentCoin.price);
-    Gtk.Label lastUpdate = new Gtk.Label (_("Last Update: ") + this.currentCoin.lastUpdate);
-    Gtk.Label lastVolume = new Gtk.Label (_("Last Volume: ") + this.currentCoin.lastVolume);
-    Gtk.Label lastVolumeTo = new Gtk.Label (_("Last Volume To: ") + this.currentCoin.lastVolumeTo);
-    Gtk.Label lastTradeID = new Gtk.Label (_("Last TradeID: ") + this.currentCoin.lastTradeID);
-    Gtk.Label volumeDay = new Gtk.Label (_("Volume Day: ") + this.currentCoin.volumeDay);
-    Gtk.Label volumeDayTo = new Gtk.Label (_("Volume Day To: ") + this.currentCoin.volumeDayTo);
-    Gtk.Label volume24Hour = new Gtk.Label (_("Volume 24 Hour: ") + this.currentCoin.volume24Hour);
-    Gtk.Label volume24HourTo = new Gtk.Label (_("Volume 24 Hour To: ") + this.currentCoin.volume24HourTo);
-    Gtk.Label openDay = new Gtk.Label (_("Open Day: ") + this.currentCoin.openDay);
-    Gtk.Label highDay = new Gtk.Label (_("Open High Day: ") + this.currentCoin.highDay);
-    Gtk.Label lowDay = new Gtk.Label (_("Open Low Day: ") + this.currentCoin.lowDay);
-    Gtk.Label open24Hour = new Gtk.Label (_("Open 24h: ") + this.currentCoin.open24Hour);
-    Gtk.Label high24Hour = new Gtk.Label (_("Open High 24h: ") + this.currentCoin.high24Hour);
-    Gtk.Label low24Hour = new Gtk.Label (_("Open Low 24h: ") + this.currentCoin.high24Hour);
-    Gtk.Label lastMarket = new Gtk.Label (_("Last Market: ") + this.currentCoin.lastMarket);
-    Gtk.Label change24Hour = new Gtk.Label (_("Change Last 24h: ") + this.currentCoin.change24Hour);
-    Gtk.Label changeP24Hour = new Gtk.Label (_("Change Percent Last 24h: ") + this.currentCoin.changeP24Hour);
-    Gtk.Label changeDay = new Gtk.Label (_("Change Day: ") + this.currentCoin.changeDay);
-    Gtk.Label changePDay = new Gtk.Label (_("Change Percent Day: ") + this.currentCoin.changePDay);
-    Gtk.Label supply = new Gtk.Label (_("Supply: ") + this.currentCoin.supply);
-    Gtk.Label mCap = new Gtk.Label (_("Market Cap: ") + this.currentCoin.mCap);
-    Gtk.Label totalVolume24Hour = new Gtk.Label (_("Total Volume 24h: ") + this.currentCoin.totalVolume24Hour);
-    Gtk.Label totalVolume24HTo = new Gtk.Label (_("Total Volume 24h To: ") + this.currentCoin.totalVolume24HTo);
-    price.get_style_context().add_class("sub-text-coin-view");
-    price.xalign = 0;
-    lastUpdate.get_style_context().add_class("sub-text-coin-view");
-    lastUpdate.xalign = 0;
-    lastVolume.get_style_context().add_class("sub-text-coin-view");
-    lastVolume.xalign = 0;
-    lastVolumeTo.get_style_context().add_class("sub-text-coin-view");
-    lastVolumeTo.xalign = 0;
-    lastTradeID.get_style_context().add_class("sub-text-coin-view");
-    lastTradeID.xalign = 0;
-    volumeDay.get_style_context().add_class("sub-text-coin-view");
-    volumeDay.xalign = 0;
-    volumeDayTo.get_style_context().add_class("sub-text-coin-view");
-    volumeDayTo.xalign = 0;
-    volume24Hour.get_style_context().add_class("sub-text-coin-view");
-    volume24Hour.xalign = 0;
-    volume24HourTo.get_style_context().add_class("sub-text-coin-view");
-    volume24HourTo.xalign = 0;
-    openDay.get_style_context().add_class("sub-text-coin-view");
-    openDay.xalign = 0;
-    highDay.get_style_context().add_class("sub-text-coin-view");
-    highDay.xalign = 0;
-    lowDay.get_style_context().add_class("sub-text-coin-view");
-    lowDay.xalign = 0;
-    open24Hour.get_style_context().add_class("sub-text-coin-view");
-    open24Hour.xalign = 0;
-    high24Hour.get_style_context().add_class("sub-text-coin-view");
-    high24Hour.xalign = 0;
-    low24Hour.get_style_context().add_class("sub-text-coin-view");
-    low24Hour.xalign = 0;
-    lastMarket.get_style_context().add_class("sub-text-coin-view");
-    lastMarket.xalign = 0;
-    change24Hour.get_style_context().add_class("sub-text-coin-view");
-    change24Hour.xalign = 0;
-    changeP24Hour.get_style_context().add_class("sub-text-coin-view");
-    changeP24Hour.xalign = 0;
-    changeDay.get_style_context().add_class("sub-text-coin-view");
-    changeDay.xalign = 0;
-    changePDay.get_style_context().add_class("sub-text-coin-view");
-    changePDay.xalign = 0;
-    supply.get_style_context().add_class("sub-text-coin-view");
-    supply.xalign = 0;
-    mCap.get_style_context().add_class("sub-text-coin-view");
-    mCap.xalign = 0;
-    totalVolume24Hour.get_style_context().add_class("sub-text-coin-view");
-    totalVolume24Hour.xalign = 0;
-    totalVolume24HTo.get_style_context().add_class("sub-text-coin-view");
-    totalVolume24HTo.xalign = 0;
-
-    Gtk.Box verticalBoxSecondary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-    Gtk.Box verticalBoxSecondaryMain = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-    verticalBoxSecondaryMain.pack_start(priceTitle,false,false);
-    verticalBoxSecondaryMain.pack_start(price,false,false);
-    verticalBoxSecondaryMain.pack_start(lastUpdate,false,false);
-    verticalBoxSecondaryMain.pack_start(lastVolume,false,false);
-    verticalBoxSecondaryMain.pack_start(lastVolumeTo,false,false);
-    verticalBoxSecondaryMain.pack_start(lastTradeID,false,false);
-    verticalBoxSecondaryMain.pack_start(volumeDay,false,false);
-    verticalBoxSecondaryMain.pack_start(volumeDayTo,false,false);
-    verticalBoxSecondaryMain.pack_start(volume24Hour,false,false);
-    verticalBoxSecondaryMain.pack_start(volume24HourTo,false,false);
-    verticalBoxSecondaryMain.pack_start(openDay,false,false);
-    verticalBoxSecondaryMain.pack_start(highDay,false,false);
-    verticalBoxSecondaryMain.pack_start(lowDay,false,false);
-    verticalBoxSecondaryMain.pack_start(open24Hour,false,false);
-    verticalBoxSecondaryMain.pack_start(high24Hour,false,false);
-    verticalBoxSecondaryMain.pack_start(low24Hour,false,false);
-    verticalBoxSecondaryMain.pack_start(lastMarket,false,false);
-    verticalBoxSecondaryMain.pack_start(change24Hour,false,false);
-    verticalBoxSecondaryMain.pack_start(changeP24Hour,false,false);
-    verticalBoxSecondaryMain.pack_start(changeDay,false,false);
-    verticalBoxSecondaryMain.pack_start(changePDay,false,false);
-    verticalBoxSecondaryMain.pack_start(supply,false,false);
-    verticalBoxSecondaryMain.pack_start(mCap,false,false);
-    verticalBoxSecondaryMain.pack_start(totalVolume24Hour,false,false);
-    verticalBoxSecondaryMain.pack_start(totalVolume24HTo,false,false);
-
-    Gtk.ScrolledWindow scrolledStats = new Gtk.ScrolledWindow (null, null);
-    scrolledStats.set_max_content_width(200);
-    scrolledStats.set_min_content_height(300);
-    scrolledStats.add(verticalBoxSecondaryMain);
-
-    Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&categories=".concat(coinAbrv));
-		session.send_message (message);
-    Gtk.Box newsBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-    newsBox.set_spacing(10);
-    Gtk.ScrolledWindow scrolledNews = new Gtk.ScrolledWindow (null, null);
-
-    Gtk.Label currentNewsLabel = new Gtk.Label ((_("Current News")) + " (" + coinAbrv + ")");
-    currentNewsLabel.get_style_context().add_class("title-text");
-    currentNewsLabel.get_style_context().add_class("padding-top");
-
-    newsBox.pack_start(currentNewsLabel);
-
-		try {
-
-			var parser = new Json.Parser ();
-      parser.load_from_data((string) message.response_body.flatten().data, -1);
-      var root_object = parser.get_root ().get_object ();
-      var response = root_object.get_array_member("Data");
-
-      foreach (var news in response.get_elements()) {
-
-        var newsObject = news.get_object();
-
-        Gtk.Label titleLabel = new Gtk.Label (newsObject.get_string_member("title"));
-        Gtk.Label linkLabel = new Gtk.Label (newsObject.get_string_member("url"));
-        linkLabel.set_markup("<a href='".concat(newsObject.get_string_member("url"),"'>",newsObject.get_string_member("url"),"</a>"));
-        titleLabel.set_alignment(0,0);
-        titleLabel.set_line_wrap(true);
-        titleLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
-        titleLabel.set_max_width_chars(100);
-        linkLabel.set_alignment(0,0);
-        linkLabel.set_use_markup(true);
-        linkLabel.set_line_wrap(true);
-        linkLabel.set_selectable(true);
-        linkLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
-        linkLabel.set_max_width_chars(100);
-
-        newsBox.pack_start(titleLabel);
-        newsBox.pack_start(linkLabel);
-        newsBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
-
-      }
-
-    }catch (Error e) {
-
-      stderr.printf ("Something is wrong in getNewsMainPage");
-
-    }
-
-    scrolledNews.set_max_content_width(200);
-    scrolledNews.set_min_content_height(300);
-    scrolledNews.add(newsBox);
-
-    verticalBoxSecondary.pack_end(scrolledNews);
-    verticalBoxSecondary.pack_end(scrolledStats);
-
-    Caroline hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/2) - 50);
-    Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
-    Caroline weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
-
-    Timeout.add(500,()=>{
-      hourLineChart.queue_draw();
-      dayLineChart.queue_draw();
-      weekLineChart.queue_draw();
-      return true;
-    });
-
-    Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-
-    chartBox.pack_start (hourLineChart);
-    chartBox.pack_start (new Gtk.Label (_("Minute")), false, false, 0);
-    chartBox.pack_start (dayLineChart);
-    chartBox.pack_start (new Gtk.Label (_("Day")), false, false, 0);
-    chartBox.pack_start (weekLineChart);
-    chartBox.pack_start (new Gtk.Label (_("Week")), false, false, 0);
-    chartBox.get_style_context().add_class("area");
-
-    Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
-    scrolled.set_min_content_width((int)(this.windowWidth/1.7));
-    scrolled.set_min_content_height((int)this.windowHeight/3);
-    scrolled.add(chartBox);
-    scrolled.get_style_context().add_class("area");
-
-    Gtk.Grid coinGrid = new Gtk.Grid ();
-    coinGrid.orientation = Gtk.Orientation.HORIZONTAL;
-    coinGrid.attach(scrolled,0,0,3,1);
-    coinGrid.attach(verticalBoxSecondary, 3,0,1,1);
-    coinGrid.get_style_context().add_class("box");
-    coinGrid.set_row_homogeneous(true);
-    coinGrid.set_column_homogeneous(true);
-
-    Gtk.Label title = new Gtk.Label (coinAbrv);
-    this.notebook.insert_page (coinGrid, title,1);
-    this.notebook.show_all();
-
-    Timeout.add (this.refreshRate * 1000, () => {
+    if (this.spinner.active != true){
 
       this.spinner.active = true;
 
       this.currentCoin.getCoinInfoFull(coinAbrv);
+      this.windowHeight = 600;
 
-      priceTitle.label = coinAbrv
+      Gtk.Label priceTitle = new Gtk.Label (coinAbrv
       .concat(": ",this.currentCoin.price.to_string()," | ",this.currentCoin.change24Hour.to_string(),
-      " | ",this.currentCoin.changeP24Hour.to_string());
-      priceTitle.xalign = 0;
-      price.label = (_("Price: ")) + this.currentCoin.price;
-      lastUpdate.label = (_("Last Update: ")) + this.currentCoin.lastUpdate;
-      lastVolume.label = (_("Last Volume: ")) + this.currentCoin.lastVolume;
-      lastVolumeTo.label = (_("Last Volume To: ")) + this.currentCoin.lastVolumeTo;
-      volumeDay.label = (_("Volume Day: ")) + this.currentCoin.volumeDay;
-      lastTradeID.label = (_("Last TradeID: ")) + this.currentCoin.lastTradeID;
-      volumeDayTo.label = (_("Volume Day To: ")) + this.currentCoin.volumeDayTo;
-      volume24HourTo.label = (_("Volume 24 Hour To: ")) + this.currentCoin.volume24HourTo;
-      volume24Hour.label = (_("Volume 24 Hour: ")) + this.currentCoin.volume24Hour;
-      openDay.label = (_("Open Day: ")) + this.currentCoin.openDay;
-      highDay.label = (_("Open High Day: ")) + this.currentCoin.highDay;
-      lowDay.label = (_("Open Low Day: ")) + this.currentCoin.lowDay;
-      open24Hour.label = (_("Open 24h: ")) + this.currentCoin.open24Hour;
-      high24Hour.label = (_("Open High 24h: ")) + this.currentCoin.high24Hour;
-      low24Hour.label = (_("Open Low 24h: ")) + this.currentCoin.low24Hour;
-      lastMarket.label = (_("Last Market: ")) + this.currentCoin.lastMarket;
-      change24Hour.label = (_("Change Last 24h: ")) + this.currentCoin.change24Hour;
-      changeP24Hour.label = (_("Change Percent Last 24h: ")) + this.currentCoin.changeP24Hour;
-      changeDay.label = (_("Change Day: ")) + this.currentCoin.changeDay;
-      changePDay.label = (_("Change Percent Day: ")) + this.currentCoin.changePDay;
-      supply.label = (_("Supply: ")) + this.currentCoin.supply;
-      mCap.label = (_("Market Cap: ")) + this.currentCoin.mCap;
-      totalVolume24Hour.label = (_("Total Volume 24h: ")) + this.currentCoin.totalVolume24Hour;
-      totalVolume24HTo.label = (_("Total Volume 24h To: ")) + this.currentCoin.totalVolume24HTo;
+      " | ",this.currentCoin.changeP24Hour.to_string()));
+      priceTitle.get_style_context().add_class("title-text");
+      priceTitle.get_style_context().add_class("padding-top");
+      Gtk.Label price = new Gtk.Label (_("Price: ") + this.currentCoin.price);
+      Gtk.Label lastUpdate = new Gtk.Label (_("Last Update: ") + this.currentCoin.lastUpdate);
+      Gtk.Label lastVolume = new Gtk.Label (_("Last Volume: ") + this.currentCoin.lastVolume);
+      Gtk.Label lastVolumeTo = new Gtk.Label (_("Last Volume To: ") + this.currentCoin.lastVolumeTo);
+      Gtk.Label lastTradeID = new Gtk.Label (_("Last TradeID: ") + this.currentCoin.lastTradeID);
+      Gtk.Label volumeDay = new Gtk.Label (_("Volume Day: ") + this.currentCoin.volumeDay);
+      Gtk.Label volumeDayTo = new Gtk.Label (_("Volume Day To: ") + this.currentCoin.volumeDayTo);
+      Gtk.Label volume24Hour = new Gtk.Label (_("Volume 24 Hour: ") + this.currentCoin.volume24Hour);
+      Gtk.Label volume24HourTo = new Gtk.Label (_("Volume 24 Hour To: ") + this.currentCoin.volume24HourTo);
+      Gtk.Label openDay = new Gtk.Label (_("Open Day: ") + this.currentCoin.openDay);
+      Gtk.Label highDay = new Gtk.Label (_("Open High Day: ") + this.currentCoin.highDay);
+      Gtk.Label lowDay = new Gtk.Label (_("Open Low Day: ") + this.currentCoin.lowDay);
+      Gtk.Label open24Hour = new Gtk.Label (_("Open 24h: ") + this.currentCoin.open24Hour);
+      Gtk.Label high24Hour = new Gtk.Label (_("Open High 24h: ") + this.currentCoin.high24Hour);
+      Gtk.Label low24Hour = new Gtk.Label (_("Open Low 24h: ") + this.currentCoin.high24Hour);
+      Gtk.Label lastMarket = new Gtk.Label (_("Last Market: ") + this.currentCoin.lastMarket);
+      Gtk.Label change24Hour = new Gtk.Label (_("Change Last 24h: ") + this.currentCoin.change24Hour);
+      Gtk.Label changeP24Hour = new Gtk.Label (_("Change Percent Last 24h: ") + this.currentCoin.changeP24Hour);
+      Gtk.Label changeDay = new Gtk.Label (_("Change Day: ") + this.currentCoin.changeDay);
+      Gtk.Label changePDay = new Gtk.Label (_("Change Percent Day: ") + this.currentCoin.changePDay);
+      Gtk.Label supply = new Gtk.Label (_("Supply: ") + this.currentCoin.supply);
+      Gtk.Label mCap = new Gtk.Label (_("Market Cap: ") + this.currentCoin.mCap);
+      Gtk.Label totalVolume24Hour = new Gtk.Label (_("Total Volume 24h: ") + this.currentCoin.totalVolume24Hour);
+      Gtk.Label totalVolume24HTo = new Gtk.Label (_("Total Volume 24h To: ") + this.currentCoin.totalVolume24HTo);
+      price.get_style_context().add_class("sub-text-coin-view");
+      price.xalign = 0;
+      lastUpdate.get_style_context().add_class("sub-text-coin-view");
+      lastUpdate.xalign = 0;
+      lastVolume.get_style_context().add_class("sub-text-coin-view");
+      lastVolume.xalign = 0;
+      lastVolumeTo.get_style_context().add_class("sub-text-coin-view");
+      lastVolumeTo.xalign = 0;
+      lastTradeID.get_style_context().add_class("sub-text-coin-view");
+      lastTradeID.xalign = 0;
+      volumeDay.get_style_context().add_class("sub-text-coin-view");
+      volumeDay.xalign = 0;
+      volumeDayTo.get_style_context().add_class("sub-text-coin-view");
+      volumeDayTo.xalign = 0;
+      volume24Hour.get_style_context().add_class("sub-text-coin-view");
+      volume24Hour.xalign = 0;
+      volume24HourTo.get_style_context().add_class("sub-text-coin-view");
+      volume24HourTo.xalign = 0;
+      openDay.get_style_context().add_class("sub-text-coin-view");
+      openDay.xalign = 0;
+      highDay.get_style_context().add_class("sub-text-coin-view");
+      highDay.xalign = 0;
+      lowDay.get_style_context().add_class("sub-text-coin-view");
+      lowDay.xalign = 0;
+      open24Hour.get_style_context().add_class("sub-text-coin-view");
+      open24Hour.xalign = 0;
+      high24Hour.get_style_context().add_class("sub-text-coin-view");
+      high24Hour.xalign = 0;
+      low24Hour.get_style_context().add_class("sub-text-coin-view");
+      low24Hour.xalign = 0;
+      lastMarket.get_style_context().add_class("sub-text-coin-view");
+      lastMarket.xalign = 0;
+      change24Hour.get_style_context().add_class("sub-text-coin-view");
+      change24Hour.xalign = 0;
+      changeP24Hour.get_style_context().add_class("sub-text-coin-view");
+      changeP24Hour.xalign = 0;
+      changeDay.get_style_context().add_class("sub-text-coin-view");
+      changeDay.xalign = 0;
+      changePDay.get_style_context().add_class("sub-text-coin-view");
+      changePDay.xalign = 0;
+      supply.get_style_context().add_class("sub-text-coin-view");
+      supply.xalign = 0;
+      mCap.get_style_context().add_class("sub-text-coin-view");
+      mCap.xalign = 0;
+      totalVolume24Hour.get_style_context().add_class("sub-text-coin-view");
+      totalVolume24Hour.xalign = 0;
+      totalVolume24HTo.get_style_context().add_class("sub-text-coin-view");
+      totalVolume24HTo.xalign = 0;
 
-      currentCoin.getPriceDataHour(coinAbrv);
+      Gtk.Box verticalBoxSecondary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+      Gtk.Box verticalBoxSecondaryMain = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+      verticalBoxSecondaryMain.pack_start(priceTitle,false,false);
+      verticalBoxSecondaryMain.pack_start(price,false,false);
+      verticalBoxSecondaryMain.pack_start(lastUpdate,false,false);
+      verticalBoxSecondaryMain.pack_start(lastVolume,false,false);
+      verticalBoxSecondaryMain.pack_start(lastVolumeTo,false,false);
+      verticalBoxSecondaryMain.pack_start(lastTradeID,false,false);
+      verticalBoxSecondaryMain.pack_start(volumeDay,false,false);
+      verticalBoxSecondaryMain.pack_start(volumeDayTo,false,false);
+      verticalBoxSecondaryMain.pack_start(volume24Hour,false,false);
+      verticalBoxSecondaryMain.pack_start(volume24HourTo,false,false);
+      verticalBoxSecondaryMain.pack_start(openDay,false,false);
+      verticalBoxSecondaryMain.pack_start(highDay,false,false);
+      verticalBoxSecondaryMain.pack_start(lowDay,false,false);
+      verticalBoxSecondaryMain.pack_start(open24Hour,false,false);
+      verticalBoxSecondaryMain.pack_start(high24Hour,false,false);
+      verticalBoxSecondaryMain.pack_start(low24Hour,false,false);
+      verticalBoxSecondaryMain.pack_start(lastMarket,false,false);
+      verticalBoxSecondaryMain.pack_start(change24Hour,false,false);
+      verticalBoxSecondaryMain.pack_start(changeP24Hour,false,false);
+      verticalBoxSecondaryMain.pack_start(changeDay,false,false);
+      verticalBoxSecondaryMain.pack_start(changePDay,false,false);
+      verticalBoxSecondaryMain.pack_start(supply,false,false);
+      verticalBoxSecondaryMain.pack_start(mCap,false,false);
+      verticalBoxSecondaryMain.pack_start(totalVolume24Hour,false,false);
+      verticalBoxSecondaryMain.pack_start(totalVolume24HTo,false,false);
 
-      hourLineChart.DATA = currentCoin.DATA;
-      hourLineChart.HIGH = currentCoin.HIGH;
-      hourLineChart.LOW = currentCoin.LOW;
-      hourLineChart.calculations();
+      Gtk.ScrolledWindow scrolledStats = new Gtk.ScrolledWindow (null, null);
+      scrolledStats.set_max_content_width(200);
+      scrolledStats.set_min_content_height(300);
+      scrolledStats.add(verticalBoxSecondaryMain);
 
-      currentCoin.getPriceDataDay(coinAbrv);
+      Soup.Session session = new Soup.Session();
+  		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&categories=".concat(coinAbrv));
+  		session.send_message (message);
+      Gtk.Box newsBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+      newsBox.set_spacing(10);
+      Gtk.ScrolledWindow scrolledNews = new Gtk.ScrolledWindow (null, null);
 
-      dayLineChart.DATA = currentCoin.DATA;
-      dayLineChart.HIGH = currentCoin.HIGH;
-      dayLineChart.LOW = currentCoin.LOW;
-      dayLineChart.calculations();
+      Gtk.Label currentNewsLabel = new Gtk.Label ((_("Current News")) + " (" + coinAbrv + ")");
+      currentNewsLabel.get_style_context().add_class("title-text");
+      currentNewsLabel.get_style_context().add_class("padding-top");
 
-      currentCoin.getPriceDataWeek(coinAbrv);
+      newsBox.pack_start(currentNewsLabel);
 
-      weekLineChart.DATA = currentCoin.DATA;
-      weekLineChart.HIGH = currentCoin.HIGH;
-      weekLineChart.LOW = currentCoin.LOW;
-      weekLineChart.calculations();
+  		try {
 
+  			var parser = new Json.Parser ();
+        parser.load_from_data((string) message.response_body.flatten().data, -1);
+        var root_object = parser.get_root ().get_object ();
+        var response = root_object.get_array_member("Data");
+
+        foreach (var news in response.get_elements()) {
+
+          var newsObject = news.get_object();
+
+          Gtk.Label titleLabel = new Gtk.Label (newsObject.get_string_member("title"));
+          Gtk.Label linkLabel = new Gtk.Label (newsObject.get_string_member("url"));
+          linkLabel.set_markup("<a href='".concat(newsObject.get_string_member("url"),"'>",newsObject.get_string_member("url"),"</a>"));
+          titleLabel.set_alignment(0,0);
+          titleLabel.set_line_wrap(true);
+          titleLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
+          titleLabel.set_max_width_chars(100);
+          linkLabel.set_alignment(0,0);
+          linkLabel.set_use_markup(true);
+          linkLabel.set_line_wrap(true);
+          linkLabel.set_selectable(true);
+          linkLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
+          linkLabel.set_max_width_chars(100);
+
+          newsBox.pack_start(titleLabel);
+          newsBox.pack_start(linkLabel);
+          newsBox.pack_start(new Gtk.Separator(Gtk.Orientation.HORIZONTAL), false, false, 0);
+
+        }
+
+      }catch (Error e) {
+
+        stderr.printf ("Something is wrong in getNewsMainPage");
+
+      }
+
+      scrolledNews.set_max_content_width(200);
+      scrolledNews.set_min_content_height(300);
+      scrolledNews.add(newsBox);
+
+      verticalBoxSecondary.pack_end(scrolledNews);
+      verticalBoxSecondary.pack_end(scrolledStats);
+
+      Caroline hourLineChart = drawClass.drawLargeChartHour(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/2) - 50);
+      Caroline dayLineChart = drawClass.drawLargeChartDay(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      Caroline weekLineChart = drawClass.drawLargeChartWeek(coinAbrv,((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+
+      Timeout.add(500,()=>{
+        hourLineChart.queue_draw();
+        dayLineChart.queue_draw();
+        weekLineChart.queue_draw();
+        return true;
+      });
+
+      Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+
+      chartBox.pack_start (hourLineChart);
+      chartBox.pack_start (new Gtk.Label (_("Minute")), false, false, 0);
+      chartBox.pack_start (dayLineChart);
+      chartBox.pack_start (new Gtk.Label (_("Day")), false, false, 0);
+      chartBox.pack_start (weekLineChart);
+      chartBox.pack_start (new Gtk.Label (_("Week")), false, false, 0);
+      chartBox.get_style_context().add_class("area");
+
+      Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
+      scrolled.set_min_content_width((int)(this.windowWidth/1.7));
+      scrolled.set_min_content_height((int)this.windowHeight/3);
+      scrolled.add(chartBox);
+      scrolled.get_style_context().add_class("area");
+
+      Gtk.Grid coinGrid = new Gtk.Grid ();
+      coinGrid.orientation = Gtk.Orientation.HORIZONTAL;
+      coinGrid.attach(scrolled,0,0,3,1);
+      coinGrid.attach(verticalBoxSecondary, 3,0,1,1);
+      coinGrid.get_style_context().add_class("box");
+      coinGrid.set_row_homogeneous(true);
+      coinGrid.set_column_homogeneous(true);
+
+      Gtk.Label title = new Gtk.Label (coinAbrv);
+      this.notebook.insert_page (coinGrid, title,1);
       this.notebook.show_all();
+
+      Timeout.add (this.refreshRate * 1000, () => {
+
+        this.spinner.active = true;
+
+        this.currentCoin.getCoinInfoFull(coinAbrv);
+
+        priceTitle.label = coinAbrv
+        .concat(": ",this.currentCoin.price.to_string()," | ",this.currentCoin.change24Hour.to_string(),
+        " | ",this.currentCoin.changeP24Hour.to_string());
+        priceTitle.xalign = 0;
+        price.label = (_("Price: ")) + this.currentCoin.price;
+        lastUpdate.label = (_("Last Update: ")) + this.currentCoin.lastUpdate;
+        lastVolume.label = (_("Last Volume: ")) + this.currentCoin.lastVolume;
+        lastVolumeTo.label = (_("Last Volume To: ")) + this.currentCoin.lastVolumeTo;
+        volumeDay.label = (_("Volume Day: ")) + this.currentCoin.volumeDay;
+        lastTradeID.label = (_("Last TradeID: ")) + this.currentCoin.lastTradeID;
+        volumeDayTo.label = (_("Volume Day To: ")) + this.currentCoin.volumeDayTo;
+        volume24HourTo.label = (_("Volume 24 Hour To: ")) + this.currentCoin.volume24HourTo;
+        volume24Hour.label = (_("Volume 24 Hour: ")) + this.currentCoin.volume24Hour;
+        openDay.label = (_("Open Day: ")) + this.currentCoin.openDay;
+        highDay.label = (_("Open High Day: ")) + this.currentCoin.highDay;
+        lowDay.label = (_("Open Low Day: ")) + this.currentCoin.lowDay;
+        open24Hour.label = (_("Open 24h: ")) + this.currentCoin.open24Hour;
+        high24Hour.label = (_("Open High 24h: ")) + this.currentCoin.high24Hour;
+        low24Hour.label = (_("Open Low 24h: ")) + this.currentCoin.low24Hour;
+        lastMarket.label = (_("Last Market: ")) + this.currentCoin.lastMarket;
+        change24Hour.label = (_("Change Last 24h: ")) + this.currentCoin.change24Hour;
+        changeP24Hour.label = (_("Change Percent Last 24h: ")) + this.currentCoin.changeP24Hour;
+        changeDay.label = (_("Change Day: ")) + this.currentCoin.changeDay;
+        changePDay.label = (_("Change Percent Day: ")) + this.currentCoin.changePDay;
+        supply.label = (_("Supply: ")) + this.currentCoin.supply;
+        mCap.label = (_("Market Cap: ")) + this.currentCoin.mCap;
+        totalVolume24Hour.label = (_("Total Volume 24h: ")) + this.currentCoin.totalVolume24Hour;
+        totalVolume24HTo.label = (_("Total Volume 24h To: ")) + this.currentCoin.totalVolume24HTo;
+
+        currentCoin.getPriceDataHour(coinAbrv);
+
+        hourLineChart.DATA = currentCoin.DATA;
+        hourLineChart.HIGH = currentCoin.HIGH;
+        hourLineChart.LOW = currentCoin.LOW;
+        hourLineChart.calculations();
+
+        currentCoin.getPriceDataDay(coinAbrv);
+
+        dayLineChart.DATA = currentCoin.DATA;
+        dayLineChart.HIGH = currentCoin.HIGH;
+        dayLineChart.LOW = currentCoin.LOW;
+        dayLineChart.calculations();
+
+        currentCoin.getPriceDataWeek(coinAbrv);
+
+        weekLineChart.DATA = currentCoin.DATA;
+        weekLineChart.HIGH = currentCoin.HIGH;
+        weekLineChart.LOW = currentCoin.LOW;
+        weekLineChart.calculations();
+
+        this.notebook.show_all();
+        this.spinner.active = false;
+
+        return true;
+
+      });
+
       this.spinner.active = false;
 
-      return true;
+    }else{
 
-    });
+      this.toastNetwork.send_notification ();
 
-    this.spinner.active = false;
+    }
 
   }
 
@@ -733,7 +742,6 @@ public class Crypt: Gtk.Window{
       chartHomeLabel.get_style_context().add_class("title-text");
 
       Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-
       chartBox.pack_start (chartHomeLabel, false, false, 0);
       chartBox.pack_start (btcLineChart);
       chartBox.pack_start (btcLabel, false, false, 0);
@@ -747,8 +755,9 @@ public class Crypt: Gtk.Window{
       this.getNewsMainPage();
 
       this.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
-      this.mainGrid.attach(chartBox,0,0,1,1);
-      this.mainGrid.attach(this.secondaryBox, 1,0,1,1);
+      this.mainGrid.attach(this.toastNetwork,1,0,2,2);
+      this.mainGrid.attach(chartBox,1,0,1,1);
+      this.mainGrid.attach(this.secondaryBox, 2,0,1,1);
       this.mainGrid.get_style_context().add_class("box");
       this.mainGrid.set_row_homogeneous(true);
       this.mainGrid.set_column_homogeneous(true);
