@@ -755,15 +755,18 @@ public class Crypt: Gtk.Window{
       this.getNewsMainPage();
 
       this.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
-      this.mainGrid.attach(this.toastNetwork,1,0,2,2);
-      this.mainGrid.attach(chartBox,1,0,1,1);
-      this.mainGrid.attach(this.secondaryBox, 2,0,1,1);
+      this.mainGrid.attach(chartBox,0,0,1,1);
+      this.mainGrid.attach(this.secondaryBox, 1,0,1,1);
       this.mainGrid.get_style_context().add_class("box");
       this.mainGrid.set_row_homogeneous(true);
       this.mainGrid.set_column_homogeneous(true);
 
+      Gtk.Box tempBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+      tempBox.pack_start(this.toastNetwork);
+      tempBox.pack_start(this.mainGrid);
+
       Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
-      scrolled.add(this.mainGrid);
+      scrolled.add(tempBox);
       scrolled.set_max_content_width(1200);
       scrolled.set_min_content_height(500);
 
