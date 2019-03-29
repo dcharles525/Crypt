@@ -35,7 +35,7 @@ msgstr "Dernier volume à : "
 
 #: src/Crypt.vala:131 src/Crypt.vala:344
 msgid "Last TradeID: "
-msgstr "Dernier identifiante de transaction : "
+msgstr "Dernier ID de transaction : "
 
 #: src/Crypt.vala:132 src/Crypt.vala:343
 msgid "Volume Day: "
@@ -163,7 +163,7 @@ msgstr "Dernier marché"
 
 #: src/Crypt.vala:707
 msgid "Welcome to Crypt!"
-msgstr "Bienvenue dans Crypt"
+msgstr "Bienvenue dans Crypt !"
 
 #: src/Crypt.vala:707
 msgid "Just downloading the latest data, this could take a second or two."
