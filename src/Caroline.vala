@@ -167,7 +167,7 @@ public class Caroline : Gtk.DrawingArea {
     double spreadFinal = height/this.spreadY;
 
     for (int i = 1; i < this.spreadY + 1; i++){
-
+      
       cr.move_to (-10, height+15-(spreadFinal*i));
       cr.line_to (25, height+15-(spreadFinal*i));
 

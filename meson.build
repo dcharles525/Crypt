@@ -12,6 +12,8 @@ executable(
     'src/Coin.vala',
     'src/Crypt.vala',
     'src/Draw.vala',
+    'src/Database.vala',
+    'src/Structures/CoinList.vala',
     dependencies: [
       dependency('gtk+-3.0'),
       dependency('libsoup-2.4'),
@@ -21,6 +23,7 @@ executable(
       dependency('gstreamer-1.0'),
       dependency('clutter-gst-3.0'),
       dependency('clutter-gtk-1.0'),
+      dependency('sqlite3'),
       dependency('granite')
     ],
     install: true

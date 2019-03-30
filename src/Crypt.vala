@@ -83,7 +83,7 @@ public class Crypt: Gtk.Window{
     }
 
     .button-color{
-      background-image: linear-gradient( #1c9cc4, #1c8dc4);
+      background-image: linear-gradient( #00aeae, #1aaeae);
     }
 
     .table{
@@ -120,6 +120,7 @@ public class Crypt: Gtk.Window{
       this.spinner.active = true;
 
       this.currentCoin.getCoinInfoFull(coinAbrv);
+      
       this.windowHeight = 600;
 
       Gtk.Label priceTitle = new Gtk.Label (coinAbrv
@@ -280,6 +281,16 @@ public class Crypt: Gtk.Window{
       }catch (Error e) {
 
         stderr.printf ("Something is wrong in getNewsMainPage");
+        
+        this.networkAccess = false;
+        this.window.remove (this.deleteBox);
+        this.window.remove (this.notebook);
+        this.comboBox = new Gtk.ComboBoxText();
+        this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+        var welcome = new Granite.Widgets.Welcome (_("Whoops!"), _("Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!"));
+        this.deleteBox.pack_start(welcome);
+        this.window.add(this.deleteBox);
+        this.window.show_all();
 
       }
 
@@ -424,6 +435,46 @@ public class Crypt: Gtk.Window{
     Gtk.Label pricesLabel = new Gtk.Label (_("Quick Price Lookup"));
     pricesLabel.get_style_context().add_class("title-text");
     verticalGridBox.pack_start(pricesLabel);
+    
+    Gtk.Button addCoinButton = new Gtk.Button.with_label (_("Add Coin"));
+    addCoinButton.set_tooltip_markup(_("Add coin to global list"));
+    addCoinButton.clicked.connect (() => {
+      
+      Gtk.Label coinNameLabel = new Gtk.Label (_("Coin Name"));
+      coinNameLabel.xalign = 0;
+
+      var coinNameEntry = new Entry ();
+  
+      Gtk.Label coinAbbrevLabel = new Gtk.Label (_("Coin Abbreviation"));
+      coinAbbrevLabel.xalign = 0;
+
+      var coinAbbrevEntry = new Entry ();
+  
+      Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
+      saveButton.get_style_context().add_class("button-color");    
+      
+      Gtk.Dialog dialog = new Gtk.Dialog ();
+      dialog.width_request = 500;
+      dialog.get_content_area ().spacing = 7;
+      dialog.get_content_area ().border_width = 10;
+      dialog.get_content_area ().pack_start (coinNameLabel,false,false);
+      dialog.get_content_area ().pack_start (coinNameEntry,false,false);
+      dialog.get_content_area ().pack_start (coinAbbrevLabel,false,false);
+      dialog.get_content_area ().pack_start (coinAbbrevEntry,false,false);
+      dialog.get_content_area ().pack_start (saveButton,false,false);
+      dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
+      dialog.set_default_response (Gtk.ResponseType.OK);
+      dialog.show_all ();
+    
+    });
+  
+    addCoinButton.get_style_context().add_class("button-color");
+    addCoinButton.set_size_request(50, 32);
+    
+    Gtk.Box tempBox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+    
+    tempBox.pack_start(addCoinButton, false, false, 0);
+    verticalGridBox.pack_start(tempBox, false, false, 0);
 
     this.mainAreaTreeView = new TreeView ();
     this.mainAreaTreeView.get_selection().changed.connect(rowClick);
@@ -864,8 +915,12 @@ public class Crypt: Gtk.Window{
 
 int main (string[] args){
   Gtk.init (ref args);
-
+  
+  Database database = new Database();
   Crypt crypt = new Crypt();
+  
+  database.createCheckDirectory();
+  database.getCoin();
 
   try {
 

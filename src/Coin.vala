@@ -41,15 +41,17 @@ public class Coin{
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
     string defaultCoin = settings.get_value("main-coin").get_string();
-
+    
     Soup.Session session = new Soup.Session();
-		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(coinAbrv,"&tsyms=",defaultCoin));
+	  Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(coinAbrv,"&tsyms=",defaultCoin));
 
     session.queue_message (message, (sess, message) => {
-
-		  try {
-
-			  var parser = new Json.Parser ();
+      
+    if (message.status_code == 200) {
+      
+      try {
+      
+        var parser = new Json.Parser ();
         parser.load_from_data((string) message.response_body.flatten().data, -1);
         var root_object = parser.get_root ().get_object ();
         var data = root_object.get_object_member ("DISPLAY").get_object_member(coinAbrv).get_object_member(defaultCoin);
@@ -81,13 +83,15 @@ public class Coin{
         this.totalVolume24Hour = data.get_string_member("TOTALVOLUME24H");
         this.totalVolume24HTo = data.get_string_member("TOTALVOLUME24HTO");
 
-      }catch (Error e) {
+        loop.quit();
+        
+        }catch (Error e) {
 
-        stderr.printf ("Something is wrong in getCurrentPrice");
+          stderr.printf ("Something is wrong in getCurrentPrice");
 
+        }
+        
       }
-
-      loop.quit();
 
     });
 
@@ -105,39 +109,43 @@ public class Coin{
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histominute?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=30"));
 
     session.queue_message (message, (sess, message) => {
+    
+      if (message.status_code == 200) {
 
-      double[] DATA = {};
-      double[] HIGH = {};
-      double[] LOW = {};
+        double[] DATA = {};
+        double[] HIGH = {};
+        double[] LOW = {};
 
-		  try {
+		    try {
 
-			  var parser = new Json.Parser ();
-        parser.load_from_data((string) message.response_body.flatten().data, -1);
-        var root_object = parser.get_root ().get_object ();
-        var response = root_object.get_array_member ("Data");
+			    var parser = new Json.Parser ();
+          parser.load_from_data((string) message.response_body.flatten().data, -1);
+          var root_object = parser.get_root ().get_object ();
+          var response = root_object.get_array_member ("Data");
 
-        foreach (var data in response.get_elements()) {
+          foreach (var data in response.get_elements()) {
 
-          //int64 time = data.get_object().get_int_member("time");
-          double price = data.get_object().get_double_member("close");
-          double high = data.get_object().get_double_member("high");
-          double low = data.get_object().get_double_member("low");
+            //int64 time = data.get_object().get_int_member("time");
+            double price = data.get_object().get_double_member("close");
+            double high = data.get_object().get_double_member("high");
+            double low = data.get_object().get_double_member("low");
 
-          DATA += price;
-          HIGH += high;
-          LOW += low;
+            DATA += price;
+            HIGH += high;
+            LOW += low;
+
+          }
+
+          this.DATA = DATA;
+          this.HIGH = HIGH;
+          this.LOW = LOW;
+
+        }catch (Error e) {
+
+          stderr.printf ("Something is wrong in getPriceData");
 
         }
-
-        this.DATA = DATA;
-        this.HIGH = HIGH;
-        this.LOW = LOW;
-
-      }catch (Error e) {
-
-        stderr.printf ("Something is wrong in getPriceData");
-
+        
       }
 
       loop.quit();
@@ -158,42 +166,46 @@ public class Coin{
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histohour?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=24"));
 
     session.queue_message (message, (sess, message) => {
+    
+      if (message.status_code == 200) {
 
-      double[] DATA = {};
-      double[] HIGH = {};
-      double[] LOW = {};
+        double[] DATA = {};
+        double[] HIGH = {};
+        double[] LOW = {};
 
-		  try {
+		    try {
 
-			  var parser = new Json.Parser ();
-        parser.load_from_data((string) message.response_body.flatten().data, -1);
-        var root_object = parser.get_root ().get_object ();
-        var response = root_object.get_array_member ("Data");
+			    var parser = new Json.Parser ();
+          parser.load_from_data((string) message.response_body.flatten().data, -1);
+          var root_object = parser.get_root ().get_object ();
+          var response = root_object.get_array_member ("Data");
 
-        foreach (var data in response.get_elements()) {
+          foreach (var data in response.get_elements()) {
 
-          //int64 time = data.get_object().get_int_member("time");
-          double price = data.get_object().get_double_member("close");
-          double high = data.get_object().get_double_member("high");
-          double low = data.get_object().get_double_member("low");
+            //int64 time = data.get_object().get_int_member("time");
+            double price = data.get_object().get_double_member("close");
+            double high = data.get_object().get_double_member("high");
+            double low = data.get_object().get_double_member("low");
 
-          DATA += price;
-          HIGH += high;
-          LOW += low;
+            DATA += price;
+            HIGH += high;
+            LOW += low;
+
+          }
+
+          this.DATA = DATA;
+          this.HIGH = HIGH;
+          this.LOW = LOW;
+
+        }catch (Error e) {
+
+          stderr.printf ("Something is wrong in getPriceData");
 
         }
 
-        this.DATA = DATA;
-        this.HIGH = HIGH;
-        this.LOW = LOW;
-
-      }catch (Error e) {
-
-        stderr.printf ("Something is wrong in getPriceData");
-
+        loop.quit();
+        
       }
-
-      loop.quit();
 
     });
 
@@ -202,51 +214,55 @@ public class Coin{
   }
 
   public void getPriceDataWeek(string coin){
-
+  
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
     string defaultCoin = settings.get_value("main-coin").get_string();
 
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histoday?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=6"));
-
+  
     session.queue_message (message, (sess, message) => {
+      
+      if (message.status_code == 200) {    
+      
+        double[] DATA = {};
+        double[] HIGH = {};
+        double[] LOW = {};
 
-      double[] DATA = {};
-      double[] HIGH = {};
-      double[] LOW = {};
+		    try {
 
-		  try {
+			    var parser = new Json.Parser ();
+          parser.load_from_data((string) message.response_body.flatten().data, -1);
+          var root_object = parser.get_root ().get_object ();
+          var response = root_object.get_array_member ("Data");
 
-			  var parser = new Json.Parser ();
-        parser.load_from_data((string) message.response_body.flatten().data, -1);
-        var root_object = parser.get_root ().get_object ();
-        var response = root_object.get_array_member ("Data");
+          foreach (var data in response.get_elements()) {
 
-        foreach (var data in response.get_elements()) {
+            //int64 time = data.get_object().get_int_member("time");
+            double price = data.get_object().get_double_member("close");
+            double high = data.get_object().get_double_member("high");
+            double low = data.get_object().get_double_member("low");
 
-          //int64 time = data.get_object().get_int_member("time");
-          double price = data.get_object().get_double_member("close");
-          double high = data.get_object().get_double_member("high");
-          double low = data.get_object().get_double_member("low");
+            DATA += price;
+            HIGH += high;
+            LOW += low;
 
-          DATA += price;
-          HIGH += high;
-          LOW += low;
+          }
+
+          this.DATA = DATA;
+          this.HIGH = HIGH;
+          this.LOW = LOW;
+
+        }catch (Error e) {
+
+          stderr.printf ("Something is wrong in getPriceData");
 
         }
 
-        this.DATA = DATA;
-        this.HIGH = HIGH;
-        this.LOW = LOW;
-
-      }catch (Error e) {
-
-        stderr.printf ("Something is wrong in getPriceData");
-
+        loop.quit();
+        
       }
-
-      loop.quit();
 
     });
 
