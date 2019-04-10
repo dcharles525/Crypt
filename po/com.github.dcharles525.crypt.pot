@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.dcharles525.crypt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-24 12:40+0100\n"
+"POT-Creation-Date: 2019-03-29 19:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,8 +205,7 @@ msgid ""
 "reconnecting!"
 msgstr ""
 
-#: src/Crypt.vala:888 data/com.github.dcharles525.crypt.desktop.in:3
-#: data/com.github.dcharles525.crypt.appdata.xml.in:7
+#: src/Crypt.vala:888
 msgid "Crypt"
 msgstr ""
 
@@ -252,110 +251,4 @@ msgstr ""
 
 #: src/Caroline.vala:311
 msgid "Current: "
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.desktop.in:4
-msgid "Crypto Market Watcher"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.desktop.in:5
-#: data/com.github.dcharles525.crypt.appdata.xml.in:8
-msgid "View and Watch Crypto Currency With Ease!"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.desktop.in:8
-msgid "com.github.dcharles525.crypt"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.desktop.in:12
-msgid "crypto;bitcoin;litecoin;coin;bit;trading;money;"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:10
-msgid ""
-"Ever want to view the crypto market in native Vala/GTK? Well look no more "
-"Crypt is all you need to look at charts, prices, and other information while "
-"using less than 50mb of RAM."
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:12
-msgid "Data refreshes every minute!"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:13
-msgid "View hourly, daily, and weekly charts!"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:14
-msgid "Click on candles to inspect information!"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:15
-msgid "View full coin information!"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:16
-msgid "See information in USD, EUR, GBP, and more!!"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:17
-msgid "Change refresh rate to save on data!"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:37
-msgid "Bug fixes"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:43
-msgid "Fixed tons of bugs with help from @NathanBnm"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:44
-msgid "Click on candles to see information for that time period"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:50
-msgid "Translations (Thanks to @NathanBnm for French translations!)"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:51
-msgid "Change refresh rate"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:52
-msgid "Change base currency"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:53
-msgid "Coin specific news"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:54
-msgid "Close a coin tab with ctrl-w"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:60
-#: data/com.github.dcharles525.crypt.appdata.xml.in:67
-msgid "Complete rewrite of how charts work"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:61
-#: data/com.github.dcharles525.crypt.appdata.xml.in:68
-msgid "*Slaps Crypt* This bad boy can fit so many bugs in it"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:74
-msgid "Better window resizing"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:75
-msgid "AppCenter fixes"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:81
-msgid "Initial release"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:112
-msgid "David Johnson"
 msgstr ""

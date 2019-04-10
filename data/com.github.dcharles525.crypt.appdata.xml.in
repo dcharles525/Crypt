@@ -20,7 +20,6 @@
   <provides>
     <binary>com.github.dcharles525.crypt</binary>
   </provides>
-
   <screenshots>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot.png</image>
@@ -29,9 +28,7 @@
       <image>https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot2.png</image>
     </screenshot>
   </screenshots>
-
-  ​<releases>
-
+  <releases>
     <release version="1.4.0" date="2019-03-27">
       <description>
         <p>App adapts to network condidtions better</p>
@@ -40,20 +37,17 @@
         <p>Bug fixes</p>
       </description>
     </release>
-
     <release version="1.3.1" date="2019-03-13">
       <description>
         <p>Bug fixes</p>
       </description>
     </release>
-
     <release version="1.3.0" date="2019-03-13">
       <description>
         <p>Fixed tons of bugs with help from @NathanBnm</p>
         <p>Click on candles to see information for that time period</p>
       </description>
     </release>
-
     <release version="1.2.0" date="2019-02-16">
       <description>
         <p>Translations (Thanks to @NathanBnm for French translations!)</p>
@@ -63,36 +57,30 @@
         <p>Close a coin tab with ctrl-w</p>
       </description>
     </release>
-
     <release version="1.1.2" date="2019-01-05">
       <description>
         <p>Complete rewrite of how charts work</p>
         <p>*Slaps Crypt* This bad boy can fit so many bugs in it</p>
       </description>
     </release>
-
     <release version="1.1.0" date="2019-01-05">
       <description>
         <p>Complete rewrite of how charts work</p>
         <p>*Slaps Crypt* This bad boy can fit so many bugs in it</p>
       </description>
     </release>
-
     <release version="1.0.2" date="2019-01-01">
       <description>
         <p>Better window resizing</p>
         <p>AppCenter fixes</p>
       </description>
     </release>
-
     <release version="1.0.0" date="2018-06-02">
       <description>
         <p>Initial release</p>
       </description>
     </release>
-
   </releases>
-
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>
@@ -117,11 +105,9 @@
     <content_attribute id="social-chat">none</content_attribute>
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
-
   <developer_name>David Johnson</developer_name>
   <url type="homepage">https://github.com/dcharles525/crypt</url>
   <url type="bugtracker">https://github.com/dcharles525/crypt/issues</url>
-
   <custom>
     <value key="x-appcenter-color-primary">#00aeae</value>
     <value key="x-appcenter-color-primary-text">#000</value>
