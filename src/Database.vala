@@ -114,7 +114,7 @@ public class Database: GLib.Object {
   
   }
   
-  public CoinList getCoin() {
+  public CoinList getCoins() {
     
     Sqlite.Statement stmt;
     CoinList coinList = new CoinList();
@@ -134,8 +134,6 @@ public class Database: GLib.Object {
       coinList.coinIds.add(stmt.column_text(0));
       coinList.coinNames.add(stmt.column_text(1));
       coinList.coinAbbrvs.add(stmt.column_text(2));
-      
-      stderr.printf("%s\n",stmt.column_text (1));
       
 		}
 		

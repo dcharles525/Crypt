@@ -95,20 +95,18 @@ public class Crypt: Gtk.Window{
   """;
 
   public void getCoins(){
-
-    this.comboBox.append("0","BTC");
-    this.comboBox.append("1","LTC");
-    this.comboBox.append("2","ETH");
-    this.comboBox.append("3","BCH");
-    this.comboBox.append("4","XMR");
-    this.comboBox.append("5","DASH");
-    this.comboBox.append("6","ZEC");
-    this.comboBox.append("7","ETC");
-    this.comboBox.append("8","EOS");
-    this.comboBox.append("9","XRP");
-    this.comboBox.append("10","BNB");
-    this.comboBox.append("11","TRX");
-    this.comboBox.append("12","DOGE");
+    
+    Database dbObject = new Database();
+    dbObject.createCheckDirectory();
+    CoinList coinList = dbObject.getCoins();
+    
+    for (int i = 0; i < coinList.coinIds.size; i++){
+      
+      stdout.printf("%s\n",coinList.coinAbbrvs.get(i));
+      this.comboBox.append(i.to_string(),coinList.coinAbbrvs.get(i));
+      
+    }
+  
     this.comboBox.active = 0;
 
   }
@@ -343,57 +341,58 @@ public class Crypt: Gtk.Window{
       Timeout.add (this.refreshRate * 1000, () => {
 
         this.spinner.active = true;
-
-        this.currentCoin.getCoinInfoFull(coinAbrv);
+        
+        Coin tempCoinObject = new Coin();
+        tempCoinObject.getCoinInfoFull(coinAbrv);
 
         priceTitle.label = coinAbrv
-        .concat(": ",this.currentCoin.price.to_string()," | ",this.currentCoin.change24Hour.to_string(),
-        " | ",this.currentCoin.changeP24Hour.to_string());
+        .concat(": ",tempCoinObject.price.to_string()," | ",tempCoinObject.change24Hour.to_string(),
+        " | ",tempCoinObject.changeP24Hour.to_string());
         priceTitle.xalign = 0;
-        price.label = (_("Price: ")) + this.currentCoin.price;
-        lastUpdate.label = (_("Last Update: ")) + this.currentCoin.lastUpdate;
-        lastVolume.label = (_("Last Volume: ")) + this.currentCoin.lastVolume;
-        lastVolumeTo.label = (_("Last Volume To: ")) + this.currentCoin.lastVolumeTo;
-        volumeDay.label = (_("Volume Day: ")) + this.currentCoin.volumeDay;
-        lastTradeID.label = (_("Last TradeID: ")) + this.currentCoin.lastTradeID;
-        volumeDayTo.label = (_("Volume Day To: ")) + this.currentCoin.volumeDayTo;
-        volume24HourTo.label = (_("Volume 24 Hour To: ")) + this.currentCoin.volume24HourTo;
-        volume24Hour.label = (_("Volume 24 Hour: ")) + this.currentCoin.volume24Hour;
-        openDay.label = (_("Open Day: ")) + this.currentCoin.openDay;
-        highDay.label = (_("Open High Day: ")) + this.currentCoin.highDay;
-        lowDay.label = (_("Open Low Day: ")) + this.currentCoin.lowDay;
-        open24Hour.label = (_("Open 24h: ")) + this.currentCoin.open24Hour;
-        high24Hour.label = (_("Open High 24h: ")) + this.currentCoin.high24Hour;
-        low24Hour.label = (_("Open Low 24h: ")) + this.currentCoin.low24Hour;
-        lastMarket.label = (_("Last Market: ")) + this.currentCoin.lastMarket;
-        change24Hour.label = (_("Change Last 24h: ")) + this.currentCoin.change24Hour;
-        changeP24Hour.label = (_("Change Percent Last 24h: ")) + this.currentCoin.changeP24Hour;
-        changeDay.label = (_("Change Day: ")) + this.currentCoin.changeDay;
-        changePDay.label = (_("Change Percent Day: ")) + this.currentCoin.changePDay;
-        supply.label = (_("Supply: ")) + this.currentCoin.supply;
-        mCap.label = (_("Market Cap: ")) + this.currentCoin.mCap;
-        totalVolume24Hour.label = (_("Total Volume 24h: ")) + this.currentCoin.totalVolume24Hour;
-        totalVolume24HTo.label = (_("Total Volume 24h To: ")) + this.currentCoin.totalVolume24HTo;
+        price.label = (_("Price: ")) + tempCoinObject.price;
+        lastUpdate.label = (_("Last Update: ")) + tempCoinObject.lastUpdate;
+        lastVolume.label = (_("Last Volume: ")) + tempCoinObject.lastVolume;
+        lastVolumeTo.label = (_("Last Volume To: ")) + tempCoinObject.lastVolumeTo;
+        volumeDay.label = (_("Volume Day: ")) + tempCoinObject.volumeDay;
+        lastTradeID.label = (_("Last TradeID: ")) + tempCoinObject.lastTradeID;
+        volumeDayTo.label = (_("Volume Day To: ")) + tempCoinObject.volumeDayTo;
+        volume24HourTo.label = (_("Volume 24 Hour To: ")) + tempCoinObject.volume24HourTo;
+        volume24Hour.label = (_("Volume 24 Hour: ")) + tempCoinObject.volume24Hour;
+        openDay.label = (_("Open Day: ")) + tempCoinObject.openDay;
+        highDay.label = (_("Open High Day: ")) + tempCoinObject.highDay;
+        lowDay.label = (_("Open Low Day: ")) + tempCoinObject.lowDay;
+        open24Hour.label = (_("Open 24h: ")) + tempCoinObject.open24Hour;
+        high24Hour.label = (_("Open High 24h: ")) + tempCoinObject.high24Hour;
+        low24Hour.label = (_("Open Low 24h: ")) + tempCoinObject.low24Hour;
+        lastMarket.label = (_("Last Market: ")) + tempCoinObject.lastMarket;
+        change24Hour.label = (_("Change Last 24h: ")) + tempCoinObject.change24Hour;
+        changeP24Hour.label = (_("Change Percent Last 24h: ")) + tempCoinObject.changeP24Hour;
+        changeDay.label = (_("Change Day: ")) + tempCoinObject.changeDay;
+        changePDay.label = (_("Change Percent Day: ")) + tempCoinObject.changePDay;
+        supply.label = (_("Supply: ")) + tempCoinObject.supply;
+        mCap.label = (_("Market Cap: ")) + tempCoinObject.mCap;
+        totalVolume24Hour.label = (_("Total Volume 24h: ")) + tempCoinObject.totalVolume24Hour;
+        totalVolume24HTo.label = (_("Total Volume 24h To: ")) + tempCoinObject.totalVolume24HTo;
 
-        currentCoin.getPriceDataHour(coinAbrv);
+        tempCoinObject.getPriceDataHour(coinAbrv);
 
-        hourLineChart.DATA = currentCoin.DATA;
-        hourLineChart.HIGH = currentCoin.HIGH;
-        hourLineChart.LOW = currentCoin.LOW;
+        hourLineChart.DATA = tempCoinObject.DATA;
+        hourLineChart.HIGH = tempCoinObject.HIGH;
+        hourLineChart.LOW = tempCoinObject.LOW;
         hourLineChart.calculations();
 
-        currentCoin.getPriceDataDay(coinAbrv);
+        tempCoinObject.getPriceDataDay(coinAbrv);
 
-        dayLineChart.DATA = currentCoin.DATA;
-        dayLineChart.HIGH = currentCoin.HIGH;
-        dayLineChart.LOW = currentCoin.LOW;
+        dayLineChart.DATA = tempCoinObject.DATA;
+        dayLineChart.HIGH = tempCoinObject.HIGH;
+        dayLineChart.LOW = tempCoinObject.LOW;
         dayLineChart.calculations();
 
-        currentCoin.getPriceDataWeek(coinAbrv);
+        tempCoinObject.getPriceDataWeek(coinAbrv);
 
-        weekLineChart.DATA = currentCoin.DATA;
-        weekLineChart.HIGH = currentCoin.HIGH;
-        weekLineChart.LOW = currentCoin.LOW;
+        weekLineChart.DATA = tempCoinObject.DATA;
+        weekLineChart.HIGH = tempCoinObject.HIGH;
+        weekLineChart.LOW = tempCoinObject.LOW;
         weekLineChart.calculations();
 
         this.notebook.show_all();
@@ -920,7 +919,6 @@ int main (string[] args){
   Crypt crypt = new Crypt();
   
   database.createCheckDirectory();
-  database.getCoin();
 
   try {
 

@@ -47,43 +47,43 @@ public class Coin{
 
     session.queue_message (message, (sess, message) => {
       
-    if (message.status_code == 200) {
-      
-      try {
-      
-        var parser = new Json.Parser ();
-        parser.load_from_data((string) message.response_body.flatten().data, -1);
-        var root_object = parser.get_root ().get_object ();
-        var data = root_object.get_object_member ("DISPLAY").get_object_member(coinAbrv).get_object_member(defaultCoin);
+      if (message.status_code == 200) {
+        
+        try {
+        
+          var parser = new Json.Parser ();
+          parser.load_from_data((string) message.response_body.flatten().data, -1);
+          var root_object = parser.get_root ().get_object ();
+          var data = root_object.get_object_member ("DISPLAY").get_object_member(coinAbrv).get_object_member(defaultCoin);
 
-        this.assumedAbbrv = coinAbrv;
-        this.abbrv = data.get_string_member("FROMSYMBOL");
-        this.price = data.get_string_member("PRICE");
-        this.lastUpdate = data.get_string_member("LASTUPDATE");
-        this.lastVolume = data.get_string_member("LASTVOLUME");
-        this.lastVolumeTo = data.get_string_member("LASTVOLUMETO");
-        this.lastTradeID = data.get_string_member("LASTTRADEID");
-        this.volumeDay = data.get_string_member("VOLUMEDAY");
-        this.volumeDayTo = data.get_string_member("VOLUMEDAYTO");
-        this.volume24Hour = data.get_string_member("VOLUME24HOUR");
-        this.volume24HourTo = data.get_string_member("VOLUME24HOURTO");
-        this.openDay = data.get_string_member("OPENDAY");
-        this.highDay = data.get_string_member("HIGHDAY");
-        this.lowDay = data.get_string_member("LOWDAY");
-        this.open24Hour = data.get_string_member("OPEN24HOUR");
-        this.high24Hour = data.get_string_member("HIGH24HOUR");
-        this.low24Hour = data.get_string_member("LOW24HOUR");
-        this.lastMarket = data.get_string_member("LASTMARKET");
-        this.change24Hour = data.get_string_member("CHANGE24HOUR");
-        this.changeP24Hour = data.get_string_member("CHANGEPCT24HOUR");
-        this.changeDay = data.get_string_member("CHANGEDAY");
-        this.changePDay = data.get_string_member("CHANGEPCTDAY");
-        this.supply = data.get_string_member("SUPPLY");
-        this.mCap = data.get_string_member("MKTCAP");
-        this.totalVolume24Hour = data.get_string_member("TOTALVOLUME24H");
-        this.totalVolume24HTo = data.get_string_member("TOTALVOLUME24HTO");
+          this.assumedAbbrv = coinAbrv;
+          this.abbrv = data.get_string_member("FROMSYMBOL");
+          this.price = data.get_string_member("PRICE");
+          this.lastUpdate = data.get_string_member("LASTUPDATE");
+          this.lastVolume = data.get_string_member("LASTVOLUME");
+          this.lastVolumeTo = data.get_string_member("LASTVOLUMETO");
+          this.lastTradeID = data.get_string_member("LASTTRADEID");
+          this.volumeDay = data.get_string_member("VOLUMEDAY");
+          this.volumeDayTo = data.get_string_member("VOLUMEDAYTO");
+          this.volume24Hour = data.get_string_member("VOLUME24HOUR");
+          this.volume24HourTo = data.get_string_member("VOLUME24HOURTO");
+          this.openDay = data.get_string_member("OPENDAY");
+          this.highDay = data.get_string_member("HIGHDAY");
+          this.lowDay = data.get_string_member("LOWDAY");
+          this.open24Hour = data.get_string_member("OPEN24HOUR");
+          this.high24Hour = data.get_string_member("HIGH24HOUR");
+          this.low24Hour = data.get_string_member("LOW24HOUR");
+          this.lastMarket = data.get_string_member("LASTMARKET");
+          this.change24Hour = data.get_string_member("CHANGE24HOUR");
+          this.changeP24Hour = data.get_string_member("CHANGEPCT24HOUR");
+          this.changeDay = data.get_string_member("CHANGEDAY");
+          this.changePDay = data.get_string_member("CHANGEPCTDAY");
+          this.supply = data.get_string_member("SUPPLY");
+          this.mCap = data.get_string_member("MKTCAP");
+          this.totalVolume24Hour = data.get_string_member("TOTALVOLUME24H");
+          this.totalVolume24HTo = data.get_string_member("TOTALVOLUME24HTO");
 
-        loop.quit();
+          loop.quit();
         
         }catch (Error e) {
 
