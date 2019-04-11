@@ -102,7 +102,6 @@ public class Crypt: Gtk.Window{
     
     for (int i = 0; i < coinList.coinIds.size; i++){
       
-      stdout.printf("%s\n",coinList.coinAbbrvs.get(i));
       this.comboBox.append(i.to_string(),coinList.coinAbbrvs.get(i));
       
     }
@@ -413,20 +412,20 @@ public class Crypt: Gtk.Window{
   }
 
   public void getMainPageCoins(){
-
+    
     this.coinNames.clear();
-
-    this.coinNames.add("Bitcoin"); this.coinNames.add("Litecoin"); this.coinNames.add("Bitcoin Cash");
-    this.coinNames.add("Etherum"); this.coinNames.add("Dogecoin"); this.coinNames.add("Tron");
-    this.coinNames.add("EOS"); this.coinNames.add("NEO"); this.coinNames.add("Okex");
-    this.coinNames.add("Dash"); this.coinNames.add("Monero"); this.coinNames.add("Binance Coin");
-
     this.coinAbbrevs.clear();
 
-    this.coinAbbrevs.add("BTC"); this.coinAbbrevs.add("LTC"); this.coinAbbrevs.add("BCH");
-    this.coinAbbrevs.add("ETH"); this.coinAbbrevs.add("DOGE"); this.coinAbbrevs.add("TRX");
-    this.coinAbbrevs.add("EOS"); this.coinAbbrevs.add("NEO"); this.coinAbbrevs.add("OKB");
-    this.coinAbbrevs.add("DASH"); this.coinAbbrevs.add("XMR"); this.coinAbbrevs.add("BNB");
+    Database dbObject = new Database();
+    dbObject.createCheckDirectory();
+    CoinList coinList = dbObject.getCoins();
+    
+    for (int i = 0; i < coinList.coinIds.size; i++){
+      
+      this.coinNames.add(coinList.coinNames.get(i));
+      this.coinAbbrevs.add(coinList.coinAbbrvs.get(i));
+      
+    }
 
     Gtk.Box verticalGridBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     verticalGridBox.get_style_context().add_class("area");
@@ -464,6 +463,17 @@ public class Crypt: Gtk.Window{
       dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
       dialog.set_default_response (Gtk.ResponseType.OK);
       dialog.show_all ();
+      
+      saveButton.clicked.connect (() => {
+        
+        Database database = new Database();
+        database.createCheckDirectory();
+        database.insertCoin(coinNameEntry.get_text(),coinAbbrevEntry.get_text());
+        dialog.close();
+        coinList = database.getCoins();
+        this.comboBox.append(database.getCoins().coinIds.size.to_string(),coinAbbrevEntry.get_text());
+        
+      });
     
     });
   

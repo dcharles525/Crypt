@@ -59,10 +59,9 @@ public class Database: GLib.Object {
   
     string query = """
       CREATE TABLE coinlist (
-        id          INT  NOT NULL,
+        id          INTEGER PRIMARY KEY,
         coin_title  TEXT,
-        coin_abbrv  TEXT,
-        UNIQUE (id)
+        coin_abbrv  TEXT
       );
     """;
     
@@ -85,8 +84,8 @@ public class Database: GLib.Object {
   
     Sqlite.Statement stmt;
 
-    string query = "INSERT OR IGNORE INTO coinlist (id, coin_title, coin_abbrv) VALUES 
-    (0, $COINTITLE, $COINABBRV);";
+    string query = "INSERT INTO coinlist (coin_title, coin_abbrv) VALUES 
+    ($COINTITLE, $COINABBRV);";
     int ec = this.database.prepare_v2 (query, query.length, out stmt);
     
     if (ec != Sqlite.OK) {
@@ -119,7 +118,7 @@ public class Database: GLib.Object {
     Sqlite.Statement stmt;
     CoinList coinList = new CoinList();
     
-    const string query = "SELECT * FROM coinlist ORDER BY id DESC";
+    const string query = "SELECT * FROM coinlist ORDER BY id ASC";
 	  int ec = this.database.prepare_v2 (query, query.length, out stmt);
 	  
 	  if (ec != Sqlite.OK) {
