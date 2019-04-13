@@ -426,13 +426,13 @@ public class Crypt: Gtk.Window{
         
         Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label ("Open Tab");
         menu.attach_to_widget (this.mainAreaTreeView, null);
-        menu.add (menu_item);
+        menu.add (menuItem);
         menuItem.activate.connect((e) => {
           this.openCoin(event);
         });
         
         menuItem = new Gtk.MenuItem.with_label ("Delete");
-        menu.add (menu_item);
+        menu.add (menuItem);
         menuItem.activate.connect((e) => {
           this.deleteCoin(event);
         });
@@ -622,9 +622,9 @@ public class Crypt: Gtk.Window{
       TreePath path = model.get_path(iter);
       var index = int.parse(path.to_string());
 
-      if (index >= 1) {
+      if (index >= 0) {
       
-        this.addCoinTab(this.coinAbbrevs.get(index-1));
+        this.addCoinTab(this.coinAbbrevs.get(index));
       
       }
       
@@ -650,7 +650,7 @@ public class Crypt: Gtk.Window{
       
         Database dbObject = new Database();
         dbObject.createCheckDirectory();
-        dbObject.deleteCoin(this.coinAbbrevs.get(index-1));
+        dbObject.deleteCoin(this.coinAbbrevs.get(index));
         model.get_iter(out iterFinal,path);
         this.listModel.remove(ref iterFinal);
       
@@ -963,10 +963,14 @@ int main (string[] args){
     Gtk.Label validCoinLabel = new Gtk.Label ("");
     validCoinLabel.xalign = 0;
     
+    Gtk.Label addCoinLabel = new Gtk.Label (_("Add Coin"));
+    addCoinLabel.get_style_context().add_class("title-text");
+    
     Gtk.Dialog dialog = new Gtk.Dialog ();
     dialog.width_request = 500;
     dialog.get_content_area ().spacing = 7;
     dialog.get_content_area ().border_width = 10;
+    dialog.get_content_area ().pack_start (addCoinLabel,false,false);
     dialog.get_content_area ().pack_start (coinNameLabel,false,false);
     dialog.get_content_area ().pack_start (coinNameEntry,false,false);
     dialog.get_content_area ().pack_start (coinAbbrevLabel,false,false);
@@ -1035,11 +1039,15 @@ int main (string[] args){
 
       Gtk.Button saveRefreshButton = new Gtk.Button.with_label (_("Save"));
       saveRefreshButton.get_style_context().add_class("button-color");
+      
+      Gtk.Label settingsLabel = new Gtk.Label (_("Settings"));
+      settingsLabel.get_style_context().add_class("title-text");
 
       Gtk.Dialog dialog = new Gtk.Dialog ();
       dialog.width_request = 500;
       dialog.get_content_area ().spacing = 7;
       dialog.get_content_area ().border_width = 10;
+      dialog.get_content_area ().pack_start (settingsLabel,false,false);
       dialog.get_content_area ().pack_start (defaultCurrencyLabel,false,false);
       dialog.get_content_area ().pack_start (entry,false,false);
       dialog.get_content_area ().pack_start (saveButton,false,false);
