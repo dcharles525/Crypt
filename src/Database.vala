@@ -114,6 +114,34 @@ public class Database: GLib.Object {
   
   }
   
+  public void deleteCoin(string coinAbbrv) {
+    
+    Sqlite.Statement stmt;
+
+    string query = "DELETE FROM `coinlist` WHERE coin_abbrv = $COINABBRV;";
+    int ec = this.database.prepare_v2 (query, query.length, out stmt);
+    
+    if (ec != Sqlite.OK) {
+    
+	    stderr.printf("Error deleting: %s\n", this.database.errmsg());
+	    return;
+	    
+    }
+
+    int param_position = stmt.bind_parameter_index ("$COINABBRV");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, coinAbbrv);
+
+    ec = stmt.step();
+    
+		if (ec != Sqlite.DONE) {
+		
+			stderr.printf("Error deleting clipboard entry: %s\n", this.database.errmsg());
+    
+    }
+    
+  }
+  
   public CoinList getCoins() {
     
     Sqlite.Statement stmt;

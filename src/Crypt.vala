@@ -27,7 +27,7 @@ public class Crypt: Gtk.Window{
   public Gtk.Box deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
   public Gtk.Grid chartGrid = new Gtk.Grid ();
   public Gtk.Grid mainGrid = new Gtk.Grid ();
-  public Gtk.ListStore listModel = new Gtk.ListStore(7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
+  public Gtk.ListStore listModel = new Gtk.ListStore(8, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (Gtk.Button));
   public MainLoop m = new MainLoop();
   public Coin currentCoin = new Coin();
   public Coin currentCoinHour = new Coin();
@@ -418,11 +418,38 @@ public class Crypt: Gtk.Window{
     verticalGridBox.pack_start(pricesLabel);
 
     this.mainAreaTreeView = new TreeView ();
-    this.mainAreaTreeView.get_selection().changed.connect(rowClick);
+    this.mainAreaTreeView.button_press_event.connect ((event) => {
+    
+      if (event.type == Gdk.EventType.BUTTON_PRESS && event.button == 3) {
+      
+        Gtk.Menu menu = new Gtk.Menu ();
+        
+        Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label ("Open Tab");
+        menu.attach_to_widget (this.mainAreaTreeView, null);
+        menu.add (menu_item);
+        menuItem.activate.connect((e) => {
+          this.openCoin(event);
+        });
+        
+        menuItem = new Gtk.MenuItem.with_label ("Delete");
+        menu.add (menu_item);
+        menuItem.activate.connect((e) => {
+          this.deleteCoin(event);
+        });
+        
+        menu.show_all ();
+        menu.popup (null, null, null, event.button, event.time);
+          
+      }
+      
+      return false;
+      
+    });
+    
     this.mainAreaTreeView.activate_on_single_click = false;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
-    this.listModel = new Gtk.ListStore (7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
+    this.listModel = new Gtk.ListStore (8, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
     this.mainAreaTreeView.set_model (listModel);
 
     var text = new CellRendererText ();
@@ -430,7 +457,7 @@ public class Crypt: Gtk.Window{
     var coinColumn = new Gtk.TreeViewColumn ();
     coinColumn.set_title (_("Coin"));
     coinColumn.max_width = -1;
-    coinColumn.min_width = 150;
+    coinColumn.min_width = 100;
     coinColumn.pack_start (text, false);
     coinColumn.resizable = true;
     coinColumn.reorderable = true;
@@ -503,9 +530,9 @@ public class Crypt: Gtk.Window{
     var changePText = new CellRendererText ();
 
     var changePColumn = new Gtk.TreeViewColumn ();
-    changePColumn.set_title (_("Change Percent (DAY)"));
+    changePColumn.set_title (_("Change % (DAY)"));
     changePColumn.max_width = -1;
-    changePColumn.min_width = 100;
+    changePColumn.min_width = 75;
     changePColumn.pack_start (changePText, false);
     changePColumn.resizable = true;
     changePColumn.reorderable = true;
@@ -530,10 +557,6 @@ public class Crypt: Gtk.Window{
 
     this.mainAreaTreeView.append_column(lastExchangeColumn);
 
-    TreeIter iter;
-    listModel.append (out iter);
-    listModel.set(iter, 0, "...", 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0);
-
     for (int i = 0; this.coinAbbrevs.size > i; i++){
 
       MainLoop loop = new MainLoop ();
@@ -556,7 +579,8 @@ public class Crypt: Gtk.Window{
           string changeDay = data.get_string_member("CHANGEDAY");
           string changePDay = data.get_string_member("CHANGEPCTDAY");
           string lastMarket = data.get_string_member("LASTMARKET");
-
+          
+          TreeIter iter;
           this.listModel.append (out iter);
           this.listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
 
@@ -585,31 +609,55 @@ public class Crypt: Gtk.Window{
 
   }
 
-  public void rowClick(){
-
-    var index = this.get_selected();
-
-    if (index >= 1) {
-      this.addCoinTab(this.coinAbbrevs.get(index-1));
-    }
-
-  }
-
-  public int get_selected () {
-
+  public void openCoin(Gdk.EventButton event){
+    
     var selection = this.mainAreaTreeView.get_selection();
     selection.set_mode(SelectionMode.SINGLE);
 
     TreeModel model;
     TreeIter iter;
 
-    if (!selection.get_selected(out model, out iter)) {
-      return -1;
+    if (selection.get_selected(out model, out iter)) {
+    
+      TreePath path = model.get_path(iter);
+      var index = int.parse(path.to_string());
+
+      if (index >= 1) {
+      
+        this.addCoinTab(this.coinAbbrevs.get(index-1));
+      
+      }
+      
     }
 
-    TreePath path = model.get_path(iter);
-    return int.parse(path.to_string());
+  }
+  
+  public void deleteCoin(Gdk.EventButton event){
+    
+    var selection = this.mainAreaTreeView.get_selection();
+    selection.set_mode(SelectionMode.SINGLE);
 
+    TreeModel model;
+    TreeIter iter;
+    TreeIter iterFinal;
+
+    if (selection.get_selected(out model, out iter)){
+    
+      TreePath path = model.get_path(iter);
+      var index = int.parse(path.to_string());
+
+      if (index > 1) {
+      
+        Database dbObject = new Database();
+        dbObject.createCheckDirectory();
+        dbObject.deleteCoin(this.coinAbbrevs.get(index-1));
+        model.get_iter(out iterFinal,path);
+        this.listModel.remove(ref iterFinal);
+      
+      }
+    
+    }
+     
   }
 
   public void getNewsMainPage(){
@@ -937,7 +985,7 @@ int main (string[] args){
         database.createCheckDirectory();
         database.insertCoin(coinNameEntry.get_text(),coinAbbrevEntry.get_text());
         dialog.close();
-        CoinList coinList = database.getCoins();
+        
         TreeIter iter;
         crypt.listModel.append (out iter);
         crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
