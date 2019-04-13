@@ -910,7 +910,10 @@ int main (string[] args){
     var coinAbbrevEntry = new Entry ();
 
     Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
-    saveButton.get_style_context().add_class("button-color");    
+    saveButton.get_style_context().add_class("button-color");
+    
+    Gtk.Label validCoinLabel = new Gtk.Label ("");
+    validCoinLabel.xalign = 0;
     
     Gtk.Dialog dialog = new Gtk.Dialog ();
     dialog.width_request = 500;
@@ -920,6 +923,7 @@ int main (string[] args){
     dialog.get_content_area ().pack_start (coinNameEntry,false,false);
     dialog.get_content_area ().pack_start (coinAbbrevLabel,false,false);
     dialog.get_content_area ().pack_start (coinAbbrevEntry,false,false);
+    dialog.get_content_area ().pack_start (validCoinLabel,false,false);
     dialog.get_content_area ().pack_start (saveButton,false,false);
     dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
     dialog.set_default_response (Gtk.ResponseType.OK);
@@ -927,14 +931,23 @@ int main (string[] args){
     
     saveButton.clicked.connect (() => {
       
-      database = new Database();
-      database.createCheckDirectory();
-      database.insertCoin(coinNameEntry.get_text(),coinAbbrevEntry.get_text());
-      dialog.close();
-      CoinList coinList = database.getCoins();
-      TreeIter iter;
-      crypt.listModel.append (out iter);
-      crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
+      if (crypt.currentCoin.checkCoin(coinAbbrevEntry.get_text()) == 1){
+        
+        database = new Database();
+        database.createCheckDirectory();
+        database.insertCoin(coinNameEntry.get_text(),coinAbbrevEntry.get_text());
+        dialog.close();
+        CoinList coinList = database.getCoins();
+        TreeIter iter;
+        crypt.listModel.append (out iter);
+        crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
+        crypt.spinner.active = true;
+        
+      }else{
+        
+        validCoinLabel.label = (_("Whoops, that isn't a valid coin!"));
+        
+      }
       
     });
   
