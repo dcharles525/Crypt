@@ -20,7 +20,6 @@ public class Crypt: Gtk.Window{
   public Gtk.Window window = new Gtk.Window();
   public Gtk.Notebook notebook = new Gtk.Notebook();
   public Gtk.Notebook notebookSecondary = new Gtk.Notebook();
-  public Gtk.ComboBoxText comboBox = new Gtk.ComboBoxText();
   public Caroline caroline = new Caroline();
   public Gtk.CssProvider provider = new Gtk.CssProvider();
   public Gtk.Box box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -28,6 +27,7 @@ public class Crypt: Gtk.Window{
   public Gtk.Box deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
   public Gtk.Grid chartGrid = new Gtk.Grid ();
   public Gtk.Grid mainGrid = new Gtk.Grid ();
+  public Gtk.ListStore listModel = new Gtk.ListStore(7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
   public MainLoop m = new MainLoop();
   public Coin currentCoin = new Coin();
   public Coin currentCoinHour = new Coin();
@@ -93,22 +93,6 @@ public class Crypt: Gtk.Window{
       border-bottom-width: 1px;
     }
   """;
-
-  public void getCoins(){
-    
-    Database dbObject = new Database();
-    dbObject.createCheckDirectory();
-    CoinList coinList = dbObject.getCoins();
-    
-    for (int i = 0; i < coinList.coinIds.size; i++){
-      
-      this.comboBox.append(i.to_string(),coinList.coinAbbrvs.get(i));
-      
-    }
-  
-    this.comboBox.active = 0;
-
-  }
 
   public void addCoinTab(string coinAbrv){
 
@@ -282,7 +266,6 @@ public class Crypt: Gtk.Window{
         this.networkAccess = false;
         this.window.remove (this.deleteBox);
         this.window.remove (this.notebook);
-        this.comboBox = new Gtk.ComboBoxText();
         this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         var welcome = new Granite.Widgets.Welcome (_("Whoops!"), _("Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!"));
         this.deleteBox.pack_start(welcome);
@@ -433,64 +416,13 @@ public class Crypt: Gtk.Window{
     Gtk.Label pricesLabel = new Gtk.Label (_("Quick Price Lookup"));
     pricesLabel.get_style_context().add_class("title-text");
     verticalGridBox.pack_start(pricesLabel);
-    
-    Gtk.Button addCoinButton = new Gtk.Button.with_label (_("Add Coin"));
-    addCoinButton.set_tooltip_markup(_("Add coin to global list"));
-    addCoinButton.clicked.connect (() => {
-      
-      Gtk.Label coinNameLabel = new Gtk.Label (_("Coin Name"));
-      coinNameLabel.xalign = 0;
-
-      var coinNameEntry = new Entry ();
-  
-      Gtk.Label coinAbbrevLabel = new Gtk.Label (_("Coin Abbreviation"));
-      coinAbbrevLabel.xalign = 0;
-
-      var coinAbbrevEntry = new Entry ();
-  
-      Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
-      saveButton.get_style_context().add_class("button-color");    
-      
-      Gtk.Dialog dialog = new Gtk.Dialog ();
-      dialog.width_request = 500;
-      dialog.get_content_area ().spacing = 7;
-      dialog.get_content_area ().border_width = 10;
-      dialog.get_content_area ().pack_start (coinNameLabel,false,false);
-      dialog.get_content_area ().pack_start (coinNameEntry,false,false);
-      dialog.get_content_area ().pack_start (coinAbbrevLabel,false,false);
-      dialog.get_content_area ().pack_start (coinAbbrevEntry,false,false);
-      dialog.get_content_area ().pack_start (saveButton,false,false);
-      dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
-      dialog.set_default_response (Gtk.ResponseType.OK);
-      dialog.show_all ();
-      
-      saveButton.clicked.connect (() => {
-        
-        Database database = new Database();
-        database.createCheckDirectory();
-        database.insertCoin(coinNameEntry.get_text(),coinAbbrevEntry.get_text());
-        dialog.close();
-        coinList = database.getCoins();
-        this.comboBox.append(database.getCoins().coinIds.size.to_string(),coinAbbrevEntry.get_text());
-        
-      });
-    
-    });
-  
-    addCoinButton.get_style_context().add_class("button-color");
-    addCoinButton.set_size_request(50, 32);
-    
-    Gtk.Box tempBox = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-    
-    tempBox.pack_start(addCoinButton, false, false, 0);
-    verticalGridBox.pack_start(tempBox, false, false, 0);
 
     this.mainAreaTreeView = new TreeView ();
     this.mainAreaTreeView.get_selection().changed.connect(rowClick);
     this.mainAreaTreeView.activate_on_single_click = false;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
-    var listModel = new Gtk.ListStore (7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
+    this.listModel = new Gtk.ListStore (7, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
     this.mainAreaTreeView.set_model (listModel);
 
     var text = new CellRendererText ();
@@ -625,8 +557,8 @@ public class Crypt: Gtk.Window{
           string changePDay = data.get_string_member("CHANGEPCTDAY");
           string lastMarket = data.get_string_member("LASTMARKET");
 
-          listModel.append (out iter);
-          listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
+          this.listModel.append (out iter);
+          this.listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
 
         }catch (Error e) {
 
@@ -832,8 +764,6 @@ public class Crypt: Gtk.Window{
 
       this.notebook.insert_page (scrolled, title,0);
 
-      this.getCoins();
-
       Timeout.add (refreshRate * 1000, () => {
 
         if (this.checkNetworkStatus()){
@@ -885,7 +815,6 @@ public class Crypt: Gtk.Window{
           this.networkAccess = false;
           this.window.remove (this.deleteBox);
           this.window.remove (this.notebook);
-          this.comboBox = new Gtk.ComboBoxText();
           this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
           welcome = new Granite.Widgets.Welcome (_("Whoops!"), _("Looks like you're not connected to a network, after connecting the app will refresh (based on your refresh rate)!"));
           this.deleteBox.pack_start(welcome);
@@ -908,7 +837,6 @@ public class Crypt: Gtk.Window{
       this.networkAccess = false;
       this.window.remove (this.deleteBox);
       this.window.remove (this.notebook);
-      this.comboBox = new Gtk.ComboBoxText();
       this.deleteBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
       var welcome = new Granite.Widgets.Welcome (_("Whoops!"), _("Looks like you're not connected to a network, restart the app after reconnecting!"));
       this.window.add(welcome);
@@ -966,13 +894,50 @@ int main (string[] args){
   crypt.window.title = windowTitle;
   crypt.window.set_default_size (1200,600);
   crypt.window.set_position (Gtk.WindowPosition.CENTER);
-
+  
   Gtk.Button addCoinButton = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-  addCoinButton.set_tooltip_markup(_("Add"));
+  addCoinButton.set_tooltip_markup(_("Add coin to global list"));
   addCoinButton.clicked.connect (() => {
+    
+    Gtk.Label coinNameLabel = new Gtk.Label (_("Coin Name"));
+    coinNameLabel.xalign = 0;
 
-    crypt.addCoinTab(crypt.comboBox.get_active_text());
+    var coinNameEntry = new Entry ();
 
+    Gtk.Label coinAbbrevLabel = new Gtk.Label (_("Coin Abbreviation"));
+    coinAbbrevLabel.xalign = 0;
+
+    var coinAbbrevEntry = new Entry ();
+
+    Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
+    saveButton.get_style_context().add_class("button-color");    
+    
+    Gtk.Dialog dialog = new Gtk.Dialog ();
+    dialog.width_request = 500;
+    dialog.get_content_area ().spacing = 7;
+    dialog.get_content_area ().border_width = 10;
+    dialog.get_content_area ().pack_start (coinNameLabel,false,false);
+    dialog.get_content_area ().pack_start (coinNameEntry,false,false);
+    dialog.get_content_area ().pack_start (coinAbbrevLabel,false,false);
+    dialog.get_content_area ().pack_start (coinAbbrevEntry,false,false);
+    dialog.get_content_area ().pack_start (saveButton,false,false);
+    dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
+    dialog.set_default_response (Gtk.ResponseType.OK);
+    dialog.show_all ();
+    
+    saveButton.clicked.connect (() => {
+      
+      database = new Database();
+      database.createCheckDirectory();
+      database.insertCoin(coinNameEntry.get_text(),coinAbbrevEntry.get_text());
+      dialog.close();
+      CoinList coinList = database.getCoins();
+      TreeIter iter;
+      crypt.listModel.append (out iter);
+      crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
+      
+    });
+  
   });
 
   Gtk.Image settingsImage = new Gtk.Image.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
@@ -1060,9 +1025,8 @@ int main (string[] args){
   var header = new Gtk.HeaderBar ();
   header.show_close_button = true;
   header.title = windowTitle;
-  header.pack_start (crypt.comboBox);
-  header.pack_start (addCoinButton);
   header.pack_end (settingsButton);
+  header.pack_end (addCoinButton);
   header.pack_end (crypt.spinner);
   header.show_all();
   crypt.window.set_titlebar(header);

@@ -33,6 +33,7 @@ public class Database: GLib.Object {
       
       openDatabase();
       prepareDatabase();
+      insertCoin("Bitcoin","BTC");
     
     }
     
