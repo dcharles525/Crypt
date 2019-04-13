@@ -424,14 +424,14 @@ public class Crypt: Gtk.Window{
       
         Gtk.Menu menu = new Gtk.Menu ();
         
-        Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label ("Open Tab");
+        Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Open Tab"));
         menu.attach_to_widget (this.mainAreaTreeView, null);
         menu.add (menuItem);
         menuItem.activate.connect((e) => {
           this.openCoin(event);
         });
         
-        menuItem = new Gtk.MenuItem.with_label ("Delete");
+        menuItem = new Gtk.MenuItem.with_label (_("Delete"));
         menu.add (menuItem);
         menuItem.activate.connect((e) => {
           this.deleteCoin(event);
