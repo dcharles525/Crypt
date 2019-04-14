@@ -29,6 +29,14 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.5.0" date="2019-04-14">
+      <description>
+        <p>You can now customize the coin list (right click for menu)</p>
+        <p>Lots of stablization effrots</p>
+        <p>Reworked the header</p>
+        <p>Translation updates @NathanBnm</p>
+      </description>
+    </release>
     <release version="1.4.0" date="2019-03-27">
       <description>
         <p>App adapts to network condidtions better</p>
