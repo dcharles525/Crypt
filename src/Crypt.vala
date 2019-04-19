@@ -566,27 +566,31 @@ public class Crypt: Gtk.Window{
 
       session.queue_message (message, (sess, message) => {
 
-  		  try {
+        if (message.status_code == 200) {
 
-  			  var parser = new Json.Parser ();
-          parser.load_from_data((string) message.response_body.flatten().data, -1);
-          var root_object = parser.get_root ().get_object ();
-          var data = root_object.get_object_member ("DISPLAY").get_object_member(this.coinAbbrevs.get(i)).get_object_member(this.defaultCoin);
+    		  try {
 
-          string price = data.get_string_member("PRICE");
-          string high = data.get_string_member("HIGH24HOUR");
-          string low = data.get_string_member("LOW24HOUR");
-          string changeDay = data.get_string_member("CHANGEDAY");
-          string changePDay = data.get_string_member("CHANGEPCTDAY");
-          string lastMarket = data.get_string_member("LASTMARKET");
-          
-          TreeIter iter;
-          this.listModel.append (out iter);
-          this.listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
+    			  var parser = new Json.Parser ();
+            parser.load_from_data((string) message.response_body.flatten().data, -1);
+            var root_object = parser.get_root ().get_object ();
+            var data = root_object.get_object_member ("DISPLAY").get_object_member(this.coinAbbrevs.get(i)).get_object_member(this.defaultCoin);
 
-        }catch (Error e) {
+            string price = data.get_string_member("PRICE");
+            string high = data.get_string_member("HIGH24HOUR");
+            string low = data.get_string_member("LOW24HOUR");
+            string changeDay = data.get_string_member("CHANGEDAY");
+            string changePDay = data.get_string_member("CHANGEPCTDAY");
+            string lastMarket = data.get_string_member("LASTMARKET");
+            
+            TreeIter iter;
+            this.listModel.append (out iter);
+            this.listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
 
-          stderr.printf ("Something is wrong in getMainPageCoins");
+          }catch (Error e) {
+
+            stderr.printf ("Something is wrong in getMainPageCoins");
+
+          }
 
         }
 
@@ -618,7 +622,7 @@ public class Crypt: Gtk.Window{
     TreeIter iter;
 
     if (selection.get_selected(out model, out iter)) {
-    
+      
       TreePath path = model.get_path(iter);
       var index = int.parse(path.to_string());
 
@@ -653,6 +657,20 @@ public class Crypt: Gtk.Window{
         dbObject.deleteCoin(this.coinAbbrevs.get(index));
         model.get_iter(out iterFinal,path);
         this.listModel.remove(ref iterFinal);
+
+        this.coinNames.clear();
+        this.coinAbbrevs.clear();
+
+        dbObject = new Database();
+        dbObject.createCheckDirectory();
+        CoinList coinList = dbObject.getCoins();
+        
+        for (int i = 0; i < coinList.coinIds.size; i++){
+          
+          this.coinNames.add(coinList.coinNames.get(i));
+          this.coinAbbrevs.add(coinList.coinAbbrvs.get(i));
+          
+        }
       
       }
     
@@ -664,7 +682,8 @@ public class Crypt: Gtk.Window{
 
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
-		session.send_message (message);
+    
+	  session.send_message (message);
     Gtk.Box newsBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     newsBox.set_spacing(10);
     Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
@@ -675,9 +694,9 @@ public class Crypt: Gtk.Window{
 
     newsBox.pack_start(currentNewsLabel);
 
-		try {
+	  try {
 
-			var parser = new Json.Parser ();
+		  var parser = new Json.Parser ();
       parser.load_from_data((string) message.response_body.flatten().data, -1);
       var root_object = parser.get_root ().get_object ();
       var response = root_object.get_array_member("Data");
@@ -994,6 +1013,7 @@ int main (string[] args){
         crypt.listModel.append (out iter);
         crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
         crypt.spinner.active = true;
+        crypt.coinAbbrevs.add(coinAbbrevEntry.get_text());
         
       }else{
         
