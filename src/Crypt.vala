@@ -7,8 +7,6 @@ using Cairo;
 
 /*
 - Split up code and condense it
-- remove warnings and errors
-- make sure numbers don't go null because of length
 */
 //valac --pkg gtk+-3.0 --pkg libsoup-2.4 --pkg json-glib-1.0 --pkg webkit2gtk-4.0 --pkg gee-0.8 --pkg gstreamer-1.0 Crypt.vala
 
@@ -99,9 +97,7 @@ public class Crypt: Gtk.Window{
     if (this.spinner.active != true){
 
       this.spinner.active = true;
-
       this.currentCoin.getCoinInfoFull(coinAbrv);
-      
       this.windowHeight = 600;
 
       Gtk.Label priceTitle = new Gtk.Label (coinAbrv
@@ -262,7 +258,7 @@ public class Crypt: Gtk.Window{
       }catch (Error e) {
 
         stderr.printf ("Something is wrong in getNewsMainPage");
-        
+
         this.networkAccess = false;
         this.window.remove (this.deleteBox);
         this.window.remove (this.notebook);
@@ -323,7 +319,7 @@ public class Crypt: Gtk.Window{
       Timeout.add (this.refreshRate * 1000, () => {
 
         this.spinner.active = true;
-        
+
         Coin tempCoinObject = new Coin();
         tempCoinObject.getCoinInfoFull(coinAbrv);
 
@@ -395,19 +391,19 @@ public class Crypt: Gtk.Window{
   }
 
   public void getMainPageCoins(){
-    
+
     this.coinNames.clear();
     this.coinAbbrevs.clear();
 
     Database dbObject = new Database();
     dbObject.createCheckDirectory();
     CoinList coinList = dbObject.getCoins();
-    
+
     for (int i = 0; i < coinList.coinIds.size; i++){
-      
+
       this.coinNames.add(coinList.coinNames.get(i));
       this.coinAbbrevs.add(coinList.coinAbbrvs.get(i));
-      
+
     }
 
     Gtk.Box verticalGridBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -419,33 +415,33 @@ public class Crypt: Gtk.Window{
 
     this.mainAreaTreeView = new TreeView ();
     this.mainAreaTreeView.button_press_event.connect ((event) => {
-    
+
       if (event.type == Gdk.EventType.BUTTON_PRESS && event.button == 3) {
-      
+
         Gtk.Menu menu = new Gtk.Menu ();
-        
+
         Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Open Tab"));
         menu.attach_to_widget (this.mainAreaTreeView, null);
         menu.add (menuItem);
         menuItem.activate.connect((e) => {
           this.openCoin(event);
         });
-        
+
         menuItem = new Gtk.MenuItem.with_label (_("Delete"));
         menu.add (menuItem);
         menuItem.activate.connect((e) => {
           this.deleteCoin(event);
         });
-        
+
         menu.show_all ();
         menu.popup (null, null, null, event.button, event.time);
-          
+
       }
-      
+
       return false;
-      
+
     });
-    
+
     this.mainAreaTreeView.activate_on_single_click = false;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
@@ -581,7 +577,7 @@ public class Crypt: Gtk.Window{
             string changeDay = data.get_string_member("CHANGEDAY");
             string changePDay = data.get_string_member("CHANGEPCTDAY");
             string lastMarket = data.get_string_member("LASTMARKET");
-            
+
             TreeIter iter;
             this.listModel.append (out iter);
             this.listModel.set(iter, 0, this.coinNames.get(i), 1, price, 2, high, 3, low, 4, changeDay, 5, changePDay, 6, lastMarket);
@@ -614,7 +610,7 @@ public class Crypt: Gtk.Window{
   }
 
   public void openCoin(Gdk.EventButton event){
-    
+
     var selection = this.mainAreaTreeView.get_selection();
     selection.set_mode(SelectionMode.SINGLE);
 
@@ -622,22 +618,22 @@ public class Crypt: Gtk.Window{
     TreeIter iter;
 
     if (selection.get_selected(out model, out iter)) {
-      
+
       TreePath path = model.get_path(iter);
       var index = int.parse(path.to_string());
 
       if (index >= 0) {
-      
+
         this.addCoinTab(this.coinAbbrevs.get(index));
-      
+
       }
-      
+
     }
 
   }
-  
+
   public void deleteCoin(Gdk.EventButton event){
-    
+
     var selection = this.mainAreaTreeView.get_selection();
     selection.set_mode(SelectionMode.SINGLE);
 
@@ -646,12 +642,12 @@ public class Crypt: Gtk.Window{
     TreeIter iterFinal;
 
     if (selection.get_selected(out model, out iter)){
-    
+
       TreePath path = model.get_path(iter);
       var index = int.parse(path.to_string());
 
       if (index > 1) {
-      
+
         Database dbObject = new Database();
         dbObject.createCheckDirectory();
         dbObject.deleteCoin(this.coinAbbrevs.get(index));
@@ -664,25 +660,25 @@ public class Crypt: Gtk.Window{
         dbObject = new Database();
         dbObject.createCheckDirectory();
         CoinList coinList = dbObject.getCoins();
-        
+
         for (int i = 0; i < coinList.coinIds.size; i++){
-          
+
           this.coinNames.add(coinList.coinNames.get(i));
           this.coinAbbrevs.add(coinList.coinAbbrvs.get(i));
-          
+
         }
-      
+
       }
-    
+
     }
-     
+
   }
 
   public void getNewsMainPage(){
 
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/v2/news/?lang=EN");
-    
+
 	  session.send_message (message);
     Gtk.Box newsBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     newsBox.set_spacing(10);
@@ -919,10 +915,11 @@ public class Crypt: Gtk.Window{
 
 int main (string[] args){
   Gtk.init (ref args);
-  
+
+  //var indicator = new Indicator();
   Database database = new Database();
   Crypt crypt = new Crypt();
-  
+
   database.createCheckDirectory();
 
   try {
@@ -961,11 +958,11 @@ int main (string[] args){
   crypt.window.title = windowTitle;
   crypt.window.set_default_size (1200,600);
   crypt.window.set_position (Gtk.WindowPosition.CENTER);
-  
+
   Gtk.Button addCoinButton = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
   addCoinButton.set_tooltip_markup(_("Add coin to global list"));
   addCoinButton.clicked.connect (() => {
-    
+
     Gtk.Label coinNameLabel = new Gtk.Label (_("Coin Name"));
     coinNameLabel.xalign = 0;
 
@@ -978,13 +975,13 @@ int main (string[] args){
 
     Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
     saveButton.get_style_context().add_class("button-color");
-    
+
     Gtk.Label validCoinLabel = new Gtk.Label ("");
     validCoinLabel.xalign = 0;
-    
+
     Gtk.Label addCoinLabel = new Gtk.Label (_("Add Coin"));
     addCoinLabel.get_style_context().add_class("title-text");
-    
+
     Gtk.Dialog dialog = new Gtk.Dialog ();
     dialog.width_request = 500;
     dialog.get_content_area ().spacing = 7;
@@ -999,30 +996,30 @@ int main (string[] args){
     dialog.get_widget_for_response (Gtk.ResponseType.OK).can_default = true;
     dialog.set_default_response (Gtk.ResponseType.OK);
     dialog.show_all ();
-    
+
     saveButton.clicked.connect (() => {
-      
+
       if (crypt.currentCoin.checkCoin(coinAbbrevEntry.get_text()) == 1){
-        
+
         database = new Database();
         database.createCheckDirectory();
         database.insertCoin(coinNameEntry.get_text(),coinAbbrevEntry.get_text());
         dialog.close();
-        
+
         TreeIter iter;
         crypt.listModel.append (out iter);
         crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
         crypt.spinner.active = true;
         crypt.coinAbbrevs.add(coinAbbrevEntry.get_text());
-        
+
       }else{
-        
+
         validCoinLabel.label = (_("Whoops, that isn't a valid coin!"));
-        
+
       }
-      
+
     });
-  
+
   });
 
   Gtk.Image settingsImage = new Gtk.Image.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
@@ -1059,7 +1056,7 @@ int main (string[] args){
 
       Gtk.Button saveRefreshButton = new Gtk.Button.with_label (_("Save"));
       saveRefreshButton.get_style_context().add_class("button-color");
-      
+
       Gtk.Label settingsLabel = new Gtk.Label (_("Settings"));
       settingsLabel.get_style_context().add_class("title-text");
 
@@ -1123,6 +1120,7 @@ int main (string[] args){
   crypt.window.destroy.connect(()=>{
     crypt.m.quit();
     Gtk.main_quit();
+    //indicator.visible = false;
   });
 
   crypt.spinner.active = true;

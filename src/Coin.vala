@@ -40,17 +40,27 @@ public class Coin{
 
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-    string defaultCoin = settings.get_value("main-coin").get_string();
-    
+    string defaultCoin = "";
+
+    if (settings != null){
+
+      defaultCoin = settings.get_value("main-coin").get_string();
+
+    }else{
+
+      defaultCoin = "BTC";
+
+    }
+
     Soup.Session session = new Soup.Session();
 	  Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=".concat(coinAbrv,"&tsyms=",defaultCoin));
 
     session.queue_message (message, (sess, message) => {
-      
+
       if (message.status_code == 200) {
-        
+
         try {
-        
+
           var parser = new Json.Parser ();
           parser.load_from_data((string) message.response_body.flatten().data, -1);
           var root_object = parser.get_root ().get_object ();
@@ -84,13 +94,13 @@ public class Coin{
           this.totalVolume24HTo = data.get_string_member("TOTALVOLUME24HTO");
 
           loop.quit();
-        
+
         }catch (Error e) {
 
           stderr.printf ("Something is wrong in getCurrentPrice");
 
         }
-        
+
       }
 
     });
@@ -103,13 +113,23 @@ public class Coin{
 
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-    string defaultCoin = settings.get_value("main-coin").get_string();
+    string defaultCoin = "";
+
+    if (settings != null){
+
+      defaultCoin = settings.get_value("main-coin").get_string();
+
+    }else{
+
+      defaultCoin = "BTC";
+
+    }
 
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histominute?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=30"));
 
     session.queue_message (message, (sess, message) => {
-    
+
       if (message.status_code == 200) {
 
         double[] DATA = {};
@@ -145,7 +165,7 @@ public class Coin{
           stderr.printf ("Something is wrong in getPriceData");
 
         }
-        
+
       }
 
       loop.quit();
@@ -160,13 +180,23 @@ public class Coin{
 
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-    string defaultCoin = settings.get_value("main-coin").get_string();
+    string defaultCoin = "";
+
+    if (settings != null){
+
+      defaultCoin = settings.get_value("main-coin").get_string();
+
+    }else{
+
+      defaultCoin = "BTC";
+
+    }
 
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histohour?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=24"));
 
     session.queue_message (message, (sess, message) => {
-    
+
       if (message.status_code == 200) {
 
         double[] DATA = {};
@@ -204,7 +234,7 @@ public class Coin{
         }
 
         loop.quit();
-        
+
       }
 
     });
@@ -214,18 +244,28 @@ public class Coin{
   }
 
   public void getPriceDataWeek(string coin){
-  
+
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-    string defaultCoin = settings.get_value("main-coin").get_string();
+    string defaultCoin = "";
+
+    if (settings != null){
+
+      defaultCoin = settings.get_value("main-coin").get_string();
+
+    }else{
+
+      defaultCoin = "BTC";
+
+    }
 
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histoday?fsym=".concat(coin,"&tsym=",defaultCoin,"&limit=6"));
-  
+
     session.queue_message (message, (sess, message) => {
-      
-      if (message.status_code == 200) {    
-      
+
+      if (message.status_code == 200) {
+
         double[] DATA = {};
         double[] HIGH = {};
         double[] LOW = {};
@@ -261,7 +301,7 @@ public class Coin{
         }
 
         loop.quit();
-        
+
       }
 
     });
@@ -269,42 +309,53 @@ public class Coin{
     loop.run();
 
   }
-  
+
   public int checkCoin(string coinAbrv){
-    
+
     MainLoop loop = new MainLoop ();
     var settings = new GLib.Settings ("com.github.dcharles525.crypt");
-    string defaultCoin = settings.get_value("main-coin").get_string();
+    string defaultCoin = "";
+
+    if (settings != null){
+
+      defaultCoin = settings.get_value("main-coin").get_string();
+
+    }else{
+
+      defaultCoin = "BTC";
+
+    }
+
     int coinExists = 0;
 
     Soup.Session session = new Soup.Session();
 		Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/histominute?fsym=".concat(coinAbrv,"&tsym=",defaultCoin,"&limit=1"));
 
     session.queue_message (message, (sess, message) => {
-    
+
       if (message.status_code == 200) {
 
 		    try {
-          
+
           var parser = new Json.Parser ();
           parser.load_from_data((string) message.response_body.flatten().data, -1);
           var root_object = parser.get_root ().get_object ();
           var response = root_object.get_array_member ("Data");
-          
+
           foreach (var data in response.get_elements()) {
-          
+
             double price = data.get_object().get_double_member("close");
-            
+
             if (price > 0){
-            
+
               coinExists = 1;
-              
+
             }else{
-              
+
               coinExists = 0;
-              
+
             }
-            
+
           }
 
         }catch (Error e) {
@@ -312,11 +363,11 @@ public class Coin{
           stderr.printf ("Something is wrong in validating coin");
 
         }
-        
+
       }else{
-        
+
         coinExists = 0;
-        
+
       }
 
       loop.quit();
@@ -325,7 +376,7 @@ public class Coin{
 
     loop.run();
     return coinExists;
-    
+
   }
 
 }
