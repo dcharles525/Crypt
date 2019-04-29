@@ -8,9 +8,8 @@ using Cairo;
 /*
 - Split up code and condense it
 */
-//valac --pkg gtk+-3.0 --pkg libsoup-2.4 --pkg json-glib-1.0 --pkg webkit2gtk-4.0 --pkg gee-0.8 --pkg gstreamer-1.0 Crypt.vala
 
-public class Crypt: Gtk.Window{
+public class Crypt: Gtk.Application{
 
   public double windowWidth;
   public double windowHeight;
@@ -570,13 +569,34 @@ public class Crypt: Gtk.Window{
             parser.load_from_data((string) message.response_body.flatten().data, -1);
             var root_object = parser.get_root ().get_object ();
             var data = root_object.get_object_member ("DISPLAY").get_object_member(this.coinAbbrevs.get(i)).get_object_member(this.defaultCoin);
+            var rawData = root_object.get_object_member ("RAW").get_object_member(this.coinAbbrevs.get(i)).get_object_member(this.defaultCoin);
 
+            double rawPrice = rawData.get_double_member("PRICE");
             string price = data.get_string_member("PRICE");
             string high = data.get_string_member("HIGH24HOUR");
             string low = data.get_string_member("LOW24HOUR");
             string changeDay = data.get_string_member("CHANGEDAY");
             string changePDay = data.get_string_member("CHANGEPCTDAY");
             string lastMarket = data.get_string_member("LASTMARKET");
+
+            int limitHigh = 5400;
+            int limitLow = 5200;
+
+            if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice >= limitHigh){
+
+              var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
+              notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitHigh.to_string(),"!!")));
+              this.send_notification ("com.github.dcharles525.crypt", notification);
+
+            }
+            
+            if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice <= limitLow){
+
+              var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
+              notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitLow.to_string(),"!!")));
+              this.send_notification ("com.github.dcharles525.crypt", notification);
+
+            }
 
             TreeIter iter;
             this.listModel.append (out iter);
@@ -916,9 +936,12 @@ public class Crypt: Gtk.Window{
 int main (string[] args){
   Gtk.init (ref args);
 
-  //var indicator = new Indicator();
+  //var indicator = new Indicator(); can't use this per the elementary guidelines
   Database database = new Database();
   Crypt crypt = new Crypt();
+
+  crypt.set_application_id ("com.github.dcharles525.crypt") ;
+  crypt.register();
 
   database.createCheckDirectory();
 
@@ -1108,11 +1131,17 @@ int main (string[] args){
 
   });
 
+  Gtk.Image notificationImage = new Gtk.Image.from_icon_name ("preferences-system-notifications-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+  notificationImage.pixel_size = 16;
+  Gtk.ToolButton notificationButton = new Gtk.ToolButton (notificationImage, null);
+  notificationButton.set_tooltip_markup(_("Limit Notifications"));
+
   var header = new Gtk.HeaderBar ();
   header.show_close_button = true;
   header.title = windowTitle;
   header.pack_end (settingsButton);
   header.pack_end (addCoinButton);
+  header.pack_end (notificationButton);
   header.pack_end (crypt.spinner);
   header.show_all();
   crypt.window.set_titlebar(header);

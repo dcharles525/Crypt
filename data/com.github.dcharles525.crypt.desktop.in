@@ -9,3 +9,4 @@ Terminal=false
 Type=Application
 X-GNOME-Gettext-Domain=com.github.dcharles525.crypt
 Keywords=crypto;bitcoin;litecoin;coin;bit;trading;money;
+X-GNOME-UsesNotifications=true
