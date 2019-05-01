@@ -9,11 +9,11 @@ add_global_arguments ('-DGETTEXT_PACKAGE="' + meson.project_name () + '"', langu
 executable(
     meson.project_name(),
     'src/Caroline.vala',
-    'src/Coin.vala',
+    'src/Services/Coin.vala',
     'src/Crypt.vala',
-    'src/Draw.vala',
-    'src/Database.vala',
-    'src/Structures/CoinList.vala',
+    'src/Services/Draw.vala',
+    'src/Services/Database.vala',
+    'src/Services/CoinList.vala',
     dependencies: [
       dependency('gtk+-3.0'),
       dependency('libsoup-2.4'),

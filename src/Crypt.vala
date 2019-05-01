@@ -38,6 +38,7 @@ public class Crypt: Gtk.Application{
   public ArrayList<string> coinNames = new ArrayList<string>();
   public ArrayList<string> coinAbbrevs = new ArrayList<string>();
   public int refreshRate = 30;
+  public int notificationValue = 1;
   public string CODE_STYLE = """
     .box{
       padding-left: 10px;
@@ -419,8 +420,14 @@ public class Crypt: Gtk.Application{
 
         Gtk.Menu menu = new Gtk.Menu ();
 
-        Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Open Tab"));
+        Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Set Limit Notifications"));
         menu.attach_to_widget (this.mainAreaTreeView, null);
+        menu.add (menuItem);
+        menuItem.activate.connect((e) => {
+          this.openLimitDialog(event);
+        });
+
+        menuItem = new Gtk.MenuItem.with_label (_("Open Detailed Info"));
         menu.add (menuItem);
         menuItem.activate.connect((e) => {
           this.openCoin(event);
@@ -579,22 +586,26 @@ public class Crypt: Gtk.Application{
             string changePDay = data.get_string_member("CHANGEPCTDAY");
             string lastMarket = data.get_string_member("LASTMARKET");
 
-            int limitHigh = 5400;
-            int limitLow = 5200;
+            if (this.notificationValue == 1){
 
-            if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice >= limitHigh){
+              int limitHigh = 5400;
+              int limitLow = 5200;
 
-              var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
-              notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitHigh.to_string(),"!!")));
-              this.send_notification ("com.github.dcharles525.crypt", notification);
+              if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice >= limitHigh){
 
-            }
-            
-            if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice <= limitLow){
+                var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
+                notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitHigh.to_string(),"!!")));
+                this.send_notification ("com.github.dcharles525.crypt", notification);
 
-              var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
-              notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitLow.to_string(),"!!")));
-              this.send_notification ("com.github.dcharles525.crypt", notification);
+              }
+
+              if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice <= limitLow){
+
+                var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
+                notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitLow.to_string(),"!!")));
+                this.send_notification ("com.github.dcharles525.crypt", notification);
+
+              }
 
             }
 
@@ -618,7 +629,6 @@ public class Crypt: Gtk.Application{
 
     }
 
-
     Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow (null, null);
     scroll.min_content_height = (int)(800 / 2);
     scroll.add (this.mainAreaTreeView);
@@ -626,6 +636,51 @@ public class Crypt: Gtk.Application{
     verticalGridBox.pack_start(scroll);
     this.secondaryBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
     this.secondaryBox.pack_start(verticalGridBox,false,false);
+
+  }
+
+  public void openLimitDialog(Gdk.EventButton event){
+
+    var selection = this.mainAreaTreeView.get_selection();
+    selection.set_mode(SelectionMode.SINGLE);
+
+    TreeModel model;
+    TreeIter iter;
+
+    if (selection.get_selected(out model, out iter)) {
+
+      TreePath path = model.get_path(iter);
+      int index = int.parse(path.to_string());
+
+      string coinName = this.coinNames.get(index);
+      string coinAbbrev = this.coinAbbrevs.get(index);
+
+      Gtk.Label coinAbbrevLabel = new Gtk.Label("Limits for ".concat(coinName));
+      coinAbbrevLabel.xalign = 0;
+
+      Gtk.Label highLabel = new Gtk.Label("High Limit");
+      Entry highLimitEntry = new Entry();
+      Gtk.Label lowLabel = new Gtk.Label("Low Limit");
+      Entry lowLimitEntry = new Entry();
+
+      Gtk.Button saveButton = new Gtk.Button.with_label(_("Save"));
+      saveButton.get_style_context().add_class("button-color");
+
+      Gtk.Dialog dialog = new Gtk.Dialog ();
+      dialog.width_request = 500;
+      dialog.get_content_area().spacing = 7;
+      dialog.get_content_area().border_width = 10;
+      dialog.get_content_area().pack_start(coinAbbrevLabel,false,false);
+      dialog.get_content_area().pack_start(highLabel,false,false);
+      dialog.get_content_area().pack_start(highLimitEntry,false,false);
+      dialog.get_content_area().pack_start(lowLabel,false,false);
+      dialog.get_content_area().pack_start(lowLimitEntry,false,false);
+      dialog.get_content_area().pack_start(saveButton,false,false);
+      dialog.get_widget_for_response(Gtk.ResponseType.OK).can_default = true;
+      dialog.set_default_response(Gtk.ResponseType.OK);
+      dialog.show_all();
+
+    }
 
   }
 
@@ -959,7 +1014,7 @@ int main (string[] args){
 
   Gtk.Settings.get_default().set("gtk-application-prefer-dark-theme", true);
 
-  var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+  GLib.Settings settings = new GLib.Settings ("com.github.dcharles525.crypt");
 
   if (settings != null){
 
@@ -975,6 +1030,7 @@ int main (string[] args){
   }
 
   crypt.spinner.active = true;
+  Gtk.HeaderBar header = new Gtk.HeaderBar ();
   crypt.windowWidth = 1100;
 
   var windowTitle = _("Crypt");
@@ -994,7 +1050,7 @@ int main (string[] args){
     Gtk.Label coinAbbrevLabel = new Gtk.Label (_("Coin Abbreviation"));
     coinAbbrevLabel.xalign = 0;
 
-    var coinAbbrevEntry = new Entry ();
+    Entry coinAbbrevEntry = new Entry ();
 
     Gtk.Button saveButton = new Gtk.Button.with_label (_("Save"));
     saveButton.get_style_context().add_class("button-color");
@@ -1131,12 +1187,63 @@ int main (string[] args){
 
   });
 
+  settings = new GLib.Settings ("com.github.dcharles525.crypt");
   Gtk.Image notificationImage = new Gtk.Image.from_icon_name ("preferences-system-notifications-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+
+  if (settings != null){
+
+    settings.get("notifications", "i", out crypt.notificationValue);
+
+    if (crypt.notificationValue == 1){
+
+      notificationImage = new Gtk.Image.from_icon_name ("preferences-system-notifications-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+
+    }else{
+
+      notificationImage = new Gtk.Image.from_icon_name ("notification-disabled-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+
+    }
+
+  }
+
   notificationImage.pixel_size = 16;
   Gtk.ToolButton notificationButton = new Gtk.ToolButton (notificationImage, null);
   notificationButton.set_tooltip_markup(_("Limit Notifications"));
 
-  var header = new Gtk.HeaderBar ();
+  notificationButton.clicked.connect (() => {
+
+    settings = new GLib.Settings ("com.github.dcharles525.crypt");
+
+    if (settings != null){
+
+      settings.get("notifications", "i", out crypt.notificationValue);
+
+      if (crypt.notificationValue == 1){
+
+        settings.set_value("notifications",0);
+        notificationImage = new Gtk.Image.from_icon_name ("notification-disabled-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        notificationImage.pixel_size = 16;
+        notificationButton.set_icon_widget(notificationImage);
+        header.show_all();
+
+        crypt.notificationValue = 0;
+
+      }else{
+
+        settings.set_value("notifications",1);
+        notificationImage = new Gtk.Image.from_icon_name ("preferences-system-notifications-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        notificationImage.pixel_size = 16;
+        notificationButton.set_icon_widget(notificationImage);
+        header.show_all();
+
+        crypt.notificationValue = 1;
+
+      }
+
+    }
+
+  });
+
   header.show_close_button = true;
   header.title = windowTitle;
   header.pack_end (settingsButton);

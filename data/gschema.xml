@@ -11,5 +11,10 @@
       <summary>Refresh Rate</summary>
       <description>Refresh rate for metered connections</description>
     </key>
+    <key name="notifications" type="i">
+      <default>1</default>
+      <summary>Limit Notifications</summary>
+      <description>Allows the user to turn off notifications quickly</description>
+    </key>
   </schema>
 </schemalist>

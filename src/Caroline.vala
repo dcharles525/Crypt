@@ -149,8 +149,8 @@ public class Caroline : Gtk.DrawingArea {
 
   public override bool draw (Cairo.Context cr) {
 
-    int width = get_allocated_width () - 50;
-    int height = get_allocated_height () - 50;
+    int width = get_allocated_width() - 50;
+    int height = get_allocated_height() - 50;
 
     cr.set_line_width (this.lineThicknessTicks);
     cr.set_source_rgba (255, 255, 255,0.2);
@@ -167,11 +167,12 @@ public class Caroline : Gtk.DrawingArea {
     double spreadFinal = height/this.spreadY;
 
     for (int i = 1; i < this.spreadY + 1; i++){
-      
+
       cr.move_to (-10, height+15-(spreadFinal*i));
       cr.line_to (25, height+15-(spreadFinal*i));
 
       cr.move_to (0, height+15-(spreadFinal*i));
+      stdout.printf("%s\n",this.labelYList.get(i));
       cr.show_text(this.dataTypeY.concat(this.labelYList.get(i)));
 
     };
@@ -340,7 +341,7 @@ public class Caroline : Gtk.DrawingArea {
         if (event.x >= candlePositionX[g] && event.x <= (candlePositionX[g] + 10)){
 
           if (event.y >= (candlePositionY[g] + candleHeight[g]) && event.y <= (candlePositionY[g])){
-          
+
             this.orderPosition = g;
             this.drawLabel = true;
             found = 1;
