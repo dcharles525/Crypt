@@ -28,11 +28,14 @@ public class Database: GLib.Object {
     if (File.new_for_path (this.dbLocation).query_exists ()) {
 
       openDatabase();
+      prepareCoinListDatabase();
+      prepareCoinLimitDatabase();
 
     } else {
 
       openDatabase();
-      prepareDatabase();
+      prepareCoinListDatabase();
+      prepareCoinLimitDatabase();
       insertCoin("Bitcoin","BTC");
 
     }
@@ -56,7 +59,7 @@ public class Database: GLib.Object {
 
   }
 
-  private void prepareDatabase() {
+  private void prepareCoinListDatabase() {
 
     string query = """
       CREATE TABLE coinlist (
@@ -64,6 +67,26 @@ public class Database: GLib.Object {
         coin_title  TEXT,
         coin_abbrv  TEXT
       );
+    """;
+
+    string error;
+    int ec = this.database.exec (query, null, out error);
+
+    if(ec != Sqlite.OK) {
+
+      //stderr.printf("Can't use CREATE, Error: %s", error);
+
+    }else{
+
+      stderr.printf("Can't use CREATE, Error: %d", ec);
+
+    }
+
+  }
+
+  private void prepareCoinLimitDatabase(){
+
+    string query = """
       CREATE TABLE coinlimit (
         id          INTEGER PRIMARY KEY,
         coin_abbrv  TEXT,
@@ -77,7 +100,7 @@ public class Database: GLib.Object {
 
     if(ec != Sqlite.OK) {
 
-      stderr.printf("Can't use CREATE, Error: %s", error);
+      //stderr.printf("Can't use CREATE, Error: %s", error);
 
     }else{
 
@@ -172,6 +195,145 @@ public class Database: GLib.Object {
 		}
 
 		return coinList;
+
+  }
+
+  public void insertLimit (string coinAbbrv, string high, string low) {
+
+    CoinLimit coinLimit = getLimit(coinAbbrv);
+
+    if (coinLimit.coinIds.size > 0){
+
+      Sqlite.Statement stmt;
+
+      string query = "UPDATE coinlimit SET coin_high = $COINHIGH, coin_low = $COINLOW
+      WHERE id = $COINID;";
+      int ec = this.database.prepare_v2 (query, query.length, out stmt);
+
+      if (ec != Sqlite.OK) {
+
+  	    stderr.printf("Error inserting clipboard entry: %s\n", this.database.errmsg());
+  	    return;
+
+      }
+
+      int param_position = stmt.bind_parameter_index ("$COINHIGH");
+      assert (param_position > 0);
+      stmt.bind_text (param_position, high.to_string());
+
+      param_position = stmt.bind_parameter_index ("$COINLOW");
+      assert (param_position > 0);
+      stmt.bind_text (param_position, low.to_string());
+
+      param_position = stmt.bind_parameter_index ("$COINID");
+      assert (param_position > 0);
+      stmt.bind_text (param_position, coinLimit.coinIds.get(0));
+
+      ec = stmt.step();
+
+  		if (ec != Sqlite.DONE) {
+
+  			stderr.printf("Error inserting clipboard entry: %s\n", this.database.errmsg());
+
+      }
+
+    }else{
+
+      Sqlite.Statement stmt;
+
+      string query = "INSERT INTO coinlimit (coin_abbrv, coin_high, coin_low) VALUES
+      ($COINABBRV, $COINHIGH, $COINLOW);";
+      int ec = this.database.prepare_v2 (query, query.length, out stmt);
+
+      if (ec != Sqlite.OK) {
+
+  	    stderr.printf("Error inserting clipboard entry HERE: %s\n", this.database.errmsg());
+  	    return;
+
+      }
+
+      int param_position = stmt.bind_parameter_index ("$COINABBRV");
+      assert (param_position > 0);
+      stmt.bind_text (param_position, coinAbbrv);
+
+      param_position = stmt.bind_parameter_index ("$COINHIGH");
+      assert (param_position > 0);
+      stmt.bind_text (param_position, high);
+
+      param_position = stmt.bind_parameter_index ("$COINLOW");
+      assert (param_position > 0);
+      stmt.bind_text (param_position, low);
+
+      ec = stmt.step();
+
+  		if (ec != Sqlite.DONE) {
+
+  			stderr.printf("Error inserting clipboard entry: %s\n", this.database.errmsg());
+
+      }
+
+    }
+
+  }
+
+  public CoinLimit getLimits(){
+
+    Sqlite.Statement stmt;
+    CoinLimit coinLimit = new CoinLimit();
+
+    const string query = "SELECT * FROM coinlimit ORDER BY id ASC";
+	  int ec = this.database.prepare_v2 (query, query.length, out stmt);
+
+	  if (ec != Sqlite.OK) {
+
+	    stderr.printf("Error fetching clipboard entries: %s\n", this.database.errmsg ());
+      return coinLimit;
+
+    }
+
+    while ((ec = stmt.step ()) == Sqlite.ROW) {
+
+      coinLimit.coinIds.add(stmt.column_text(0));
+      coinLimit.coinAbbrvs.add(stmt.column_text(1));
+      coinLimit.coinHigh.add(stmt.column_text(2));
+      coinLimit.coinLow.add(stmt.column_text(3));
+
+		}
+
+    return coinLimit;
+
+  }
+
+  public CoinLimit getLimit(string coinAbbrv){
+
+    Sqlite.Statement stmt;
+    CoinLimit coinLimit = new CoinLimit();
+    
+    const string query = "SELECT * FROM coinlimit WHERE coin_abbrv = $COINABBRV;";
+	  int ec = this.database.prepare_v2 (query, query.length, out stmt);
+
+    int param_position = stmt.bind_parameter_index ("$COINABBRV");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, coinAbbrv);
+
+	  if (ec != Sqlite.OK) {
+
+	    stderr.printf("Error fetching clipboard entries: %s\n", this.database.errmsg ());
+      return coinLimit;
+
+    }
+
+    while ((ec = stmt.step ()) == Sqlite.ROW) {
+
+      coinLimit.coinIds.add(stmt.column_text(0));
+      coinLimit.coinAbbrvs.add(stmt.column_text(1));
+      coinLimit.coinHigh.add(stmt.column_text(2));
+      coinLimit.coinLow.add(stmt.column_text(3));
+
+		}
+
+    stmt.reset();
+    return coinLimit;
 
   }
 

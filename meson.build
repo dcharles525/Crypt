@@ -14,6 +14,7 @@ executable(
     'src/Services/Draw.vala',
     'src/Services/Database.vala',
     'src/Services/CoinList.vala',
+    'src/Services/CoinLimit.vala',
     dependencies: [
       dependency('gtk+-3.0'),
       dependency('libsoup-2.4'),

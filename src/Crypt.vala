@@ -588,22 +588,27 @@ public class Crypt: Gtk.Application{
 
             if (this.notificationValue == 1){
 
-              int limitHigh = 5400;
-              int limitLow = 5200;
+              Database database = new Database();
+              database.createCheckDirectory();
+              CoinLimit coinLimit = database.getLimits();
 
-              if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice >= limitHigh){
+              for (int g = 0; coinLimit.coinIds.size > g; g++){
 
-                var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
-                notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitHigh.to_string(),"!!")));
-                this.send_notification ("com.github.dcharles525.crypt", notification);
+                if ((int)rawPrice >= int.parse(coinLimit.coinHigh.get(g))){
 
-              }
+                  var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
+                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinHigh.get(g),"!!")));
+                  this.send_notification ("com.github.dcharles525.crypt", notification);
 
-              if (this.coinAbbrevs.get(i) == "BTC" && (int)rawPrice <= limitLow){
+                }
 
-                var notification = new GLib.Notification (("Limit Notification! ".concat(this.coinAbbrevs.get(i))));
-                notification.set_body ((this.coinAbbrevs.get(i).concat(" just hit ",limitLow.to_string(),"!!")));
-                this.send_notification ("com.github.dcharles525.crypt", notification);
+                if ((int)rawPrice <= int.parse(coinLimit.coinLow.get(g))){
+
+                  var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
+                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinLow.get(g),"!!")));
+                  this.send_notification ("com.github.dcharles525.crypt", notification);
+
+                }
 
               }
 
@@ -663,6 +668,17 @@ public class Crypt: Gtk.Application{
       Gtk.Label lowLabel = new Gtk.Label("Low Limit");
       Entry lowLimitEntry = new Entry();
 
+      Database database = new Database();
+      database.createCheckDirectory();
+      CoinLimit coinLimit = database.getLimit(coinAbbrev);
+
+      if (coinLimit.coinIds.size > 0){
+
+        highLimitEntry.set_text(coinLimit.coinHigh.get(0));
+        lowLimitEntry.set_text(coinLimit.coinLow.get(0));
+
+      }
+
       Gtk.Button saveButton = new Gtk.Button.with_label(_("Save"));
       saveButton.get_style_context().add_class("button-color");
 
@@ -679,6 +695,15 @@ public class Crypt: Gtk.Application{
       dialog.get_widget_for_response(Gtk.ResponseType.OK).can_default = true;
       dialog.set_default_response(Gtk.ResponseType.OK);
       dialog.show_all();
+
+      saveButton.clicked.connect (() => {
+
+        database = new Database();
+        database.createCheckDirectory();
+        database.insertLimit(coinAbbrev,highLimitEntry.get_text(),lowLimitEntry.get_text());
+        dialog.close();
+
+      });
 
     }
 

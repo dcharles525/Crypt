@@ -50,8 +50,10 @@ public class Caroline : Gtk.DrawingArea {
     tempDATAH = arraySortInt(tempDATAH);
     tempDATAL = arraySortInt(tempDATAL);
     double label;
+    this.labelYList.clear();
 
     double temp = tempDATAH[tempDATAH.length-1];
+
     this.max = temp + (temp * 0.001);
     temp = tempDATAL[0];
     this.min = temp - (temp * 0.001);
@@ -84,6 +86,8 @@ public class Caroline : Gtk.DrawingArea {
       }
 
     }
+
+    this.queue_draw();
 
   }
 
@@ -165,14 +169,14 @@ public class Caroline : Gtk.DrawingArea {
     cr.set_line_width (this.lineThicknessTicks);
 
     double spreadFinal = height/this.spreadY;
-
+    
     for (int i = 1; i < this.spreadY + 1; i++){
 
       cr.move_to (-10, height+15-(spreadFinal*i));
       cr.line_to (25, height+15-(spreadFinal*i));
 
       cr.move_to (0, height+15-(spreadFinal*i));
-      stdout.printf("%s\n",this.labelYList.get(i));
+
       cr.show_text(this.dataTypeY.concat(this.labelYList.get(i)));
 
     };
