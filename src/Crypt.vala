@@ -590,7 +590,7 @@ public class Crypt: Gtk.Application{
 
               Database database = new Database();
               database.createCheckDirectory();
-              CoinLimit coinLimit = database.getLimits();
+              CoinLimit coinLimit = database.getLimit(this.coinAbbrevs.get(i));
 
               for (int g = 0; coinLimit.coinIds.size > g; g++){
 
