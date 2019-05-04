@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.dcharles525.crypt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-13 11:46-0400\n"
+"POT-Creation-Date: 2019-05-04 15:48+0200\n"
 "PO-Revision-Date: 2019-03-24 12:24+0100\n"
 "Last-Translator: NathanBnm\n"
 "Language-Team: Français\n"
@@ -17,115 +17,117 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/Crypt.vala:19
+#: src/Crypt.vala:16
 msgid "A coin is already loading, wait till that finishes!"
 msgstr ""
+"Une devise est déjà en cours de chargement, veuillez attendre que cela soit "
+"terminé !"
 
-#: src/Crypt.vala:112 src/Crypt.vala:334
+#: src/Crypt.vala:108 src/Crypt.vala:330
 msgid "Price: "
 msgstr "Valeur : "
 
-#: src/Crypt.vala:113 src/Crypt.vala:335
+#: src/Crypt.vala:109 src/Crypt.vala:331
 msgid "Last Update: "
 msgstr "Dernière mise à jour : "
 
-#: src/Crypt.vala:114 src/Crypt.vala:336
+#: src/Crypt.vala:110 src/Crypt.vala:332
 msgid "Last Volume: "
 msgstr "Dernier volume : "
 
-#: src/Crypt.vala:115 src/Crypt.vala:337
+#: src/Crypt.vala:111 src/Crypt.vala:333
 msgid "Last Volume To: "
 msgstr "Dernier volume à : "
 
-#: src/Crypt.vala:116 src/Crypt.vala:339
+#: src/Crypt.vala:112 src/Crypt.vala:335
 msgid "Last TradeID: "
 msgstr "Dernier ID de transaction : "
 
-#: src/Crypt.vala:117 src/Crypt.vala:338
+#: src/Crypt.vala:113 src/Crypt.vala:334
 msgid "Volume Day: "
 msgstr "Volume jour : "
 
-#: src/Crypt.vala:118 src/Crypt.vala:340
+#: src/Crypt.vala:114 src/Crypt.vala:336
 msgid "Volume Day To: "
 msgstr "Volume jour à : "
 
-#: src/Crypt.vala:119 src/Crypt.vala:342
+#: src/Crypt.vala:115 src/Crypt.vala:338
 msgid "Volume 24 Hour: "
 msgstr "Volume 24 heures : "
 
-#: src/Crypt.vala:120 src/Crypt.vala:341
+#: src/Crypt.vala:116 src/Crypt.vala:337
 msgid "Volume 24 Hour To: "
 msgstr "Volume 24 heures à : "
 
-#: src/Crypt.vala:121 src/Crypt.vala:343
+#: src/Crypt.vala:117 src/Crypt.vala:339
 msgid "Open Day: "
 msgstr "Ouverture jour : "
 
-#: src/Crypt.vala:122 src/Crypt.vala:344
+#: src/Crypt.vala:118 src/Crypt.vala:340
 msgid "Open High Day: "
 msgstr "Ouverture à la montée jour : "
 
-#: src/Crypt.vala:123 src/Crypt.vala:345
+#: src/Crypt.vala:119 src/Crypt.vala:341
 msgid "Open Low Day: "
 msgstr "Ouverture à la baisse jour : "
 
-#: src/Crypt.vala:124 src/Crypt.vala:346
+#: src/Crypt.vala:120 src/Crypt.vala:342
 msgid "Open 24h: "
 msgstr "Ouverture 24h : "
 
-#: src/Crypt.vala:125 src/Crypt.vala:347
+#: src/Crypt.vala:121 src/Crypt.vala:343
 msgid "Open High 24h: "
 msgstr "Ouverture à la montée 24h : "
 
-#: src/Crypt.vala:126 src/Crypt.vala:348
+#: src/Crypt.vala:122 src/Crypt.vala:344
 msgid "Open Low 24h: "
 msgstr "Ouverture à la baisse 24h : "
 
-#: src/Crypt.vala:127 src/Crypt.vala:349
+#: src/Crypt.vala:123 src/Crypt.vala:345
 msgid "Last Market: "
 msgstr "Dernier marché : "
 
-#: src/Crypt.vala:128 src/Crypt.vala:350
+#: src/Crypt.vala:124 src/Crypt.vala:346
 msgid "Change Last 24h: "
 msgstr "Variation des dernières 24h : "
 
-#: src/Crypt.vala:129 src/Crypt.vala:351
+#: src/Crypt.vala:125 src/Crypt.vala:347
 msgid "Change Percent Last 24h: "
 msgstr "Variation en pourcentage des dernières 24h : "
 
-#: src/Crypt.vala:130 src/Crypt.vala:352
+#: src/Crypt.vala:126 src/Crypt.vala:348
 msgid "Change Day: "
 msgstr "Variation du jour : "
 
-#: src/Crypt.vala:131 src/Crypt.vala:353
+#: src/Crypt.vala:127 src/Crypt.vala:349
 msgid "Change Percent Day: "
 msgstr "Variation en pourcentage du jour : "
 
-#: src/Crypt.vala:132 src/Crypt.vala:354
+#: src/Crypt.vala:128 src/Crypt.vala:350
 msgid "Supply: "
 msgstr "Approvisionnement : "
 
-#: src/Crypt.vala:133 src/Crypt.vala:355
+#: src/Crypt.vala:129 src/Crypt.vala:351
 msgid "Market Cap: "
 msgstr "Capitalisation boursière : "
 
-#: src/Crypt.vala:134 src/Crypt.vala:356
+#: src/Crypt.vala:130 src/Crypt.vala:352
 msgid "Total Volume 24h: "
 msgstr "Volume total 24h : "
 
-#: src/Crypt.vala:135 src/Crypt.vala:357
+#: src/Crypt.vala:131 src/Crypt.vala:353
 msgid "Total Volume 24h To: "
 msgstr "Volume total 24h à : "
 
-#: src/Crypt.vala:225 src/Crypt.vala:672
+#: src/Crypt.vala:221 src/Crypt.vala:787
 msgid "Current News"
 msgstr "Informations actuelles"
 
-#: src/Crypt.vala:270 src/Crypt.vala:867 src/Crypt.vala:889
+#: src/Crypt.vala:266 src/Crypt.vala:982 src/Crypt.vala:1004
 msgid "Whoops!"
 msgstr "Oups !"
 
-#: src/Crypt.vala:270 src/Crypt.vala:867
+#: src/Crypt.vala:266 src/Crypt.vala:982
 msgid ""
 "Looks like you're not connected to a network, after connecting the app will "
 "refresh (based on your refresh rate)!"
@@ -133,90 +135,117 @@ msgstr ""
 "On dirait que vous n'êtes pas connecté à Internet, après reconnexion "
 "l'application s'actualisera (en fonction du taux de rafraîchissement) !"
 
-#: src/Crypt.vala:298
+#: src/Crypt.vala:294
 msgid "Minute"
 msgstr "Heure"
 
-#: src/Crypt.vala:300
+#: src/Crypt.vala:296
 msgid "Day"
 msgstr "Jour"
 
-#: src/Crypt.vala:302
+#: src/Crypt.vala:298
 msgid "Week"
 msgstr "Semaine"
 
-#: src/Crypt.vala:416
+#: src/Crypt.vala:412
 msgid "Quick Price Lookup"
 msgstr "Aperçu rapide"
 
-#: src/Crypt.vala:427
-#, fuzzy
-msgid "Open Tab"
-msgstr "Ouverture jour : "
+#: src/Crypt.vala:423
+msgid "Set Limit Notifications"
+msgstr "Définir les notifications de limite"
 
-#: src/Crypt.vala:434
+#: src/Crypt.vala:430
+msgid "Open Detailed Info"
+msgstr "Ouvrir les informations détaillées"
+
+#: src/Crypt.vala:436
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
-#: src/Crypt.vala:458
+#: src/Crypt.vala:460
 msgid "Coin"
 msgstr "Monnaie"
 
-#: src/Crypt.vala:473
+#: src/Crypt.vala:475
 msgid "Current"
 msgstr "Actuel"
 
-#: src/Crypt.vala:488
+#: src/Crypt.vala:490
 msgid "High"
 msgstr "Haut"
 
-#: src/Crypt.vala:503
+#: src/Crypt.vala:505
 msgid "Low"
 msgstr "Bas"
 
-#: src/Crypt.vala:518
+#: src/Crypt.vala:520
 msgid "Change Price (DAY)"
 msgstr "Variation de prix (JOUR)"
 
-#: src/Crypt.vala:533
-#, fuzzy
+#: src/Crypt.vala:535
 msgid "Change % (DAY)"
-msgstr "Variation de prix (JOUR)"
+msgstr "Variation en % (JOUR)"
 
-#: src/Crypt.vala:548
+#: src/Crypt.vala:550
 msgid "Last Market"
 msgstr "Dernier marché"
 
-#: src/Crypt.vala:758
+#: src/Crypt.vala:599 src/Crypt.vala:607
+msgid "Limit Notification! "
+msgstr "Notification de limite ! "
+
+#: src/Crypt.vala:600 src/Crypt.vala:608
+msgid " just hit "
+msgstr " vient juste d'atteindre "
+
+#: src/Crypt.vala:663
+msgid "Limits for "
+msgstr "Limites pour : "
+
+#: src/Crypt.vala:666
+msgid "High Limit"
+msgstr "Limite haute"
+
+#: src/Crypt.vala:668
+msgid "Low Limit"
+msgstr "Limite basse"
+
+#: src/Crypt.vala:682 src/Crypt.vala:1080 src/Crypt.vala:1148
+#: src/Crypt.vala:1161
+msgid "Save"
+msgstr "Enregistrer"
+
+#: src/Crypt.vala:873
 msgid "Welcome to Crypt!"
 msgstr "Bienvenue dans Crypt !"
 
-#: src/Crypt.vala:758
+#: src/Crypt.vala:873
 msgid "Just downloading the latest data, this could take a second or two."
 msgstr ""
 "Téléchargement des dernières données, cela peut prendre quelques secondes."
 
-#: src/Crypt.vala:764
+#: src/Crypt.vala:879
 msgid "Home"
 msgstr "Accueil"
 
-#: src/Crypt.vala:766
+#: src/Crypt.vala:881
 msgid "Bitcoin (BTC)"
 msgstr "Bitcoin (BTC)"
 
-#: src/Crypt.vala:767
+#: src/Crypt.vala:882
 msgid "Litecoin (LTC)"
 msgstr "Litecoin (LTC)"
 
-#: src/Crypt.vala:768
+#: src/Crypt.vala:883
 msgid "Etherum (ETH)"
 msgstr "Étherum (ETH)"
 
-#: src/Crypt.vala:781
+#: src/Crypt.vala:896
 msgid "Last Hour"
 msgstr "Dernière heure"
 
-#: src/Crypt.vala:889
+#: src/Crypt.vala:1004
 msgid ""
 "Looks like you're not connected to a network, restart the app after "
 "reconnecting!"
@@ -224,82 +253,78 @@ msgstr ""
 "On dirait que vous n'êtes pas connecté à Internet, redémarrez l'applciation "
 "après reconnexion !"
 
-#: src/Crypt.vala:941
+#: src/Crypt.vala:1061
 msgid "Crypt"
 msgstr "Crypt"
 
-#: src/Crypt.vala:947
+#: src/Crypt.vala:1067
 msgid "Add coin to global list"
-msgstr ""
+msgstr "Ajouter une monnaie à la liste globale"
 
-#: src/Crypt.vala:950
-#, fuzzy
+#: src/Crypt.vala:1070
 msgid "Coin Name"
-msgstr "Monnaie"
+msgstr "Nom de la monnaie"
 
-#: src/Crypt.vala:955
+#: src/Crypt.vala:1075
 msgid "Coin Abbreviation"
-msgstr ""
+msgstr "Abbréviation de la monnaie"
 
-#: src/Crypt.vala:960 src/Crypt.vala:1027 src/Crypt.vala:1040
-msgid "Save"
-msgstr "Enregistrer"
-
-#: src/Crypt.vala:966
-#, fuzzy
+#: src/Crypt.vala:1086
 msgid "Add Coin"
-msgstr "Monnaie"
+msgstr "Ajouter une monnaie"
 
-#: src/Crypt.vala:1000
+#: src/Crypt.vala:1115
+msgid "Fetching..."
+msgstr "Récupération..."
+
+#: src/Crypt.vala:1121
 msgid "Whoops, that isn't a valid coin!"
-msgstr ""
+msgstr "Oups, ce n'est pas une monnaie valide !"
 
-#: src/Crypt.vala:1011
+#: src/Crypt.vala:1132
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/Crypt.vala:1021
+#: src/Crypt.vala:1142
 msgid "Set Default Currency (Tested with USD,GBP,EUR)"
 msgstr "Définir la devise par défaut (Testé avec USD, GBP, EUR)"
 
-#: src/Crypt.vala:1034
+#: src/Crypt.vala:1155
 msgid "Set the refresh rate (in seconds)"
 msgstr "Définir le taux de rafraichissement (en secondes)"
 
-#: src/Crypt.vala:1043
+#: src/Crypt.vala:1164
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
-#: src/Crypt.vala:1067
+#: src/Crypt.vala:1188
 msgid "Settings Saved! Restarting the app is recommended!"
 msgstr "Paramètres enregistrés ! Il est recommandé de relancer l'application !"
 
-#: src/Crypt.vala:1075
+#: src/Crypt.vala:1196
 msgid "Refresh rate saved! Restarting the app is recommended!"
 msgstr ""
 "Taux de rafraîchissement enregistré ! Il est recommandé de relancer "
 "l'application !"
 
-#: src/Crypt.vala:1085
+#: src/Crypt.vala:1206
 msgid "Settings schema isn't installed properly, reinstall app."
 msgstr ""
 "Le schéma des paramètres n'est pas installé correctement, veuillez "
 "réinstaller l'application."
 
-#: src/Caroline.vala:265
+#: src/Crypt.vala:1236
+msgid "Limit Notifications"
+msgstr "Notifications de limite"
+
+#: src/Caroline.vala:270
 msgid "High: "
 msgstr "Haut : "
 
-#: src/Caroline.vala:288
+#: src/Caroline.vala:293
 msgid "Low: "
 msgstr "Bas : "
 
-#: src/Caroline.vala:311
+#: src/Caroline.vala:316
 msgid "Current: "
 msgstr "Actuel : "
-
-#~ msgid "Change Percent (DAY)"
-#~ msgstr "Variation de pourcentage (JOUR)"
-
-#~ msgid "Add"
-#~ msgstr "Ajouter"

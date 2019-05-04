@@ -596,16 +596,16 @@ public class Crypt: Gtk.Application{
 
                 if ((int)rawPrice >= int.parse(coinLimit.coinHigh.get(g))){
 
-                  var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
-                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinHigh.get(g),"!!")));
+                  var notification = new GLib.Notification ((_("Limit Notification! ").concat(coinLimit.coinAbbrvs.get(g))));
+                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(_(" just hit "),coinLimit.coinHigh.get(g),"!")));
                   this.send_notification ("com.github.dcharles525.crypt", notification);
 
                 }
 
                 if ((int)rawPrice <= int.parse(coinLimit.coinLow.get(g))){
 
-                  var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
-                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinLow.get(g),"!!")));
+                  var notification = new GLib.Notification ((_("Limit Notification! ").concat(coinLimit.coinAbbrvs.get(g))));
+                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(_(" just hit "),coinLimit.coinLow.get(g),"!")));
                   this.send_notification ("com.github.dcharles525.crypt", notification);
 
                 }
@@ -660,12 +660,12 @@ public class Crypt: Gtk.Application{
       string coinName = this.coinNames.get(index);
       string coinAbbrev = this.coinAbbrevs.get(index);
 
-      Gtk.Label coinAbbrevLabel = new Gtk.Label("Limits for ".concat(coinName));
+      Gtk.Label coinAbbrevLabel = new Gtk.Label(_("Limits for ").concat(coinName));
       coinAbbrevLabel.xalign = 0;
 
-      Gtk.Label highLabel = new Gtk.Label("High Limit");
+      Gtk.Label highLabel = new Gtk.Label(_("High Limit"));
       Entry highLimitEntry = new Entry();
-      Gtk.Label lowLabel = new Gtk.Label("Low Limit");
+      Gtk.Label lowLabel = new Gtk.Label(_("Low Limit"));
       Entry lowLimitEntry = new Entry();
 
       Database database = new Database();
@@ -1112,7 +1112,7 @@ int main (string[] args){
 
         TreeIter iter;
         crypt.listModel.append (out iter);
-        crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
+        crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, (_("Fetching...")), 2, (_("Fetching...")), 3, (_("Fetching...")), 4, (_("Fetching...")), 5, (_("Fetching...")), 6, (_("Fetching...")));
         crypt.spinner.active = true;
         crypt.coinAbbrevs.add(coinAbbrevEntry.get_text());
 
