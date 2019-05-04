@@ -324,8 +324,8 @@ public class Crypt: Gtk.Application{
         tempCoinObject.getCoinInfoFull(coinAbrv);
 
         priceTitle.label = coinAbrv
-        .concat(": ",tempCoinObject.price.to_string()," | ",tempCoinObject.change24Hour.to_string(),
-        " | ",tempCoinObject.changeP24Hour.to_string());
+        .concat(": ",tempCoinObject.price.to_string()," | ",tempCoinObject.changeDay.to_string(),
+        " | ",tempCoinObject.changePDay.to_string());
         priceTitle.xalign = 0;
         price.label = (_("Price: ")) + tempCoinObject.price;
         lastUpdate.label = (_("Last Update: ")) + tempCoinObject.lastUpdate;
@@ -1086,6 +1086,10 @@ int main (string[] args){
   addCoinButton.set_tooltip_markup(_("Add coin to global list"));
   addCoinButton.clicked.connect (() => {
 
+    Gtk.Label addCoinLabel = new Gtk.Label (_("Add Coin"));
+    addCoinLabel.xalign = 0;
+    addCoinLabel.get_style_context().add_class("large-text");
+
     Gtk.Label coinNameLabel = new Gtk.Label (_("Coin Name"));
     coinNameLabel.xalign = 0;
 
@@ -1101,9 +1105,6 @@ int main (string[] args){
 
     Gtk.Label validCoinLabel = new Gtk.Label ("");
     validCoinLabel.xalign = 0;
-
-    Gtk.Label addCoinLabel = new Gtk.Label (_("Add Coin"));
-    addCoinLabel.get_style_context().add_class("title-text");
 
     Gtk.Dialog dialog = new Gtk.Dialog ();
     dialog.width_request = 500;
@@ -1181,6 +1182,7 @@ int main (string[] args){
       saveRefreshButton.get_style_context().add_class("button-color");
 
       Gtk.Label settingsLabel = new Gtk.Label (_("Settings"));
+      settingsLabel.xalign = 0;
       settingsLabel.get_style_context().add_class("title-text");
 
       Gtk.Dialog dialog = new Gtk.Dialog ();
