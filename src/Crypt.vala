@@ -594,19 +594,23 @@ public class Crypt: Gtk.Application{
 
               for (int g = 0; coinLimit.coinIds.size > g; g++){
 
-                if ((int)rawPrice >= int.parse(coinLimit.coinHigh.get(g))){
+                if (coinLimit.coinEnabled.get(g) == 1){
 
-                  var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
-                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinHigh.get(g),"!!")));
-                  this.send_notification ("com.github.dcharles525.crypt", notification);
+                  if (rawPrice >= double.parse(coinLimit.coinHigh.get(g))){
 
-                }
+                    var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
+                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinHigh.get(g),"!!")));
+                    this.send_notification ("com.github.dcharles525.crypt", notification);
 
-                if ((int)rawPrice <= int.parse(coinLimit.coinLow.get(g))){
+                  }
 
-                  var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
-                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinLow.get(g),"!!")));
-                  this.send_notification ("com.github.dcharles525.crypt", notification);
+                  if (rawPrice <= double.parse(coinLimit.coinLow.get(g))){
+
+                    var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
+                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just dropped to ",coinLimit.coinLow.get(g),"!!")));
+                    this.send_notification ("com.github.dcharles525.crypt", notification);
+
+                  }
 
                 }
 
@@ -660,19 +664,33 @@ public class Crypt: Gtk.Application{
       string coinName = this.coinNames.get(index);
       string coinAbbrev = this.coinAbbrevs.get(index);
 
-      Gtk.Label coinAbbrevLabel = new Gtk.Label("Limits for ".concat(coinName));
-      coinAbbrevLabel.xalign = 0;
-
-      Gtk.Label highLabel = new Gtk.Label("High Limit");
-      Entry highLimitEntry = new Entry();
-      Gtk.Label lowLabel = new Gtk.Label("Low Limit");
-      Entry lowLimitEntry = new Entry();
-
       Database database = new Database();
       database.createCheckDirectory();
       CoinLimit coinLimit = database.getLimit(coinAbbrev);
 
+      Gtk.Label coinAbbrevLabel = new Gtk.Label("Limits for ".concat(coinName));
+      coinAbbrevLabel.xalign = 0;
+      coinAbbrevLabel.get_style_context().add_class("large-text");
+
+      Gtk.Label highLabel = new Gtk.Label("High Limit");
+      highLabel.xalign = 0;
+      Entry highLimitEntry = new Entry();
+      Gtk.Label lowLabel = new Gtk.Label("Low Limit");
+      lowLabel.xalign = 0;
+      Entry lowLimitEntry = new Entry();
+
+      var modeSwitch = new Granite.ModeSwitch.from_icon_name ("notification-disabled-symbolic", "preferences-system-notifications-symbolic");
+      modeSwitch.primary_icon_tooltip_text = (_("Notifications disabled for coin"));
+      modeSwitch.secondary_icon_tooltip_text = (_("Notifications enabled for coin"));
+      modeSwitch.valign = Gtk.Align.CENTER;
+
       if (coinLimit.coinIds.size > 0){
+
+        if (coinLimit.coinEnabled.get(0) == 1){
+
+          modeSwitch.active = true;
+
+        }
 
         highLimitEntry.set_text(coinLimit.coinHigh.get(0));
         lowLimitEntry.set_text(coinLimit.coinLow.get(0));
@@ -687,6 +705,7 @@ public class Crypt: Gtk.Application{
       dialog.get_content_area().spacing = 7;
       dialog.get_content_area().border_width = 10;
       dialog.get_content_area().pack_start(coinAbbrevLabel,false,false);
+      dialog.get_content_area().pack_start(modeSwitch,false,false);
       dialog.get_content_area().pack_start(highLabel,false,false);
       dialog.get_content_area().pack_start(highLimitEntry,false,false);
       dialog.get_content_area().pack_start(lowLabel,false,false);
@@ -700,7 +719,7 @@ public class Crypt: Gtk.Application{
 
         database = new Database();
         database.createCheckDirectory();
-        database.insertLimit(coinAbbrev,highLimitEntry.get_text(),lowLimitEntry.get_text());
+        database.insertLimit(coinAbbrev,highLimitEntry.get_text(),lowLimitEntry.get_text(),modeSwitch.active);
         dialog.close();
 
       });
@@ -1233,7 +1252,7 @@ int main (string[] args){
 
   notificationImage.pixel_size = 16;
   Gtk.ToolButton notificationButton = new Gtk.ToolButton (notificationImage, null);
-  notificationButton.set_tooltip_markup(_("Limit Notifications"));
+  notificationButton.set_tooltip_markup(_("Global Notifications Toggle"));
 
   notificationButton.clicked.connect (() => {
 
@@ -1272,8 +1291,8 @@ int main (string[] args){
   header.show_close_button = true;
   header.title = windowTitle;
   header.pack_end (settingsButton);
-  header.pack_end (addCoinButton);
   header.pack_end (notificationButton);
+  header.pack_end (addCoinButton);
   header.pack_end (crypt.spinner);
   header.show_all();
   crypt.window.set_titlebar(header);
