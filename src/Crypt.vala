@@ -39,6 +39,9 @@ public class Crypt: Gtk.Application{
   public ArrayList<string> coinAbbrevs = new ArrayList<string>();
   public int refreshRate = 30;
   public int notificationValue = 1;
+  public Caroline btcLineChart;
+  public Caroline ltcLineChart;
+  public Caroline ethLineChart;
   public string CODE_STYLE = """
     .box{
       padding-left: 10px;
@@ -902,9 +905,9 @@ public class Crypt: Gtk.Application{
       Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin (LTC)"));
       Gtk.Label ethLabel = new Gtk.Label (_("Etherum (ETH)"));
 
-      Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
-      Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
-      Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      this.btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      this.ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      this.ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
 
       Timeout.add(500,()=>{
         btcLineChart.queue_draw();
@@ -913,17 +916,16 @@ public class Crypt: Gtk.Application{
         return true;
       });
 
-      Gtk.Label chartHomeLabel = new Gtk.Label (_("Last Hour"));
-      chartHomeLabel.get_style_context().add_class("title-text");
-
       Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      chartBox.pack_start (chartHomeLabel, false, false, 0);
-      chartBox.pack_start (btcLineChart);
-      chartBox.pack_start (btcLabel, false, false, 0);
-      chartBox.pack_start (ltcLineChart);
-      chartBox.pack_start (ltcLabel, false, false, 0);
-      chartBox.pack_start (ethLineChart);
-      chartBox.pack_start (ethLabel, false, false, 0);
+      chartBox.pack_start(btcLineChart);
+      chartBox.pack_start(btcLabel, false, false, 0);
+      chartBox.pack_start(new ChartButtonGroup().createButtonGroup("BTC",btcLineChart), false, false, 0);
+      chartBox.pack_start(ltcLineChart);
+      chartBox.pack_start(ltcLabel, false, false, 0);
+      chartBox.pack_start(new ChartButtonGroup().createButtonGroup("LTC",ltcLineChart), false, false, 0);
+      chartBox.pack_start(ethLineChart);
+      chartBox.pack_start(ethLabel, false, false, 0);
+      chartBox.pack_start(new ChartButtonGroup().createButtonGroup("ETH",ethLineChart), false, false, 0);
       chartBox.get_style_context().add_class("area");
 
       Gtk.Paned panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
@@ -949,8 +951,6 @@ public class Crypt: Gtk.Application{
       scrolled.add(panelArea);
       scrolled.set_max_content_width(1200);
       scrolled.set_min_content_height(500);
-
-
 
       this.notebook.insert_page (scrolled, title,0);
 
