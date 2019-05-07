@@ -719,6 +719,7 @@ public class Crypt: Gtk.Application{
 
         database = new Database();
         database.createCheckDirectory();
+
         database.insertLimit(coinAbbrev,highLimitEntry.get_text(),lowLimitEntry.get_text(),modeSwitch.active);
         dialog.close();
 
@@ -925,24 +926,31 @@ public class Crypt: Gtk.Application{
       chartBox.pack_start (ethLabel, false, false, 0);
       chartBox.get_style_context().add_class("area");
 
+      Gtk.Paned panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
+      panelArea.add1(chartBox);
+
       this.getMainPageCoins();
       this.getNewsMainPage();
 
-      this.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
+      panelArea.add2(this.secondaryBox);
+
+      /*this.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
       this.mainGrid.attach(chartBox,0,0,1,1);
-      this.mainGrid.attach(this.secondaryBox, 1,0,1,1);
+      this.mainGrid.attach(, 1,0,1,1);
       this.mainGrid.get_style_context().add_class("box");
       this.mainGrid.set_row_homogeneous(true);
       this.mainGrid.set_column_homogeneous(true);
 
       Gtk.Box tempBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
       tempBox.pack_start(this.toastNetwork);
-      tempBox.pack_start(this.mainGrid);
+      tempBox.pack_start(this.mainGrid);*/
 
       Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
-      scrolled.add(tempBox);
+      scrolled.add(panelArea);
       scrolled.set_max_content_width(1200);
       scrolled.set_min_content_height(500);
+
+
 
       this.notebook.insert_page (scrolled, title,0);
 
@@ -1132,7 +1140,7 @@ int main (string[] args){
 
         TreeIter iter;
         crypt.listModel.append (out iter);
-        crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching...", 2, "Fetching...", 3, "Fetching...", 4, "Fetching...", 5, "Fetching...", 6, "Fetching...");
+        crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, "Fetching Data", 2, "Fetching Data", 3, "Fetching Data", 4, "Fetching Data", 5, "Fetching Data", 6, "Fetching Data");
         crypt.spinner.active = true;
         crypt.coinAbbrevs.add(coinAbbrevEntry.get_text());
 
