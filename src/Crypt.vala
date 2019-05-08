@@ -40,6 +40,7 @@ public class Crypt: Gtk.Application{
   public ArrayList<string> coinAbbrevs = new ArrayList<string>();
   public int refreshRate = 30;
   public int notificationValue = 1;
+  private int firstRun = 0;
   public Caroline btcLineChart;
   public Caroline ltcLineChart;
   public Caroline ethLineChart;
@@ -421,29 +422,42 @@ public class Crypt: Gtk.Application{
 
       if (event.type == Gdk.EventType.BUTTON_PRESS && event.button == 3) {
 
-        Gtk.Menu menu = new Gtk.Menu ();
+        TreePath path; TreeViewColumn column; int cell_x; int cell_y;
+				this.mainAreaTreeView.get_path_at_pos ((int)event.x, (int)event.y, out path, out column, out cell_x, out cell_y);
+				this.mainAreaTreeView.grab_focus();
+     		this.mainAreaTreeView.set_cursor(path,column,false);
 
-        Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Set Limit Notifications"));
-        menu.attach_to_widget (this.mainAreaTreeView, null);
-        menu.add (menuItem);
-        menuItem.activate.connect((e) => {
-          this.openLimitDialog(event);
-        });
+				TreeSelection aTreeSelection = this.mainAreaTreeView.get_selection ();
 
-        menuItem = new Gtk.MenuItem.with_label (_("Open Detailed Info"));
-        menu.add (menuItem);
-        menuItem.activate.connect((e) => {
-          this.openCoin(event);
-        });
+        if(aTreeSelection.count_selected_rows() == 1){
 
-        menuItem = new Gtk.MenuItem.with_label (_("Delete"));
-        menu.add (menuItem);
-        menuItem.activate.connect((e) => {
-          this.deleteCoin(event);
-        });
+          Gtk.Menu menu = new Gtk.Menu ();
 
-        menu.show_all ();
-        menu.popup (null, null, null, event.button, event.time);
+          Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Set Limit Notifications"));
+          menu.attach_to_widget (this.mainAreaTreeView, null);
+          menu.add (menuItem);
+          menuItem.activate.connect((e) => {
+            this.openLimitDialog(event);
+          });
+
+          menuItem = new Gtk.MenuItem.with_label (_("Open Detailed Info"));
+          menu.add (menuItem);
+          menuItem.activate.connect((e) => {
+            this.openCoin(event);
+          });
+
+          menuItem = new Gtk.MenuItem.with_label (_("Delete"));
+          menu.add (menuItem);
+          menuItem.activate.connect((e) => {
+            this.deleteCoin(event);
+          });
+
+          menu.show_all ();
+          menu.popup (null, null, null, event.button, event.time);
+
+        }
+
+        return true;
 
       }
 
@@ -451,7 +465,7 @@ public class Crypt: Gtk.Application{
 
     });
 
-    this.mainAreaTreeView.activate_on_single_click = false;
+    this.mainAreaTreeView.activate_on_single_click = true;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
     this.listModel = new Gtk.ListStore (8, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
@@ -459,108 +473,112 @@ public class Crypt: Gtk.Application{
 
     var text = new CellRendererText ();
 
-    var coinColumn = new Gtk.TreeViewColumn ();
-    coinColumn.set_title (_("Coin"));
-    coinColumn.max_width = -1;
-    coinColumn.min_width = 100;
-    coinColumn.pack_start (text, false);
-    coinColumn.resizable = true;
-    coinColumn.reorderable = true;
-    coinColumn.sort_column_id = 0;
-    coinColumn.set_attributes ( text, "text", 0);
-    coinColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+    if (this.firstRun == 0){
 
-    this.mainAreaTreeView.append_column(coinColumn);
+      var coinColumn = new Gtk.TreeViewColumn ();
+      coinColumn.set_title (_("Coin"));
+      coinColumn.max_width = -1;
+      coinColumn.min_width = 100;
+      coinColumn.pack_start (text, false);
+      coinColumn.resizable = true;
+      coinColumn.reorderable = true;
+      coinColumn.sort_column_id = 0;
+      coinColumn.set_attributes ( text, "text", 0);
+      coinColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var currentText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(coinColumn);
 
-    var currentColumn = new Gtk.TreeViewColumn ();
-    currentColumn.set_title (_("Current"));
-    currentColumn.max_width = -1;
-    currentColumn.min_width = 100;
-    currentColumn.pack_start (currentText, false);
-    currentColumn.resizable = true;
-    currentColumn.reorderable = true;
-    currentColumn.sort_column_id = 0;
-    currentColumn.set_attributes (currentText, "text", 1);
-    currentColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var currentText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(currentColumn);
+      var currentColumn = new Gtk.TreeViewColumn ();
+      currentColumn.set_title (_("Current"));
+      currentColumn.max_width = -1;
+      currentColumn.min_width = 100;
+      currentColumn.pack_start (currentText, false);
+      currentColumn.resizable = true;
+      currentColumn.reorderable = true;
+      currentColumn.sort_column_id = 0;
+      currentColumn.set_attributes (currentText, "text", 1);
+      currentColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var highText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(currentColumn);
 
-    var highColumn = new Gtk.TreeViewColumn ();
-    highColumn.set_title (_("High"));
-    highColumn.max_width = -1;
-    highColumn.min_width = 100;
-    highColumn.pack_start (highText, false);
-    highColumn.resizable = true;
-    highColumn.reorderable = true;
-    highColumn.sort_column_id = 0;
-    highColumn.set_attributes (highText, "text", 2);
-    highColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var highText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(highColumn);
+      var highColumn = new Gtk.TreeViewColumn ();
+      highColumn.set_title (_("High"));
+      highColumn.max_width = -1;
+      highColumn.min_width = 100;
+      highColumn.pack_start (highText, false);
+      highColumn.resizable = true;
+      highColumn.reorderable = true;
+      highColumn.sort_column_id = 0;
+      highColumn.set_attributes (highText, "text", 2);
+      highColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var lowText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(highColumn);
 
-    var lowColumn = new Gtk.TreeViewColumn ();
-    lowColumn.set_title (_("Low"));
-    lowColumn.max_width = -1;
-    lowColumn.min_width = 100;
-    lowColumn.pack_start (lowText, false);
-    lowColumn.resizable = true;
-    lowColumn.reorderable = true;
-    lowColumn.sort_column_id = 0;
-    lowColumn.set_attributes (lowText, "text", 3);
-    lowColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var lowText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(lowColumn);
+      var lowColumn = new Gtk.TreeViewColumn ();
+      lowColumn.set_title (_("Low"));
+      lowColumn.max_width = -1;
+      lowColumn.min_width = 100;
+      lowColumn.pack_start (lowText, false);
+      lowColumn.resizable = true;
+      lowColumn.reorderable = true;
+      lowColumn.sort_column_id = 0;
+      lowColumn.set_attributes (lowText, "text", 3);
+      lowColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var changeText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(lowColumn);
 
-    var changeColumn = new Gtk.TreeViewColumn ();
-    changeColumn.set_title (_("Change Price (DAY)"));
-    changeColumn.max_width = -1;
-    changeColumn.min_width = 100;
-    changeColumn.pack_start (changeText, false);
-    changeColumn.resizable = true;
-    changeColumn.reorderable = true;
-    changeColumn.sort_column_id = 0;
-    changeColumn.set_attributes (changeText, "text", 4);
-    changeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var changeText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(changeColumn);
+      var changeColumn = new Gtk.TreeViewColumn ();
+      changeColumn.set_title (_("Change Price (DAY)"));
+      changeColumn.max_width = -1;
+      changeColumn.min_width = 100;
+      changeColumn.pack_start (changeText, false);
+      changeColumn.resizable = true;
+      changeColumn.reorderable = true;
+      changeColumn.sort_column_id = 0;
+      changeColumn.set_attributes (changeText, "text", 4);
+      changeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var changePText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(changeColumn);
 
-    var changePColumn = new Gtk.TreeViewColumn ();
-    changePColumn.set_title (_("Change % (DAY)"));
-    changePColumn.max_width = -1;
-    changePColumn.min_width = 75;
-    changePColumn.pack_start (changePText, false);
-    changePColumn.resizable = true;
-    changePColumn.reorderable = true;
-    changePColumn.sort_column_id = 0;
-    changePColumn.set_attributes (changePText, "text", 5);
-    changePColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var changePText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(changePColumn);
+      var changePColumn = new Gtk.TreeViewColumn ();
+      changePColumn.set_title (_("Change % (DAY)"));
+      changePColumn.max_width = -1;
+      changePColumn.min_width = 75;
+      changePColumn.pack_start (changePText, false);
+      changePColumn.resizable = true;
+      changePColumn.reorderable = true;
+      changePColumn.sort_column_id = 0;
+      changePColumn.set_attributes (changePText, "text", 5);
+      changePColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var lastExchange = new CellRendererText ();
+      this.mainAreaTreeView.append_column(changePColumn);
 
-    var lastExchangeColumn = new Gtk.TreeViewColumn ();
-    lastExchangeColumn.set_title (_("Last Market"));
-    lastExchangeColumn.max_width = -1;
-    lastExchangeColumn.min_width = 100;
-    lastExchangeColumn.pack_start (lastExchange, false);
-    lastExchangeColumn.resizable = true;
-    lastExchangeColumn.reorderable = true;
-    lastExchangeColumn.sort_column_id = 0;
-    lastExchangeColumn.set_attributes (lastExchange, "text", 6);
-    lastExchangeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var lastExchange = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(lastExchangeColumn);
+      var lastExchangeColumn = new Gtk.TreeViewColumn ();
+      lastExchangeColumn.set_title (_("Last Market"));
+      lastExchangeColumn.max_width = -1;
+      lastExchangeColumn.min_width = 100;
+      lastExchangeColumn.pack_start (lastExchange, false);
+      lastExchangeColumn.resizable = true;
+      lastExchangeColumn.reorderable = true;
+      lastExchangeColumn.sort_column_id = 0;
+      lastExchangeColumn.set_attributes (lastExchange, "text", 6);
+      lastExchangeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+
+      this.mainAreaTreeView.append_column(lastExchangeColumn);
+
+    }
 
     for (int i = 0; this.coinAbbrevs.size > i; i++){
 
@@ -643,7 +661,14 @@ public class Crypt: Gtk.Application{
 
     Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow (null, null);
     scroll.min_content_height = (int)(800 / 2);
-    scroll.add (this.mainAreaTreeView);
+
+    if (this.firstRun == 0){
+
+      scroll.add (this.mainAreaTreeView);
+      this.firstRun = 1;
+
+    }
+
     scroll.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
     verticalGridBox.pack_start(scroll);
     this.secondaryBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -916,16 +941,20 @@ public class Crypt: Gtk.Application{
         return true;
       });
 
+      var chart1ButtonGroup = new ChartButtonGroup().createButtonGroup("BTC",btcLineChart);
+      var chart2ButtonGroup = new ChartButtonGroup().createButtonGroup("LTC",btcLineChart);
+      var chart3ButtonGroup = new ChartButtonGroup().createButtonGroup("ETH",btcLineChart);
+
       Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
       chartBox.pack_start(btcLineChart);
       chartBox.pack_start(btcLabel, false, false, 0);
-      chartBox.pack_start(new ChartButtonGroup().createButtonGroup("BTC",btcLineChart), false, false, 0);
+      chartBox.pack_start(chart1ButtonGroup, false, false, 0);
       chartBox.pack_start(ltcLineChart);
       chartBox.pack_start(ltcLabel, false, false, 0);
-      chartBox.pack_start(new ChartButtonGroup().createButtonGroup("LTC",ltcLineChart), false, false, 0);
+      chartBox.pack_start(chart2ButtonGroup, false, false, 0);
       chartBox.pack_start(ethLineChart);
       chartBox.pack_start(ethLabel, false, false, 0);
-      chartBox.pack_start(new ChartButtonGroup().createButtonGroup("ETH",ethLineChart), false, false, 0);
+      chartBox.pack_start(chart3ButtonGroup, false, false, 0);
       chartBox.get_style_context().add_class("area");
 
       this.panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
@@ -957,7 +986,7 @@ public class Crypt: Gtk.Application{
           }
 
           this.spinner.active = true;
-
+          //wrap in button states
           this.currentCoinHour.getPriceDataHour("BTC");
 
           btcLineChart.DATA = this.currentCoinHour.DATA;

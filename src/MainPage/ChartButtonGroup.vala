@@ -10,6 +10,7 @@ public class ChartButtonGroup{
     modeButton.append_text ("Hour");
     modeButton.append_text ("Day");
     modeButton.append_text ("Week");
+    modeButton.set_active(0);
 
     modeButton.mode_changed.connect (mode => {
 
