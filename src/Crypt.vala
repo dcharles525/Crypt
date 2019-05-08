@@ -17,6 +17,7 @@ public class Crypt: Gtk.Application{
   public Gtk.Window window = new Gtk.Window();
   public Gtk.Notebook notebook = new Gtk.Notebook();
   public Gtk.Notebook notebookSecondary = new Gtk.Notebook();
+  public Gtk.Paned panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
   public Caroline caroline = new Caroline();
   public Gtk.CssProvider provider = new Gtk.CssProvider();
   public Gtk.Box box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -30,7 +31,7 @@ public class Crypt: Gtk.Application{
   public Coin currentCoinHour = new Coin();
   public Draw drawClass = new Draw();
   public Gtk.Spinner spinner = new Gtk.Spinner();
-  public Gtk.TreeView mainAreaTreeView;
+  public Gtk.TreeView mainAreaTreeView = new Gtk.TreeView();
   public int signalDampener = 0;
   public int signalDampenerSecondary = 0;
   public string defaultCoin = "";
@@ -416,7 +417,6 @@ public class Crypt: Gtk.Application{
     pricesLabel.get_style_context().add_class("title-text");
     verticalGridBox.pack_start(pricesLabel);
 
-    this.mainAreaTreeView = new TreeView ();
     this.mainAreaTreeView.button_press_event.connect ((event) => {
 
       if (event.type == Gdk.EventType.BUTTON_PRESS && event.button == 3) {
@@ -928,27 +928,16 @@ public class Crypt: Gtk.Application{
       chartBox.pack_start(new ChartButtonGroup().createButtonGroup("ETH",ethLineChart), false, false, 0);
       chartBox.get_style_context().add_class("area");
 
-      Gtk.Paned panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
-      panelArea.add1(chartBox);
+      this.panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
+      this.panelArea.add1(chartBox);
 
       this.getMainPageCoins();
       this.getNewsMainPage();
 
-      panelArea.add2(this.secondaryBox);
-
-      /*this.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
-      this.mainGrid.attach(chartBox,0,0,1,1);
-      this.mainGrid.attach(, 1,0,1,1);
-      this.mainGrid.get_style_context().add_class("box");
-      this.mainGrid.set_row_homogeneous(true);
-      this.mainGrid.set_column_homogeneous(true);
-
-      Gtk.Box tempBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      tempBox.pack_start(this.toastNetwork);
-      tempBox.pack_start(this.mainGrid);*/
+      this.panelArea.add2(this.secondaryBox);
 
       Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
-      scrolled.add(panelArea);
+      scrolled.add(this.panelArea);
       scrolled.set_max_content_width(1200);
       scrolled.set_min_content_height(500);
 
@@ -1018,7 +1007,6 @@ public class Crypt: Gtk.Application{
       });
 
       this.window.remove (this.deleteBox);
-
       this.window.add(this.notebook);
       this.window.show_all();
 
@@ -1046,6 +1034,7 @@ int main (string[] args){
   //var indicator = new Indicator(); can't use this per the elementary guidelines
   Database database = new Database();
   Crypt crypt = new Crypt();
+  crypt.panelArea.position = 600;
 
   crypt.set_application_id ("com.github.dcharles525.crypt") ;
   crypt.register();
