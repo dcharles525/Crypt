@@ -239,10 +239,10 @@ public class Crypt: Gtk.Application{
         foreach (var news in response.get_elements()) {
 
           var newsObject = news.get_object();
-
+          var url = newsObject.get_string_member("url").replace ("&", "amp;");
           Gtk.Label titleLabel = new Gtk.Label (newsObject.get_string_member("title"));
-          Gtk.Label linkLabel = new Gtk.Label (newsObject.get_string_member("url"));
-          linkLabel.set_markup("<a href='".concat(newsObject.get_string_member("url"),"'>",newsObject.get_string_member("url"),"</a>"));
+          Gtk.Label linkLabel = new Gtk.Label (url);
+          linkLabel.set_markup("<a href='".concat(url,"'>",url,"</a>"));
           titleLabel.set_alignment(0,0);
           titleLabel.set_line_wrap(true);
           titleLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
@@ -619,16 +619,16 @@ public class Crypt: Gtk.Application{
 
                   if (rawPrice >= double.parse(coinLimit.coinHigh.get(g))){
 
-                    var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
-                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinHigh.get(g),"!!")));
+                    var notification = new GLib.Notification (_("Limit Notification for ").concat(coinLimit.coinAbbrvs.get(g),(_("!"))));
+                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just hit ",coinLimit.coinHigh.get(g),(_("!")))));
                     this.send_notification ("com.github.dcharles525.crypt", notification);
 
                   }
 
                   if (rawPrice <= double.parse(coinLimit.coinLow.get(g))){
 
-                    var notification = new GLib.Notification (("Limit Notification! ".concat(coinLimit.coinAbbrvs.get(g))));
-                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just dropped to ",coinLimit.coinLow.get(g),"!!")));
+                    var notification = new GLib.Notification (_("Limit Notification for ").concat(coinLimit.coinAbbrvs.get(g),(_("!"))));
+                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(" just dropped to ",coinLimit.coinLow.get(g),(_("!")))));
                     this.send_notification ("com.github.dcharles525.crypt", notification);
 
                   }
@@ -948,16 +948,25 @@ public class Crypt: Gtk.Application{
       Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
       chartBox.pack_start(btcLineChart);
       chartBox.pack_start(btcLabel, false, false, 0);
-      chartBox.pack_start(chart1ButtonGroup, false, false, 0);
+      //chartBox.pack_start(chart1ButtonGroup, false, false, 0);
       chartBox.pack_start(ltcLineChart);
       chartBox.pack_start(ltcLabel, false, false, 0);
-      chartBox.pack_start(chart2ButtonGroup, false, false, 0);
+      //chartBox.pack_start(chart2ButtonGroup, false, false, 0);
       chartBox.pack_start(ethLineChart);
       chartBox.pack_start(ethLabel, false, false, 0);
-      chartBox.pack_start(chart3ButtonGroup, false, false, 0);
+      //chartBox.pack_start(chart3ButtonGroup, false, false, 0);
       chartBox.get_style_context().add_class("area");
 
       this.panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
+
+      var width = 0;
+      this.window.get_size(out width,null);
+      this.panelArea.position = width / 2;
+      this.window.configure_event.connect ((event) => {
+        this.panelArea.position = event.width / 2;
+        return false;
+      });
+
       this.panelArea.add1(chartBox);
 
       this.getMainPageCoins();
@@ -1063,7 +1072,6 @@ int main (string[] args){
   //var indicator = new Indicator(); can't use this per the elementary guidelines
   Database database = new Database();
   Crypt crypt = new Crypt();
-  crypt.panelArea.position = 600;
 
   crypt.set_application_id ("com.github.dcharles525.crypt") ;
   crypt.register();
