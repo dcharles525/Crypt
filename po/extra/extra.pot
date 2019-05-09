@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extra\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-04 15:48+0200\n"
+"POT-Creation-Date: 2019-05-09 19:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,89 +70,102 @@ msgstr ""
 msgid "Change refresh rate to save on data!"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:34
-msgid "You can now customize the coin list (right click for menu)"
+#: data/com.github.dcharles525.crypt.appdata.xml.in:40
+msgid "Limit Notifications (right click on the table)"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:35
-msgid "Lots of stablization efforts"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:36
-msgid "Reworked the header"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:37
-msgid "Translation updates @NathanBnm"
+#: data/com.github.dcharles525.crypt.appdata.xml.in:41
+msgid "Reworked some dialog UI"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.appdata.xml.in:42
-msgid "App adapts to network condidtions better"
+msgid "Using Gtk.Paned on the home tab so you can make the charts larger"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.appdata.xml.in:43
-msgid "New main coin area (more coin customization coming soon!)"
+#: data/com.github.dcharles525.crypt.appdata.xml.in:51
+msgid "Translation updates @NathanBnm"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:44
-msgid "Lots of extra guards put in place to boost stability"
+#: data/com.github.dcharles525.crypt.appdata.xml.in:48
+msgid "You can now customize the coin list (right click for menu)"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:45
+#: data/com.github.dcharles525.crypt.appdata.xml.in:49
+msgid "Lots of stablization efforts"
+msgstr ""
+
 #: data/com.github.dcharles525.crypt.appdata.xml.in:50
-msgid "Bug fixes"
-msgstr ""
-
-#: data/com.github.dcharles525.crypt.appdata.xml.in:55
-msgid "Fixed tons of bugs with help from @NathanBnm"
+msgid "Reworked the header"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.appdata.xml.in:56
-msgid "Click on candles to see information for that time period"
+msgid "App adapts to network condidtions better"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:61
-msgid "Translations (Thanks to @NathanBnm for French translations!)"
+#: data/com.github.dcharles525.crypt.appdata.xml.in:57
+msgid "New main coin area (more coin customization coming soon!)"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:62
-msgid "Change refresh rate"
+#: data/com.github.dcharles525.crypt.appdata.xml.in:58
+msgid "Lots of extra guards put in place to boost stability"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:63
-msgid "Change base currency"
-msgstr ""
-
+#: data/com.github.dcharles525.crypt.appdata.xml.in:59
 #: data/com.github.dcharles525.crypt.appdata.xml.in:64
-msgid "Coin specific news"
+msgid "Bug fixes"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:65
-msgid "Close a coin tab with ctrl-w"
+#: data/com.github.dcharles525.crypt.appdata.xml.in:69
+msgid "Fixed tons of bugs with help from @NathanBnm"
 msgstr ""
 
 #: data/com.github.dcharles525.crypt.appdata.xml.in:70
+msgid "Click on candles to see information for that time period"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:75
+msgid "Translations (Thanks to @NathanBnm for French translations!)"
+msgstr ""
+
 #: data/com.github.dcharles525.crypt.appdata.xml.in:76
+msgid "Change refresh rate"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:77
+msgid "Change base currency"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:78
+msgid "Coin specific news"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:79
+msgid "Close a coin tab with ctrl-w"
+msgstr ""
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:84
+#: data/com.github.dcharles525.crypt.appdata.xml.in:90
 msgid "Complete rewrite of how charts work"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:71
-#: data/com.github.dcharles525.crypt.appdata.xml.in:77
+#: data/com.github.dcharles525.crypt.appdata.xml.in:85
+#: data/com.github.dcharles525.crypt.appdata.xml.in:91
 msgid "*Slaps Crypt* This bad boy can fit so many bugs in it"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:82
+#: data/com.github.dcharles525.crypt.appdata.xml.in:96
 msgid "Better window resizing"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:83
+#: data/com.github.dcharles525.crypt.appdata.xml.in:97
 msgid "AppCenter fixes"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:88
+#: data/com.github.dcharles525.crypt.appdata.xml.in:102
 msgid "Initial release"
 msgstr ""
 
-#: data/com.github.dcharles525.crypt.appdata.xml.in:116
+#: data/com.github.dcharles525.crypt.appdata.xml.in:130
 msgid "David Johnson"
 msgstr ""
