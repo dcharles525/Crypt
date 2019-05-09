@@ -91,7 +91,8 @@ public class Database: GLib.Object {
         id          INTEGER PRIMARY KEY,
         coin_abbrv  TEXT,
         coin_high   TEXT,
-        coin_low    TEXT
+        coin_low    TEXT,
+        enabled     INTEGER
       );
     """;
 
@@ -198,7 +199,7 @@ public class Database: GLib.Object {
 
   }
 
-  public void insertLimit (string coinAbbrv, string high, string low) {
+  public void insertLimit (string coinAbbrv, string high, string low, bool enabled) {
 
     CoinLimit coinLimit = getLimit(coinAbbrv);
 
@@ -207,7 +208,7 @@ public class Database: GLib.Object {
       Sqlite.Statement stmt;
 
       string query = "UPDATE coinlimit SET coin_high = $COINHIGH, coin_low = $COINLOW
-      WHERE id = $COINID;";
+      , enabled = $COINENABLED WHERE id = $COINID;";
       int ec = this.database.prepare_v2 (query, query.length, out stmt);
 
       if (ec != Sqlite.OK) {
@@ -225,6 +226,10 @@ public class Database: GLib.Object {
       assert (param_position > 0);
       stmt.bind_text (param_position, low.to_string());
 
+      param_position = stmt.bind_parameter_index ("$COINENABLED");
+      assert (param_position > 0);
+      stmt.bind_int (param_position, (int)enabled);
+
       param_position = stmt.bind_parameter_index ("$COINID");
       assert (param_position > 0);
       stmt.bind_text (param_position, coinLimit.coinIds.get(0));
@@ -241,8 +246,8 @@ public class Database: GLib.Object {
 
       Sqlite.Statement stmt;
 
-      string query = "INSERT INTO coinlimit (coin_abbrv, coin_high, coin_low) VALUES
-      ($COINABBRV, $COINHIGH, $COINLOW);";
+      string query = "INSERT INTO coinlimit (coin_abbrv, coin_high, coin_low, enabled) VALUES
+      ($COINABBRV, $COINHIGH, $COINLOW, $COINENABLED);";
       int ec = this.database.prepare_v2 (query, query.length, out stmt);
 
       if (ec != Sqlite.OK) {
@@ -263,6 +268,10 @@ public class Database: GLib.Object {
       param_position = stmt.bind_parameter_index ("$COINLOW");
       assert (param_position > 0);
       stmt.bind_text (param_position, low);
+
+      param_position = stmt.bind_parameter_index ("$COINENABLED");
+      assert (param_position > 0);
+      stmt.bind_int (param_position, (int)enabled);
 
       ec = stmt.step();
 
@@ -297,6 +306,7 @@ public class Database: GLib.Object {
       coinLimit.coinAbbrvs.add(stmt.column_text(1));
       coinLimit.coinHigh.add(stmt.column_text(2));
       coinLimit.coinLow.add(stmt.column_text(3));
+      coinLimit.coinLow.add(stmt.column_text(4));
 
 		}
 
@@ -308,7 +318,7 @@ public class Database: GLib.Object {
 
     Sqlite.Statement stmt;
     CoinLimit coinLimit = new CoinLimit();
-    
+
     const string query = "SELECT * FROM coinlimit WHERE coin_abbrv = $COINABBRV;";
 	  int ec = this.database.prepare_v2 (query, query.length, out stmt);
 
@@ -329,6 +339,7 @@ public class Database: GLib.Object {
       coinLimit.coinAbbrvs.add(stmt.column_text(1));
       coinLimit.coinHigh.add(stmt.column_text(2));
       coinLimit.coinLow.add(stmt.column_text(3));
+      coinLimit.coinEnabled.add(stmt.column_int(4));
 
 		}
 

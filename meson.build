@@ -15,6 +15,8 @@ executable(
     'src/Services/Database.vala',
     'src/Services/CoinList.vala',
     'src/Services/CoinLimit.vala',
+    'src/MainPage/MainPageCharts.vala',
+    'src/MainPage/ChartButtonGroup.vala',
     dependencies: [
       dependency('gtk+-3.0'),
       dependency('libsoup-2.4'),

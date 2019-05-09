@@ -20,7 +20,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
     caroline.dataTypeY = "";
-    caroline.dataTypeX = "";
+    caroline.dataTypeX = "m";
     caroline.gap = 0;
     caroline.min = 0;
     caroline.max = 0;
@@ -29,11 +29,11 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("m"));
+    caroline.labelXList.add(1.to_string().concat(caroline.dataTypeX));
 
     for (int i = 0; i < caroline.DATA.length; i++){
 
-      caroline.labelXList.add((2*i).to_string().concat("m"));
+      caroline.labelXList.add((2*i).to_string().concat(caroline.dataTypeX));
 
     }
 
@@ -56,7 +56,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
     caroline.dataTypeY = "";
-    caroline.dataTypeX = "";
+    caroline.dataTypeX = "h";
     caroline.gap = 0;
     caroline.min = 0;
     caroline.max = 0;
@@ -65,11 +65,11 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("h"));
+    caroline.labelXList.add(1.to_string().concat(caroline.dataTypeX));
 
     for (int i = 0; i < caroline.DATA.length; i++){
 
-      caroline.labelXList.add((i).to_string().concat("h"));
+      caroline.labelXList.add((i).to_string().concat(caroline.dataTypeX));
 
     }
 
@@ -92,7 +92,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
     caroline.dataTypeY = "";
-    caroline.dataTypeX = "";
+    caroline.dataTypeX = "d";
     caroline.gap = 0;
     caroline.min = 0;
     caroline.max = 0;
@@ -100,11 +100,11 @@ public class Draw: Gtk.Window{
     caroline.HIGH = coin.HIGH;
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
-    caroline.labelXList.add(1.to_string().concat("d"));
+    caroline.labelXList.add(1.to_string().concat(caroline.dataTypeX));
 
     for (int i = 1; i < caroline.DATA.length + 1; i++){
 
-      caroline.labelXList.add((i).to_string().concat("d"));
+      caroline.labelXList.add((i).to_string().concat(caroline.dataTypeX));
 
     }
 
@@ -127,7 +127,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
     caroline.dataTypeY = "";
-    caroline.dataTypeX = "";
+    caroline.dataTypeX = "m";
     caroline.gap = 0;
     caroline.min = 0;
     caroline.max = 0;
@@ -136,11 +136,11 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("m"));
+    caroline.labelXList.add(1.to_string().concat(caroline.dataTypeX));
 
     for (int i = 0; i < caroline.DATA.length; i++){
 
-      caroline.labelXList.add((2*i).to_string().concat("m"));
+      caroline.labelXList.add((2*i).to_string().concat(caroline.dataTypeX));
 
     }
 
@@ -164,7 +164,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
     caroline.dataTypeY = "";
-    caroline.dataTypeX = "";
+    caroline.dataTypeX = "h";
     caroline.gap = 0;
     caroline.min = 0;
     caroline.max = 0;
@@ -173,11 +173,11 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("h"));
+    caroline.labelXList.add(1.to_string().concat(caroline.dataTypeX));
 
     for (int i = 1; i < caroline.DATA.length+1; i++){
 
-      caroline.labelXList.add((2*i).to_string().concat("h"));
+      caroline.labelXList.add((2*i).to_string().concat(caroline.dataTypeX));
 
     }
 
@@ -201,7 +201,7 @@ public class Draw: Gtk.Window{
     caroline.lineThicknessData = 1;
     caroline.lineThicknessTicks = 2;
     caroline.dataTypeY = "";
-    caroline.dataTypeX = "";
+    caroline.dataTypeX = "d";
     caroline.gap = 0;
     caroline.min = 0;
     caroline.max = 0;
@@ -210,11 +210,11 @@ public class Draw: Gtk.Window{
     caroline.LOW = coin.LOW;
     caroline.chartType = "line";
 
-    caroline.labelXList.add(1.to_string().concat("d"));
+    caroline.labelXList.add(1.to_string().concat(caroline.dataTypeX));
 
     for (int i = 1; i < caroline.DATA.length+1; i++){
 
-      caroline.labelXList.add((2*i).to_string().concat("d"));
+      caroline.labelXList.add((2*i).to_string().concat(caroline.dataTypeX));
 
     }
 

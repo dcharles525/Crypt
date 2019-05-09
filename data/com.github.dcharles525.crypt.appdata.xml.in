@@ -27,8 +27,22 @@
     <screenshot>
       <image>https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot2.png</image>
     </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot3.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/dcharles525/crypt/master/data/screenshot4.png</image>
+    </screenshot>
   </screenshots>
   <releases>
+    <release version="1.6.0" date="2019-05-08">
+      <description>
+        <p>Limit Notifications (right click on the table)</p>
+        <p>Reworked some dialog UI</p>
+        <p>Using Gtk.Paned on the home tab so you can make the charts larger</p>
+        <p>Translation updates @NathanBnm</p>
+      </description>
+    </release>
     <release version="1.5.0" date="2019-04-14">
       <description>
         <p>You can now customize the coin list (right click for menu)</p>

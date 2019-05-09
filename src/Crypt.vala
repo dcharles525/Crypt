@@ -17,6 +17,7 @@ public class Crypt: Gtk.Application{
   public Gtk.Window window = new Gtk.Window();
   public Gtk.Notebook notebook = new Gtk.Notebook();
   public Gtk.Notebook notebookSecondary = new Gtk.Notebook();
+  public Gtk.Paned panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
   public Caroline caroline = new Caroline();
   public Gtk.CssProvider provider = new Gtk.CssProvider();
   public Gtk.Box box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -30,7 +31,7 @@ public class Crypt: Gtk.Application{
   public Coin currentCoinHour = new Coin();
   public Draw drawClass = new Draw();
   public Gtk.Spinner spinner = new Gtk.Spinner();
-  public Gtk.TreeView mainAreaTreeView;
+  public Gtk.TreeView mainAreaTreeView = new Gtk.TreeView();
   public int signalDampener = 0;
   public int signalDampenerSecondary = 0;
   public string defaultCoin = "";
@@ -39,6 +40,10 @@ public class Crypt: Gtk.Application{
   public ArrayList<string> coinAbbrevs = new ArrayList<string>();
   public int refreshRate = 30;
   public int notificationValue = 1;
+  private int firstRun = 0;
+  public Caroline btcLineChart;
+  public Caroline ltcLineChart;
+  public Caroline ethLineChart;
   public string CODE_STYLE = """
     .box{
       padding-left: 10px;
@@ -234,10 +239,10 @@ public class Crypt: Gtk.Application{
         foreach (var news in response.get_elements()) {
 
           var newsObject = news.get_object();
-
+          var url = newsObject.get_string_member("url").replace ("&", "amp;");
           Gtk.Label titleLabel = new Gtk.Label (newsObject.get_string_member("title"));
-          Gtk.Label linkLabel = new Gtk.Label (newsObject.get_string_member("url"));
-          linkLabel.set_markup("<a href='".concat(newsObject.get_string_member("url"),"'>",newsObject.get_string_member("url"),"</a>"));
+          Gtk.Label linkLabel = new Gtk.Label (url);
+          linkLabel.set_markup("<a href='".concat(url,"'>",url,"</a>"));
           titleLabel.set_alignment(0,0);
           titleLabel.set_line_wrap(true);
           titleLabel.set_line_wrap_mode(Pango.WrapMode.WORD_CHAR);
@@ -324,8 +329,8 @@ public class Crypt: Gtk.Application{
         tempCoinObject.getCoinInfoFull(coinAbrv);
 
         priceTitle.label = coinAbrv
-        .concat(": ",tempCoinObject.price.to_string()," | ",tempCoinObject.change24Hour.to_string(),
-        " | ",tempCoinObject.changeP24Hour.to_string());
+        .concat(": ",tempCoinObject.price.to_string()," | ",tempCoinObject.changeDay.to_string(),
+        " | ",tempCoinObject.changePDay.to_string());
         priceTitle.xalign = 0;
         price.label = (_("Price: ")) + tempCoinObject.price;
         lastUpdate.label = (_("Last Update: ")) + tempCoinObject.lastUpdate;
@@ -413,34 +418,46 @@ public class Crypt: Gtk.Application{
     pricesLabel.get_style_context().add_class("title-text");
     verticalGridBox.pack_start(pricesLabel);
 
-    this.mainAreaTreeView = new TreeView ();
     this.mainAreaTreeView.button_press_event.connect ((event) => {
 
       if (event.type == Gdk.EventType.BUTTON_PRESS && event.button == 3) {
 
-        Gtk.Menu menu = new Gtk.Menu ();
+        TreePath path; TreeViewColumn column; int cell_x; int cell_y;
+				this.mainAreaTreeView.get_path_at_pos ((int)event.x, (int)event.y, out path, out column, out cell_x, out cell_y);
+				this.mainAreaTreeView.grab_focus();
+     		this.mainAreaTreeView.set_cursor(path,column,false);
 
-        Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Set Limit Notifications"));
-        menu.attach_to_widget (this.mainAreaTreeView, null);
-        menu.add (menuItem);
-        menuItem.activate.connect((e) => {
-          this.openLimitDialog(event);
-        });
+				TreeSelection aTreeSelection = this.mainAreaTreeView.get_selection ();
 
-        menuItem = new Gtk.MenuItem.with_label (_("Open Detailed Info"));
-        menu.add (menuItem);
-        menuItem.activate.connect((e) => {
-          this.openCoin(event);
-        });
+        if(aTreeSelection.count_selected_rows() == 1){
 
-        menuItem = new Gtk.MenuItem.with_label (_("Delete"));
-        menu.add (menuItem);
-        menuItem.activate.connect((e) => {
-          this.deleteCoin(event);
-        });
+          Gtk.Menu menu = new Gtk.Menu ();
 
-        menu.show_all ();
-        menu.popup (null, null, null, event.button, event.time);
+          Gtk.MenuItem menuItem = new Gtk.MenuItem.with_label (_("Set Limit Notifications"));
+          menu.attach_to_widget (this.mainAreaTreeView, null);
+          menu.add (menuItem);
+          menuItem.activate.connect((e) => {
+            this.openLimitDialog(event);
+          });
+
+          menuItem = new Gtk.MenuItem.with_label (_("Open Detailed Info"));
+          menu.add (menuItem);
+          menuItem.activate.connect((e) => {
+            this.openCoin(event);
+          });
+
+          menuItem = new Gtk.MenuItem.with_label (_("Delete"));
+          menu.add (menuItem);
+          menuItem.activate.connect((e) => {
+            this.deleteCoin(event);
+          });
+
+          menu.show_all ();
+          menu.popup (null, null, null, event.button, event.time);
+
+        }
+
+        return true;
 
       }
 
@@ -448,7 +465,7 @@ public class Crypt: Gtk.Application{
 
     });
 
-    this.mainAreaTreeView.activate_on_single_click = false;
+    this.mainAreaTreeView.activate_on_single_click = true;
     this.mainAreaTreeView.get_style_context().add_class("table");
 
     this.listModel = new Gtk.ListStore (8, typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
@@ -456,108 +473,112 @@ public class Crypt: Gtk.Application{
 
     var text = new CellRendererText ();
 
-    var coinColumn = new Gtk.TreeViewColumn ();
-    coinColumn.set_title (_("Coin"));
-    coinColumn.max_width = -1;
-    coinColumn.min_width = 100;
-    coinColumn.pack_start (text, false);
-    coinColumn.resizable = true;
-    coinColumn.reorderable = true;
-    coinColumn.sort_column_id = 0;
-    coinColumn.set_attributes ( text, "text", 0);
-    coinColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+    if (this.firstRun == 0){
 
-    this.mainAreaTreeView.append_column(coinColumn);
+      var coinColumn = new Gtk.TreeViewColumn ();
+      coinColumn.set_title (_("Coin"));
+      coinColumn.max_width = -1;
+      coinColumn.min_width = 100;
+      coinColumn.pack_start (text, false);
+      coinColumn.resizable = true;
+      coinColumn.reorderable = true;
+      coinColumn.sort_column_id = 0;
+      coinColumn.set_attributes ( text, "text", 0);
+      coinColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var currentText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(coinColumn);
 
-    var currentColumn = new Gtk.TreeViewColumn ();
-    currentColumn.set_title (_("Current"));
-    currentColumn.max_width = -1;
-    currentColumn.min_width = 100;
-    currentColumn.pack_start (currentText, false);
-    currentColumn.resizable = true;
-    currentColumn.reorderable = true;
-    currentColumn.sort_column_id = 0;
-    currentColumn.set_attributes (currentText, "text", 1);
-    currentColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var currentText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(currentColumn);
+      var currentColumn = new Gtk.TreeViewColumn ();
+      currentColumn.set_title (_("Current"));
+      currentColumn.max_width = -1;
+      currentColumn.min_width = 100;
+      currentColumn.pack_start (currentText, false);
+      currentColumn.resizable = true;
+      currentColumn.reorderable = true;
+      currentColumn.sort_column_id = 0;
+      currentColumn.set_attributes (currentText, "text", 1);
+      currentColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var highText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(currentColumn);
 
-    var highColumn = new Gtk.TreeViewColumn ();
-    highColumn.set_title (_("High"));
-    highColumn.max_width = -1;
-    highColumn.min_width = 100;
-    highColumn.pack_start (highText, false);
-    highColumn.resizable = true;
-    highColumn.reorderable = true;
-    highColumn.sort_column_id = 0;
-    highColumn.set_attributes (highText, "text", 2);
-    highColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var highText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(highColumn);
+      var highColumn = new Gtk.TreeViewColumn ();
+      highColumn.set_title (_("High"));
+      highColumn.max_width = -1;
+      highColumn.min_width = 100;
+      highColumn.pack_start (highText, false);
+      highColumn.resizable = true;
+      highColumn.reorderable = true;
+      highColumn.sort_column_id = 0;
+      highColumn.set_attributes (highText, "text", 2);
+      highColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var lowText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(highColumn);
 
-    var lowColumn = new Gtk.TreeViewColumn ();
-    lowColumn.set_title (_("Low"));
-    lowColumn.max_width = -1;
-    lowColumn.min_width = 100;
-    lowColumn.pack_start (lowText, false);
-    lowColumn.resizable = true;
-    lowColumn.reorderable = true;
-    lowColumn.sort_column_id = 0;
-    lowColumn.set_attributes (lowText, "text", 3);
-    lowColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var lowText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(lowColumn);
+      var lowColumn = new Gtk.TreeViewColumn ();
+      lowColumn.set_title (_("Low"));
+      lowColumn.max_width = -1;
+      lowColumn.min_width = 100;
+      lowColumn.pack_start (lowText, false);
+      lowColumn.resizable = true;
+      lowColumn.reorderable = true;
+      lowColumn.sort_column_id = 0;
+      lowColumn.set_attributes (lowText, "text", 3);
+      lowColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var changeText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(lowColumn);
 
-    var changeColumn = new Gtk.TreeViewColumn ();
-    changeColumn.set_title (_("Change Price (DAY)"));
-    changeColumn.max_width = -1;
-    changeColumn.min_width = 100;
-    changeColumn.pack_start (changeText, false);
-    changeColumn.resizable = true;
-    changeColumn.reorderable = true;
-    changeColumn.sort_column_id = 0;
-    changeColumn.set_attributes (changeText, "text", 4);
-    changeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var changeText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(changeColumn);
+      var changeColumn = new Gtk.TreeViewColumn ();
+      changeColumn.set_title (_("Change Price (DAY)"));
+      changeColumn.max_width = -1;
+      changeColumn.min_width = 100;
+      changeColumn.pack_start (changeText, false);
+      changeColumn.resizable = true;
+      changeColumn.reorderable = true;
+      changeColumn.sort_column_id = 0;
+      changeColumn.set_attributes (changeText, "text", 4);
+      changeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var changePText = new CellRendererText ();
+      this.mainAreaTreeView.append_column(changeColumn);
 
-    var changePColumn = new Gtk.TreeViewColumn ();
-    changePColumn.set_title (_("Change % (DAY)"));
-    changePColumn.max_width = -1;
-    changePColumn.min_width = 75;
-    changePColumn.pack_start (changePText, false);
-    changePColumn.resizable = true;
-    changePColumn.reorderable = true;
-    changePColumn.sort_column_id = 0;
-    changePColumn.set_attributes (changePText, "text", 5);
-    changePColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var changePText = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(changePColumn);
+      var changePColumn = new Gtk.TreeViewColumn ();
+      changePColumn.set_title (_("Change % (DAY)"));
+      changePColumn.max_width = -1;
+      changePColumn.min_width = 75;
+      changePColumn.pack_start (changePText, false);
+      changePColumn.resizable = true;
+      changePColumn.reorderable = true;
+      changePColumn.sort_column_id = 0;
+      changePColumn.set_attributes (changePText, "text", 5);
+      changePColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
-    var lastExchange = new CellRendererText ();
+      this.mainAreaTreeView.append_column(changePColumn);
 
-    var lastExchangeColumn = new Gtk.TreeViewColumn ();
-    lastExchangeColumn.set_title (_("Last Market"));
-    lastExchangeColumn.max_width = -1;
-    lastExchangeColumn.min_width = 100;
-    lastExchangeColumn.pack_start (lastExchange, false);
-    lastExchangeColumn.resizable = true;
-    lastExchangeColumn.reorderable = true;
-    lastExchangeColumn.sort_column_id = 0;
-    lastExchangeColumn.set_attributes (lastExchange, "text", 6);
-    lastExchangeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+      var lastExchange = new CellRendererText ();
 
-    this.mainAreaTreeView.append_column(lastExchangeColumn);
+      var lastExchangeColumn = new Gtk.TreeViewColumn ();
+      lastExchangeColumn.set_title (_("Last Market"));
+      lastExchangeColumn.max_width = -1;
+      lastExchangeColumn.min_width = 100;
+      lastExchangeColumn.pack_start (lastExchange, false);
+      lastExchangeColumn.resizable = true;
+      lastExchangeColumn.reorderable = true;
+      lastExchangeColumn.sort_column_id = 0;
+      lastExchangeColumn.set_attributes (lastExchange, "text", 6);
+      lastExchangeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+
+      this.mainAreaTreeView.append_column(lastExchangeColumn);
+
+    }
 
     for (int i = 0; this.coinAbbrevs.size > i; i++){
 
@@ -594,19 +615,23 @@ public class Crypt: Gtk.Application{
 
               for (int g = 0; coinLimit.coinIds.size > g; g++){
 
-                if ((int)rawPrice >= int.parse(coinLimit.coinHigh.get(g))){
+                if (coinLimit.coinEnabled.get(g) == 1){
 
-                  var notification = new GLib.Notification ((_("Limit Notification! ").concat(coinLimit.coinAbbrvs.get(g))));
-                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(_(" just hit "),coinLimit.coinHigh.get(g),"!")));
-                  this.send_notification ("com.github.dcharles525.crypt", notification);
+                  if (rawPrice >= double.parse(coinLimit.coinHigh.get(g))){
 
-                }
+                    var notification = new GLib.Notification (_("Limit Notification for ").concat(coinLimit.coinAbbrvs.get(g),(_("!"))));
+                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(_(" just hit "),coinLimit.coinHigh.get(g),(_("!")))));
+                    this.send_notification ("com.github.dcharles525.crypt", notification);
 
-                if ((int)rawPrice <= int.parse(coinLimit.coinLow.get(g))){
+                  }
 
-                  var notification = new GLib.Notification ((_("Limit Notification! ").concat(coinLimit.coinAbbrvs.get(g))));
-                  notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(_(" just hit "),coinLimit.coinLow.get(g),"!")));
-                  this.send_notification ("com.github.dcharles525.crypt", notification);
+                  if (rawPrice <= double.parse(coinLimit.coinLow.get(g))){
+
+                    var notification = new GLib.Notification (_("Limit Notification for ").concat(coinLimit.coinAbbrvs.get(g),(_("!"))));
+                    notification.set_body ((coinLimit.coinAbbrvs.get(g).concat(_(" just dropped to "),coinLimit.coinLow.get(g),(_("!")))));
+                    this.send_notification ("com.github.dcharles525.crypt", notification);
+
+                  }
 
                 }
 
@@ -636,7 +661,14 @@ public class Crypt: Gtk.Application{
 
     Gtk.ScrolledWindow scroll = new Gtk.ScrolledWindow (null, null);
     scroll.min_content_height = (int)(800 / 2);
-    scroll.add (this.mainAreaTreeView);
+
+    if (this.firstRun == 0){
+
+      scroll.add (this.mainAreaTreeView);
+      this.firstRun = 1;
+
+    }
+
     scroll.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
     verticalGridBox.pack_start(scroll);
     this.secondaryBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
@@ -660,19 +692,33 @@ public class Crypt: Gtk.Application{
       string coinName = this.coinNames.get(index);
       string coinAbbrev = this.coinAbbrevs.get(index);
 
-      Gtk.Label coinAbbrevLabel = new Gtk.Label(_("Limits for ").concat(coinName));
-      coinAbbrevLabel.xalign = 0;
-
-      Gtk.Label highLabel = new Gtk.Label(_("High Limit"));
-      Entry highLimitEntry = new Entry();
-      Gtk.Label lowLabel = new Gtk.Label(_("Low Limit"));
-      Entry lowLimitEntry = new Entry();
-
       Database database = new Database();
       database.createCheckDirectory();
       CoinLimit coinLimit = database.getLimit(coinAbbrev);
 
+      Gtk.Label coinAbbrevLabel = new Gtk.Label(_("Limits for ").concat(coinName));
+      coinAbbrevLabel.xalign = 0;
+      coinAbbrevLabel.get_style_context().add_class("large-text");
+
+      Gtk.Label highLabel = new Gtk.Label(_("High Limit"));
+      highLabel.xalign = 0;
+      Entry highLimitEntry = new Entry();
+      Gtk.Label lowLabel = new Gtk.Label(_("Low Limit"));
+      lowLabel.xalign = 0;
+      Entry lowLimitEntry = new Entry();
+
+      var modeSwitch = new Granite.ModeSwitch.from_icon_name ("notification-disabled-symbolic", "preferences-system-notifications-symbolic");
+      modeSwitch.primary_icon_tooltip_text = (_("Notifications disabled for coin"));
+      modeSwitch.secondary_icon_tooltip_text = (_("Notifications enabled for coin"));
+      modeSwitch.valign = Gtk.Align.CENTER;
+
       if (coinLimit.coinIds.size > 0){
+
+        if (coinLimit.coinEnabled.get(0) == 1){
+
+          modeSwitch.active = true;
+
+        }
 
         highLimitEntry.set_text(coinLimit.coinHigh.get(0));
         lowLimitEntry.set_text(coinLimit.coinLow.get(0));
@@ -687,6 +733,7 @@ public class Crypt: Gtk.Application{
       dialog.get_content_area().spacing = 7;
       dialog.get_content_area().border_width = 10;
       dialog.get_content_area().pack_start(coinAbbrevLabel,false,false);
+      dialog.get_content_area().pack_start(modeSwitch,false,false);
       dialog.get_content_area().pack_start(highLabel,false,false);
       dialog.get_content_area().pack_start(highLimitEntry,false,false);
       dialog.get_content_area().pack_start(lowLabel,false,false);
@@ -700,7 +747,8 @@ public class Crypt: Gtk.Application{
 
         database = new Database();
         database.createCheckDirectory();
-        database.insertLimit(coinAbbrev,highLimitEntry.get_text(),lowLimitEntry.get_text());
+
+        database.insertLimit(coinAbbrev,highLimitEntry.get_text(),lowLimitEntry.get_text(),modeSwitch.active);
         dialog.close();
 
       });
@@ -882,9 +930,9 @@ public class Crypt: Gtk.Application{
       Gtk.Label ltcLabel = new Gtk.Label (_("Litecoin (LTC)"));
       Gtk.Label ethLabel = new Gtk.Label (_("Etherum (ETH)"));
 
-      Caroline btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
-      Caroline ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
-      Caroline ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      this.btcLineChart = drawClass.drawSmallChartHour("BTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      this.ltcLineChart = drawClass.drawSmallChartHour("LTC",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
+      this.ethLineChart = drawClass.drawSmallChartHour("ETH",((int)this.windowWidth) - 50,(int)(this.windowHeight/3) - 50);
 
       Timeout.add(500,()=>{
         btcLineChart.queue_draw();
@@ -893,35 +941,41 @@ public class Crypt: Gtk.Application{
         return true;
       });
 
-      Gtk.Label chartHomeLabel = new Gtk.Label (_("Last Hour"));
-      chartHomeLabel.get_style_context().add_class("title-text");
+      var chart1ButtonGroup = new ChartButtonGroup().createButtonGroup("BTC",btcLineChart);
+      var chart2ButtonGroup = new ChartButtonGroup().createButtonGroup("LTC",btcLineChart);
+      var chart3ButtonGroup = new ChartButtonGroup().createButtonGroup("ETH",btcLineChart);
 
       Gtk.Box chartBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      chartBox.pack_start (chartHomeLabel, false, false, 0);
-      chartBox.pack_start (btcLineChart);
-      chartBox.pack_start (btcLabel, false, false, 0);
-      chartBox.pack_start (ltcLineChart);
-      chartBox.pack_start (ltcLabel, false, false, 0);
-      chartBox.pack_start (ethLineChart);
-      chartBox.pack_start (ethLabel, false, false, 0);
+      chartBox.pack_start(btcLineChart);
+      chartBox.pack_start(btcLabel, false, false, 0);
+      //chartBox.pack_start(chart1ButtonGroup, false, false, 0);
+      chartBox.pack_start(ltcLineChart);
+      chartBox.pack_start(ltcLabel, false, false, 0);
+      //chartBox.pack_start(chart2ButtonGroup, false, false, 0);
+      chartBox.pack_start(ethLineChart);
+      chartBox.pack_start(ethLabel, false, false, 0);
+      //chartBox.pack_start(chart3ButtonGroup, false, false, 0);
       chartBox.get_style_context().add_class("area");
+
+      this.panelArea = new Gtk.Paned(Gtk.Orientation.HORIZONTAL);
+
+      var width = 0;
+      this.window.get_size(out width,null);
+      this.panelArea.position = width / 2;
+      this.window.configure_event.connect ((event) => {
+        this.panelArea.position = event.width / 2;
+        return false;
+      });
+
+      this.panelArea.add1(chartBox);
 
       this.getMainPageCoins();
       this.getNewsMainPage();
 
-      this.mainGrid.orientation = Gtk.Orientation.HORIZONTAL;
-      this.mainGrid.attach(chartBox,0,0,1,1);
-      this.mainGrid.attach(this.secondaryBox, 1,0,1,1);
-      this.mainGrid.get_style_context().add_class("box");
-      this.mainGrid.set_row_homogeneous(true);
-      this.mainGrid.set_column_homogeneous(true);
-
-      Gtk.Box tempBox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-      tempBox.pack_start(this.toastNetwork);
-      tempBox.pack_start(this.mainGrid);
+      this.panelArea.add2(this.secondaryBox);
 
       Gtk.ScrolledWindow scrolled = new Gtk.ScrolledWindow (null, null);
-      scrolled.add(tempBox);
+      scrolled.add(this.panelArea);
       scrolled.set_max_content_width(1200);
       scrolled.set_min_content_height(500);
 
@@ -941,7 +995,7 @@ public class Crypt: Gtk.Application{
           }
 
           this.spinner.active = true;
-
+          //wrap in button states
           this.currentCoinHour.getPriceDataHour("BTC");
 
           btcLineChart.DATA = this.currentCoinHour.DATA;
@@ -991,7 +1045,6 @@ public class Crypt: Gtk.Application{
       });
 
       this.window.remove (this.deleteBox);
-
       this.window.add(this.notebook);
       this.window.show_all();
 
@@ -1067,6 +1120,10 @@ int main (string[] args){
   addCoinButton.set_tooltip_markup(_("Add coin to global list"));
   addCoinButton.clicked.connect (() => {
 
+    Gtk.Label addCoinLabel = new Gtk.Label (_("Add Coin"));
+    addCoinLabel.xalign = 0;
+    addCoinLabel.get_style_context().add_class("large-text");
+
     Gtk.Label coinNameLabel = new Gtk.Label (_("Coin Name"));
     coinNameLabel.xalign = 0;
 
@@ -1082,9 +1139,6 @@ int main (string[] args){
 
     Gtk.Label validCoinLabel = new Gtk.Label ("");
     validCoinLabel.xalign = 0;
-
-    Gtk.Label addCoinLabel = new Gtk.Label (_("Add Coin"));
-    addCoinLabel.get_style_context().add_class("title-text");
 
     Gtk.Dialog dialog = new Gtk.Dialog ();
     dialog.width_request = 500;
@@ -1112,7 +1166,7 @@ int main (string[] args){
 
         TreeIter iter;
         crypt.listModel.append (out iter);
-        crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, (_("Fetching...")), 2, (_("Fetching...")), 3, (_("Fetching...")), 4, (_("Fetching...")), 5, (_("Fetching...")), 6, (_("Fetching...")));
+        crypt.listModel.set(iter, 0, coinNameEntry.get_text(), 1, _("Fetching Data"), 2, _("Fetching Data"), 3, _("Fetching Data"), 4, _("Fetching Data"), 5, _("Fetching Data"), 6, _("Fetching Data"));
         crypt.spinner.active = true;
         crypt.coinAbbrevs.add(coinAbbrevEntry.get_text());
 
@@ -1162,6 +1216,7 @@ int main (string[] args){
       saveRefreshButton.get_style_context().add_class("button-color");
 
       Gtk.Label settingsLabel = new Gtk.Label (_("Settings"));
+      settingsLabel.xalign = 0;
       settingsLabel.get_style_context().add_class("title-text");
 
       Gtk.Dialog dialog = new Gtk.Dialog ();
@@ -1233,7 +1288,7 @@ int main (string[] args){
 
   notificationImage.pixel_size = 16;
   Gtk.ToolButton notificationButton = new Gtk.ToolButton (notificationImage, null);
-  notificationButton.set_tooltip_markup(_("Limit Notifications"));
+  notificationButton.set_tooltip_markup(_("Global Notifications Toggle"));
 
   notificationButton.clicked.connect (() => {
 
@@ -1272,8 +1327,8 @@ int main (string[] args){
   header.show_close_button = true;
   header.title = windowTitle;
   header.pack_end (settingsButton);
-  header.pack_end (addCoinButton);
   header.pack_end (notificationButton);
+  header.pack_end (addCoinButton);
   header.pack_end (crypt.spinner);
   header.show_all();
   crypt.window.set_titlebar(header);
