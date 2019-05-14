@@ -239,7 +239,8 @@ public class Crypt: Gtk.Application{
         foreach (var news in response.get_elements()) {
 
           var newsObject = news.get_object();
-          var url = newsObject.get_string_member("url").replace ("&", "amp;");
+          var url = newsObject.get_string_member("url");
+          url = url.replace ("&", "amp;");
           Gtk.Label titleLabel = new Gtk.Label (newsObject.get_string_member("title"));
           Gtk.Label linkLabel = new Gtk.Label (url);
           linkLabel.set_markup("<a href='".concat(url,"'>",url,"</a>"));
