@@ -1,0 +1,342 @@
+# Danish translations for com.github.dcharles525.crypt package.
+# Copyright (C) 2019 THE com.github.dcharles525.crypt'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.dcharles525.crypt package.
+# siigdev, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.dcharles525.crypt\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-06 22:10+0100\n"
+"PO-Revision-Date: 2019-06-06 22:15+0100\n"
+"Last-Translator: siigdev\n"
+"Language-Team: \n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/Crypt.vala:16
+msgid "A coin is already loading, wait till that finishes!"
+msgstr ""
+"En Coin indlæses allerede. Vent venligst til den er "
+"færdig!"
+
+#: src/Crypt.vala:113 src/Crypt.vala:335
+msgid "Price: "
+msgstr "Pris: "
+
+#: src/Crypt.vala:114 src/Crypt.vala:336
+msgid "Last Update: "
+msgstr "Sidste opdatering: "
+
+#: src/Crypt.vala:115 src/Crypt.vala:337
+msgid "Last Volume: "
+msgstr "Sidste volumen: "
+
+#: src/Crypt.vala:116 src/Crypt.vala:338
+msgid "Last Volume To: "
+msgstr "Sidste volumen til: "
+
+#: src/Crypt.vala:117 src/Crypt.vala:340
+msgid "Last TradeID: "
+msgstr "Sidste transaktions ID: "
+
+#: src/Crypt.vala:118 src/Crypt.vala:339
+msgid "Volume Day: "
+msgstr "Volumen dag: "
+
+#: src/Crypt.vala:119 src/Crypt.vala:341
+msgid "Volume Day To: "
+msgstr "Volumen dag til: "
+
+#: src/Crypt.vala:120 src/Crypt.vala:343
+msgid "Volume 24 Hour: "
+msgstr "Volumen 24 timer: "
+
+#: src/Crypt.vala:121 src/Crypt.vala:342
+msgid "Volume 24 Hour To: "
+msgstr "Volumen 24 timer til: "
+
+#: src/Crypt.vala:122 src/Crypt.vala:344
+msgid "Open Day: "
+msgstr "Åbning dag: "
+
+#: src/Crypt.vala:123 src/Crypt.vala:345
+msgid "Open High Day: "
+msgstr "Højeste åbning dag: "
+
+#: src/Crypt.vala:124 src/Crypt.vala:346
+msgid "Open Low Day: "
+msgstr "Laveste åbning dag: "
+
+#: src/Crypt.vala:125 src/Crypt.vala:347
+msgid "Open 24h: "
+msgstr "Åbning 24 timer: "
+
+#: src/Crypt.vala:126 src/Crypt.vala:348
+msgid "Open High 24h: "
+msgstr "Højeste åbning 24 timer: "
+
+#: src/Crypt.vala:127 src/Crypt.vala:349
+msgid "Open Low 24h: "
+msgstr "Laveste åbning 24 timer: "
+
+#: src/Crypt.vala:128 src/Crypt.vala:350
+msgid "Last Market: "
+msgstr "Sidste markede: "
+
+#: src/Crypt.vala:129 src/Crypt.vala:351
+msgid "Change Last 24h: "
+msgstr "Forandring sidste 24 timer: "
+
+#: src/Crypt.vala:130 src/Crypt.vala:352
+msgid "Change Percent Last 24h: "
+msgstr "Forandring i procent sidste 24 timer: "
+
+#: src/Crypt.vala:131 src/Crypt.vala:353
+msgid "Change Day: "
+msgstr "Forandring dag: "
+
+#: src/Crypt.vala:132 src/Crypt.vala:354
+msgid "Change Percent Day: "
+msgstr "Forandring i procent dag: "
+
+#: src/Crypt.vala:133 src/Crypt.vala:355
+msgid "Supply: "
+msgstr "Udbud: "
+
+#: src/Crypt.vala:134 src/Crypt.vala:356
+msgid "Market Cap: "
+msgstr "Markedsdækning: "
+
+#: src/Crypt.vala:135 src/Crypt.vala:357
+msgid "Total Volume 24h: "
+msgstr "Total volumen 24 timer: "
+
+#: src/Crypt.vala:136 src/Crypt.vala:358
+msgid "Total Volume 24h To: "
+msgstr "Total volumen 24 timer til: "
+
+#: src/Crypt.vala:226 src/Crypt.vala:835
+msgid "Current News"
+msgstr "Aktuelle nyheder"
+
+#: src/Crypt.vala:271 src/Crypt.vala:1036 src/Crypt.vala:1057
+msgid "Whoops!"
+msgstr "Ups!"
+
+#: src/Crypt.vala:271 src/Crypt.vala:1036
+msgid ""
+"Looks like you're not connected to a network, after connecting the app will "
+"refresh (based on your refresh rate)!"
+msgstr ""
+"Det ser ud til du ikke er tilsluttet et netværk. Når du er tilsluttet vil "
+"applikanten opdatere (baseret på din opdateringshastighed)!"
+
+#: src/Crypt.vala:299
+msgid "Minute"
+msgstr "Minut"
+
+#: src/Crypt.vala:301
+msgid "Day"
+msgstr "Dag"
+
+#: src/Crypt.vala:303
+msgid "Week"
+msgstr "Uge"
+
+#: src/Crypt.vala:417
+msgid "Quick Price Lookup"
+msgstr "Hurtigt prischeck"
+
+#: src/Crypt.vala:436
+msgid "Set Limit Notifications"
+msgstr "Set notifikationsbegrænsning"
+
+#: src/Crypt.vala:443
+msgid "Open Detailed Info"
+msgstr "Opdater detaljerede informationer"
+
+#: src/Crypt.vala:449
+msgid "Delete"
+msgstr "Slet"
+
+#: src/Crypt.vala:479
+msgid "Coin"
+msgstr "Coin"
+
+#: src/Crypt.vala:494
+msgid "Current"
+msgstr "Nuværende"
+
+#: src/Crypt.vala:509
+msgid "High"
+msgstr "Høj"
+
+#: src/Crypt.vala:524
+msgid "Low"
+msgstr "Lav"
+
+#: src/Crypt.vala:539
+msgid "Change Price (DAY)"
+msgstr "Prisforandring (DAG)"
+
+#: src/Crypt.vala:554
+msgid "Change % (DAY)"
+msgstr "Forandring % (DAG)"
+
+#: src/Crypt.vala:569
+msgid "Last Market"
+msgstr "Sidste marked"
+
+#: src/Crypt.vala:622 src/Crypt.vala:630
+msgid "Limit Notification for "
+msgstr "Begræns notifikationer for "
+
+#: src/Crypt.vala:622 src/Crypt.vala:623 src/Crypt.vala:630 src/Crypt.vala:631
+msgid "!"
+msgstr ""
+
+#: src/Crypt.vala:623
+msgid " just hit "
+msgstr " har lige ramt "
+
+#: src/Crypt.vala:631
+msgid " just dropped to "
+msgstr " er lige faldet til "
+
+#: src/Crypt.vala:699
+msgid "Limits for "
+msgstr "Begrænsning for: "
+
+#: src/Crypt.vala:703
+msgid "High Limit"
+msgstr "Øvre grænse"
+
+#: src/Crypt.vala:706
+msgid "Low Limit"
+msgstr "Nedre grænse"
+
+#: src/Crypt.vala:711
+msgid "Notifications disabled for coin"
+msgstr "Notifikationer er deaktiveret for Coin"
+
+#: src/Crypt.vala:712
+msgid "Notifications enabled for coin"
+msgstr "Notifikationer er aktiveret for Coin"
+
+#: src/Crypt.vala:728 src/Crypt.vala:1137 src/Crypt.vala:1202
+#: src/Crypt.vala:1215
+msgid "Save"
+msgstr "Gem"
+
+#: src/Crypt.vala:921
+msgid "Welcome to Crypt!"
+msgstr "Velkommen til Crypt!"
+
+#: src/Crypt.vala:921
+msgid "Just downloading the latest data, this could take a second or two."
+msgstr ""
+"Downloader det nyeste data. Dette kan tage et sekund eller to."
+
+#: src/Crypt.vala:927
+msgid "Home"
+msgstr "Hjem"
+
+#: src/Crypt.vala:929
+msgid "Bitcoin (BTC)"
+msgstr "Bitcoin (BTC)"
+
+#: src/Crypt.vala:930
+msgid "Litecoin (LTC)"
+msgstr "Litecoin (LTC)"
+
+#: src/Crypt.vala:931
+msgid "Etherum (ETH)"
+msgstr "Ethereum (ETH)"
+
+#: src/Crypt.vala:1057
+msgid ""
+"Looks like you're not connected to a network, restart the app after "
+"reconnecting!"
+msgstr ""
+"Det ser ud til du ikke er tilsluttet et netværk. Genstart applikationen "
+"efter du er tilsluttet!"
+
+#: src/Crypt.vala:1114
+msgid "Crypt"
+msgstr "Crypt"
+
+#: src/Crypt.vala:1120
+msgid "Add coin to global list"
+msgstr "Tilføj Coin til global"
+
+#: src/Crypt.vala:1123
+msgid "Add Coin"
+msgstr "Tilføj Coin"
+
+#: src/Crypt.vala:1127
+msgid "Coin Name"
+msgstr "Coin navn"
+
+#: src/Crypt.vala:1132
+msgid "Coin Abbreviation"
+msgstr "Coin forkortelse"
+
+#: src/Crypt.vala:1169
+msgid "Fetching Data"
+msgstr "Henter information"
+
+#: src/Crypt.vala:1175
+msgid "Whoops, that isn't a valid coin!"
+msgstr "Ups, denne coin findes ikke!"
+
+#: src/Crypt.vala:1186
+msgid "Preferences"
+msgstr "Præferencer"
+
+#: src/Crypt.vala:1196
+msgid "Set Default Currency (Tested with USD,GBP,EUR)"
+msgstr "Set standard enhed (Testet med USD, GBP, EUR)"
+
+#: src/Crypt.vala:1209
+msgid "Set the refresh rate (in seconds)"
+msgstr "Sæt opdateringshastighed (i secondes)"
+
+#: src/Crypt.vala:1218
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: src/Crypt.vala:1243
+msgid "Settings Saved! Restarting the app is recommended!"
+msgstr "Indstillinger gemt! En genstart af applikationen anbefales!"
+
+#: src/Crypt.vala:1251
+msgid "Refresh rate saved! Restarting the app is recommended!"
+msgstr ""
+"opdateringshastighed er gemt! En genstart af applikationen "
+"anbefales!"
+
+#: src/Crypt.vala:1261
+msgid "Settings schema isn't installed properly, reinstall app."
+msgstr ""
+"Indstillingsskemaet er ikke installeret korrekt. Geninstaller "
+"applikationen."
+
+#: src/Crypt.vala:1291
+msgid "Global Notifications Toggle"
+msgstr "Toggle globale notifikationer"
+
+#: src/Caroline.vala:270
+msgid "High: "
+msgstr "Høj: "
+
+#: src/Caroline.vala:293
+msgid "Low: "
+msgstr "Lav: "
+
+#: src/Caroline.vala:316
+msgid "Current: "
+msgstr "Nuværende: "
