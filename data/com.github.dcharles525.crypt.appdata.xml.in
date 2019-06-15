@@ -35,6 +35,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release version="1.6.1" date="2019-06-08">
+      <description>
+        <p>Danish Translations thanks to @siigdev</p>
+      </description>
+    </release>
     <release version="1.6.0" date="2019-05-08">
       <description>
         <p>Limit Notifications (right click on the table)</p>
