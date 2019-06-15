@@ -27,6 +27,7 @@ public class Coin{
   public string mCap {get; set;}
   public string totalVolume24Hour {get; set;}
   public string totalVolume24HTo {get; set;}
+  public double rawPrice {get; set;}
 
   public double[] DATA { get; set; }
   public double[] HIGH { get; set; }
@@ -48,7 +49,7 @@ public class Coin{
 
     }else{
 
-      defaultCoin = "BTC";
+      defaultCoin = "USD";
 
     }
 
@@ -121,7 +122,7 @@ public class Coin{
 
     }else{
 
-      defaultCoin = "BTC";
+      defaultCoin = "USD";
 
     }
 
@@ -188,7 +189,7 @@ public class Coin{
 
     }else{
 
-      defaultCoin = "BTC";
+      defaultCoin = "USD";
 
     }
 
@@ -255,7 +256,7 @@ public class Coin{
 
     }else{
 
-      defaultCoin = "BTC";
+      defaultCoin = "USD";
 
     }
 
@@ -297,6 +298,55 @@ public class Coin{
         }catch (Error e) {
 
           stderr.printf ("Something is wrong in getPriceData");
+
+        }
+
+        loop.quit();
+
+      }
+
+    });
+
+    loop.run();
+
+  }
+
+  public void getCurrentPrice(string coin){
+
+    var settings = new GLib.Settings ("com.github.dcharles525.crypt");
+    string defaultCoin = "";
+    double price = 0;
+
+    if (settings != null){
+
+      defaultCoin = settings.get_value("main-coin").get_string();
+
+    }else{
+
+      defaultCoin = "USD";
+
+    }
+
+    MainLoop loop = new MainLoop ();
+
+    Soup.Session session = new Soup.Session();
+    Soup.Message message = new Soup.Message("GET", "https://min-api.cryptocompare.com/data/pricemulti?fsyms=".concat(coin,"&tsyms=",defaultCoin));
+
+    session.queue_message (message, (sess, message) => {
+
+      if (message.status_code == 200) {
+
+        try {
+
+          var parser = new Json.Parser ();
+          parser.load_from_data((string) message.response_body.flatten().data, -1);
+          var root_object = parser.get_root ().get_object ();
+          var data = root_object.get_object_member (coin);
+          this.rawPrice = data.get_double_member("USD");
+
+        }catch (Error e) {
+
+          stderr.printf ("Something is wrong in coin");
 
         }
 

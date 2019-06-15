@@ -30,12 +30,14 @@ public class Database: GLib.Object {
       openDatabase();
       prepareCoinListDatabase();
       prepareCoinLimitDatabase();
+      prepareWalletDatabase();
 
     } else {
 
       openDatabase();
       prepareCoinListDatabase();
       prepareCoinLimitDatabase();
+      prepareWalletDatabase();
       insertCoin("Bitcoin","BTC");
 
     }
@@ -111,6 +113,35 @@ public class Database: GLib.Object {
 
   }
 
+  private void prepareWalletDatabase(){
+
+    string query = """
+      CREATE TABLE wallet (
+        id                 INTEGER PRIMARY KEY,
+        coin_type          TEXT,
+        coin_abbrv         TEXT,
+        coin_amount        TEXT,
+        coin_buy_price     TEXT,
+        coin_current_price TEXT
+      );
+    """;
+
+    string error;
+    int ec = this.database.exec (query, null, out error);
+
+    if(ec != Sqlite.OK) {
+
+      //stderr.printf("Can't use CREATE, Error: %s", error);
+
+    }else{
+
+      stderr.printf("Can't use CREATE, Error: %d", ec);
+
+    }
+
+  }
+
+  //For coin list
   public void insertCoin (string coinTitle, string coinAbbrv) {
 
     Sqlite.Statement stmt;
@@ -199,6 +230,7 @@ public class Database: GLib.Object {
 
   }
 
+  //For limit list
   public void insertLimit (string coinAbbrv, string high, string low, bool enabled) {
 
     CoinLimit coinLimit = getLimit(coinAbbrv);
@@ -345,6 +377,111 @@ public class Database: GLib.Object {
 
     stmt.reset();
     return coinLimit;
+
+  }
+
+  //For wallet
+
+  public void insertWallet(string type, string coinAbbrv, string amount, string priceAtPurchase, string currentPrice){
+
+    Sqlite.Statement stmt;
+
+    string query = "INSERT INTO wallet (coin_type, coin_abbrv, coin_amount, coin_buy_price, coin_current_price) VALUES
+    ($COINTYPE, $COINABBRV, $COINAMOUNT, $COINBUYPRICE, $COINCURRENTPRICE);";
+    int ec = this.database.prepare_v2 (query, query.length, out stmt);
+
+    if (ec != Sqlite.OK) {
+
+      stderr.printf("Error inserting clipboard entry HERE: %s\n", this.database.errmsg());
+      return;
+
+    }
+
+    int param_position = stmt.bind_parameter_index ("$COINTYPE");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, type);
+
+    param_position = stmt.bind_parameter_index ("$COINABBRV");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, coinAbbrv);
+
+    param_position = stmt.bind_parameter_index ("$COINAMOUNT");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, amount);
+
+    param_position = stmt.bind_parameter_index ("$COINBUYPRICE");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, priceAtPurchase);
+
+    param_position = stmt.bind_parameter_index ("$COINCURRENTPRICE");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, currentPrice);
+
+    ec = stmt.step();
+
+    if (ec != Sqlite.DONE) {
+
+      stderr.printf("Error inserting clipboard entry: %s\n", this.database.errmsg());
+
+    }
+
+  }
+
+  public WalletStorage getWallet(){
+
+    Sqlite.Statement stmt;
+    WalletStorage wallet = new WalletStorage();
+
+    const string query = "SELECT * FROM wallet ORDER BY id ASC";
+	  int ec = this.database.prepare_v2 (query, query.length, out stmt);
+
+	  if (ec != Sqlite.OK) {
+
+	    stderr.printf("Error fetching clipboard entries: %s\n", this.database.errmsg ());
+      return wallet;
+
+    }
+
+    while ((ec = stmt.step ()) == Sqlite.ROW) {
+
+      wallet.coinIds.add(stmt.column_int(0));
+      wallet.coinTypes.add(stmt.column_text(1));
+      wallet.coinAbbrvs.add(stmt.column_text(2));
+      wallet.coinAmounts.add(stmt.column_double(3));
+      wallet.coinPurchasePrices.add(stmt.column_double(4));
+      wallet.coinPrices.add(stmt.column_double(5));
+
+		}
+
+    return wallet;
+
+  }
+
+  public void deleteWalletCoin(int coinId){
+
+    Sqlite.Statement stmt;
+
+    string query = "DELETE FROM `wallet` WHERE id = $COINID;";
+    int ec = this.database.prepare_v2 (query, query.length, out stmt);
+
+    if (ec != Sqlite.OK) {
+
+	    stderr.printf("Error deleting: %s\n", this.database.errmsg());
+	    return;
+
+    }
+
+    int param_position = stmt.bind_parameter_index ("$COINID");
+    assert (param_position > 0);
+    stmt.bind_int (param_position, coinId);
+
+    ec = stmt.step();
+
+		if (ec != Sqlite.DONE) {
+
+			stderr.printf("Error deleting clipboard entry: %s\n", this.database.errmsg());
+
+    }
 
   }
 

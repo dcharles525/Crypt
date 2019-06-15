@@ -38,7 +38,7 @@ public class Crypt: Gtk.Application{
   public bool networkAccess = false;
   public ArrayList<string> coinNames = new ArrayList<string>();
   public ArrayList<string> coinAbbrevs = new ArrayList<string>();
-  public int refreshRate = 30;
+  public int refreshRate = 60;
   public int notificationValue = 1;
   private int firstRun = 0;
   public Caroline btcLineChart;
@@ -87,6 +87,10 @@ public class Crypt: Gtk.Application{
 
     .button-color{
       background-image: linear-gradient( #00aeae, #1aaeae);
+    }
+
+    .button-color-sell{
+      background-image: linear-gradient( #ea221f, #ea3c1f);
     }
 
     .table{
@@ -1182,7 +1186,7 @@ int main (string[] args){
   });
 
   Gtk.Image settingsImage = new Gtk.Image.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-  settingsImage.pixel_size = 16;
+  settingsImage.pixel_size = 14;
   Gtk.ToolButton settingsButton = new Gtk.ToolButton (settingsImage, null);
   settingsButton.set_tooltip_markup(_("Preferences"));
   settingsButton.clicked.connect (() => {
@@ -1268,6 +1272,9 @@ int main (string[] args){
 
   });
 
+  Gtk.Image walletImage = new Gtk.Image.from_icon_name ("payment-card-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+  walletImage.pixel_size = 14;
+
   settings = new GLib.Settings ("com.github.dcharles525.crypt");
   Gtk.Image notificationImage = new Gtk.Image.from_icon_name ("preferences-system-notifications-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
 
@@ -1287,7 +1294,7 @@ int main (string[] args){
 
   }
 
-  notificationImage.pixel_size = 16;
+  notificationImage.pixel_size = 14;
   Gtk.ToolButton notificationButton = new Gtk.ToolButton (notificationImage, null);
   notificationButton.set_tooltip_markup(_("Global Notifications Toggle"));
 
@@ -1303,7 +1310,7 @@ int main (string[] args){
 
         settings.set_value("notifications",0);
         notificationImage = new Gtk.Image.from_icon_name ("notification-disabled-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-        notificationImage.pixel_size = 16;
+        notificationImage.pixel_size = 14;
         notificationButton.set_icon_widget(notificationImage);
         header.show_all();
 
@@ -1313,7 +1320,7 @@ int main (string[] args){
 
         settings.set_value("notifications",1);
         notificationImage = new Gtk.Image.from_icon_name ("preferences-system-notifications-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-        notificationImage.pixel_size = 16;
+        notificationImage.pixel_size = 14;
         notificationButton.set_icon_widget(notificationImage);
         header.show_all();
 
@@ -1325,8 +1332,15 @@ int main (string[] args){
 
   });
 
+  Wallet wallet = new Wallet();
+  crypt.notebook.append_page(wallet.buildTable(),new Gtk.Label (_("Wallet")));
+  wallet.insertRows();
+  Gtk.Label walletTotalLabel = new Gtk.Label(wallet.buildTotalText());
+
   header.show_close_button = true;
   header.title = windowTitle;
+  header.pack_start (walletImage);
+  header.pack_start (walletTotalLabel);
   header.pack_end (settingsButton);
   header.pack_end (notificationButton);
   header.pack_end (addCoinButton);
@@ -1338,6 +1352,14 @@ int main (string[] args){
     crypt.m.quit();
     Gtk.main_quit();
     //indicator.visible = false;
+  });
+
+  Timeout.add (crypt.refreshRate * 1000, () => {
+
+    walletTotalLabel.label = wallet.buildTotalText();
+
+    return true;
+
   });
 
   crypt.spinner.active = true;
