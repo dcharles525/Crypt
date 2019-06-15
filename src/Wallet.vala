@@ -267,11 +267,11 @@ public class Wallet{
     this.total = tempTotal;
 
     this.listModel.append (out iter);
-    this.listModel.set(iter, 0, "", 1, "Total Wallet Value: ", 2, this.buildTotalText(),
+    this.listModel.set(iter, 0, "", 1, _("Total Wallet Value: "), 2, this.buildTotalText(),
     3, "---", 4, "---", 5, "---");
 
     this.listModel.append (out iter);
-    this.listModel.set(iter, 0, "", 1, "Total Gain/Losss Value: ", 2, "$".concat(tempGainLoss.to_string()),
+    this.listModel.set(iter, 0, "", 1, _("Total Gain/Losss Value: "), 2, "$".concat(tempGainLoss.to_string()),
     3, "---", 4, "---", 5, "---");
 
   }
