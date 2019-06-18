@@ -118,6 +118,7 @@ public class Database: GLib.Object {
     string query = """
       CREATE TABLE wallet (
         id                 INTEGER PRIMARY KEY,
+        coin_date          TEXT,
         coin_type          TEXT,
         coin_abbrv         TEXT,
         coin_amount        TEXT,
@@ -381,13 +382,14 @@ public class Database: GLib.Object {
   }
 
   //For wallet
-
-  public void insertWallet(string type, string coinAbbrv, string amount, string priceAtPurchase, string currentPrice){
+  public void insertWallet(string date, string type, string coinAbbrv, string amount,
+  string priceAtPurchase, string currentPrice){
 
     Sqlite.Statement stmt;
 
-    string query = "INSERT INTO wallet (coin_type, coin_abbrv, coin_amount, coin_buy_price, coin_current_price) VALUES
-    ($COINTYPE, $COINABBRV, $COINAMOUNT, $COINBUYPRICE, $COINCURRENTPRICE);";
+    string query = "INSERT INTO wallet (coin_date, coin_type, coin_abbrv, coin_amount,
+    coin_buy_price, coin_current_price) VALUES ($COINDATE, $COINTYPE, $COINABBRV,
+    $COINAMOUNT, $COINBUYPRICE, $COINCURRENTPRICE);";
     int ec = this.database.prepare_v2 (query, query.length, out stmt);
 
     if (ec != Sqlite.OK) {
@@ -397,7 +399,11 @@ public class Database: GLib.Object {
 
     }
 
-    int param_position = stmt.bind_parameter_index ("$COINTYPE");
+    int param_position = stmt.bind_parameter_index ("$COINDATE");
+    assert (param_position > 0);
+    stmt.bind_text (param_position, date);
+
+    param_position = stmt.bind_parameter_index ("$COINTYPE");
     assert (param_position > 0);
     stmt.bind_text (param_position, type);
 
@@ -432,7 +438,7 @@ public class Database: GLib.Object {
     Sqlite.Statement stmt;
     WalletStorage wallet = new WalletStorage();
 
-    const string query = "SELECT * FROM wallet ORDER BY id ASC";
+    const string query = "SELECT * FROM wallet ORDER BY id DESC";
 	  int ec = this.database.prepare_v2 (query, query.length, out stmt);
 
 	  if (ec != Sqlite.OK) {
@@ -445,11 +451,12 @@ public class Database: GLib.Object {
     while ((ec = stmt.step ()) == Sqlite.ROW) {
 
       wallet.coinIds.add(stmt.column_int(0));
-      wallet.coinTypes.add(stmt.column_text(1));
-      wallet.coinAbbrvs.add(stmt.column_text(2));
-      wallet.coinAmounts.add(stmt.column_double(3));
-      wallet.coinPurchasePrices.add(stmt.column_double(4));
-      wallet.coinPrices.add(stmt.column_double(5));
+      wallet.coinDates.add(stmt.column_text(1));
+      wallet.coinTypes.add(stmt.column_text(2));
+      wallet.coinAbbrvs.add(stmt.column_text(3));
+      wallet.coinAmounts.add(stmt.column_double(4));
+      wallet.coinPurchasePrices.add(stmt.column_double(5));
+      wallet.coinPrices.add(stmt.column_double(6));
 
 		}
 

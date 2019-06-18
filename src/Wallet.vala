@@ -95,9 +95,24 @@ public class Wallet{
     this.walletTreeView.activate_on_single_click = true;
     this.walletTreeView.get_style_context().add_class("table");
 
-    this.listModel = new Gtk.ListStore (6, typeof (string), typeof (string),
-    typeof (string), typeof (string), typeof (string), typeof (string));
+    this.listModel = new Gtk.ListStore (7, typeof (string), typeof (string),
+    typeof (string), typeof (string), typeof (string), typeof (string), typeof (string));
     this.walletTreeView.set_model (listModel);
+
+    var dateText = new CellRendererText ();
+
+    var dateColumn = new Gtk.TreeViewColumn ();
+    dateColumn.set_title (_("Date"));
+    dateColumn.max_width = -1;
+    dateColumn.min_width = 100;
+    dateColumn.pack_start (dateText, false);
+    dateColumn.resizable = true;
+    dateColumn.reorderable = true;
+    dateColumn.sort_column_id = 0;
+    dateColumn.set_attributes (dateText, "text", 0);
+    dateColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
+
+    this.walletTreeView.append_column(dateColumn);
 
     var typeText = new CellRendererText ();
 
@@ -109,7 +124,7 @@ public class Wallet{
     typeColumn.resizable = true;
     typeColumn.reorderable = true;
     typeColumn.sort_column_id = 0;
-    typeColumn.set_attributes (typeText, "text", 0);
+    typeColumn.set_attributes (typeText, "text", 1);
     typeColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
     this.walletTreeView.append_column(typeColumn);
@@ -124,7 +139,7 @@ public class Wallet{
     coinColumn.resizable = true;
     coinColumn.reorderable = true;
     coinColumn.sort_column_id = 0;
-    coinColumn.set_attributes (labelText, "text", 1);
+    coinColumn.set_attributes (labelText, "text", 2);
     coinColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
     this.walletTreeView.append_column(coinColumn);
@@ -139,7 +154,7 @@ public class Wallet{
     gainLossColumn.resizable = true;
     gainLossColumn.reorderable = true;
     gainLossColumn.sort_column_id = 0;
-    gainLossColumn.set_attributes (gainLossText, "text", 2);
+    gainLossColumn.set_attributes (gainLossText, "text", 3);
     gainLossColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
     this.walletTreeView.append_column(gainLossColumn);
@@ -154,7 +169,7 @@ public class Wallet{
     quantityColumn.resizable = true;
     quantityColumn.reorderable = true;
     quantityColumn.sort_column_id = 0;
-    quantityColumn.set_attributes (quantityText, "text", 3);
+    quantityColumn.set_attributes (quantityText, "text", 4);
     quantityColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
     this.walletTreeView.append_column(quantityColumn);
@@ -169,7 +184,7 @@ public class Wallet{
     enterPriceColumn.resizable = true;
     enterPriceColumn.reorderable = true;
     enterPriceColumn.sort_column_id = 0;
-    enterPriceColumn.set_attributes (enterPriceText, "text", 4);
+    enterPriceColumn.set_attributes (enterPriceText, "text", 5);
     enterPriceColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
     this.walletTreeView.append_column(enterPriceColumn);
@@ -184,7 +199,7 @@ public class Wallet{
     coinPriceColumn.resizable = true;
     coinPriceColumn.reorderable = true;
     coinPriceColumn.sort_column_id = 0;
-    coinPriceColumn.set_attributes (coinPriceText, "text", 5);
+    coinPriceColumn.set_attributes (coinPriceText, "text", 6);
     coinPriceColumn.set_sizing (Gtk.TreeViewColumnSizing.FIXED);
 
     this.walletTreeView.append_column(coinPriceColumn);
@@ -259,20 +274,20 @@ public class Wallet{
       }
 
       this.listModel.append (out iter);
-      this.listModel.set(iter, 0, walletList.coinTypes.get(i), 1,walletList.coinAbbrvs.get(i), 2, "$".concat(diff.to_string()),
-      3, coinQuantity.to_string(), 4, walletList.coinPurchasePrices.get(i).to_string(), 5, coin.rawPrice.to_string());
+      this.listModel.set(iter, 0, walletList.coinDates.get(i), 1, walletList.coinTypes.get(i), 2,walletList.coinAbbrvs.get(i), 3, "$".concat(diff.to_string()),
+      4, coinQuantity.to_string(), 5, walletList.coinPurchasePrices.get(i).to_string(), 6, coin.rawPrice.to_string());
 
     }
 
     this.total = tempTotal;
 
     this.listModel.append (out iter);
-    this.listModel.set(iter, 0, "", 1, _("Total Wallet Value: "), 2, this.buildTotalText(),
-    3, "---", 4, "---", 5, "---");
+    this.listModel.set(iter, 0, "", 1, "", 2, _("Total Wallet Value: "), 3, this.buildTotalText(),
+    4, "---", 5, "---", 6, "---");
 
     this.listModel.append (out iter);
-    this.listModel.set(iter, 0, "", 1, _("Total Gain/Losss Value: "), 2, "$".concat(tempGainLoss.to_string()),
-    3, "---", 4, "---", 5, "---");
+    this.listModel.set(iter, 0, "", 1, "", 2, _("Total Gain/Losss Value: "), 3, "$".concat(tempGainLoss.to_string()),
+    4, "---", 5, "---", 6, "---");
 
   }
 
@@ -284,6 +299,9 @@ public class Wallet{
     Gtk.Label coinLabel = new Gtk.Label(_("Coin Abbreviation"));
     coinLabel.xalign = 0;
     Entry coinAbbrevEntry = new Entry();
+
+    Gtk.Label dateLabel = new Gtk.Label(_("Date Bought"));
+    Granite.Widgets.DatePicker datePicker = new Granite.Widgets.DatePicker();
 
     Gtk.Label coinAmountLabel = new Gtk.Label(_("Coin Amount"));
     coinAmountLabel.xalign = 0;
@@ -301,6 +319,8 @@ public class Wallet{
     dialog.get_content_area().spacing = 7;
     dialog.get_content_area().border_width = 10;
     dialog.get_content_area().pack_start(mainLabel,false,false);
+    dialog.get_content_area().pack_start(dateLabel,false,false);
+    dialog.get_content_area().pack_start(datePicker,false,false);
     dialog.get_content_area().pack_start(coinLabel,false,false);
     dialog.get_content_area().pack_start(coinAbbrevEntry,false,false);
     dialog.get_content_area().pack_start(coinAmountLabel,false,false);
@@ -322,7 +342,7 @@ public class Wallet{
 
         coin.getCoinInfoFull(coinAbbrevEntry.get_text());
 
-        database.insertWallet("buy",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
+        database.insertWallet(Granite.DateTime.get_relative_datetime(datePicker.date),"buy",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
         coinPricePurchase.get_text(),(string)coin.price);
 
         dialog.close();
@@ -343,6 +363,9 @@ public class Wallet{
     coinLabel.xalign = 0;
     Entry coinAbbrevEntry = new Entry();
 
+    Gtk.Label dateLabel = new Gtk.Label(_("Date Bought"));
+    Granite.Widgets.DatePicker datePicker = new Granite.Widgets.DatePicker();
+
     Gtk.Label coinAmountLabel = new Gtk.Label(_("Coin Amount"));
     coinAmountLabel.xalign = 0;
     Entry coinAmountEntry = new Entry();
@@ -359,6 +382,8 @@ public class Wallet{
     dialog.get_content_area().spacing = 7;
     dialog.get_content_area().border_width = 10;
     dialog.get_content_area().pack_start(mainLabel,false,false);
+    dialog.get_content_area().pack_start(dateLabel,false,false);
+    dialog.get_content_area().pack_start(datePicker,false,false);
     dialog.get_content_area().pack_start(coinLabel,false,false);
     dialog.get_content_area().pack_start(coinAbbrevEntry,false,false);
     dialog.get_content_area().pack_start(coinAmountLabel,false,false);
@@ -378,7 +403,7 @@ public class Wallet{
 
       if (coin.checkCoin(coinAbbrevEntry.get_text()) == 1){
 
-        database.insertWallet("sell",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
+        database.insertWallet(Granite.DateTime.get_relative_datetime(datePicker.date),"sell",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
         "",coinSellEntry.get_text());
 
         dialog.close();
