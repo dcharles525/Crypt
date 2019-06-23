@@ -1384,7 +1384,7 @@ int main (string[] args){
 
       int currentPage = crypt.notebook.get_current_page();
 
-      if (currentPage != 0){
+      if (currentPage != 0 && currentPage != (crypt.notebook.get_n_pages() - 1)){
 
         crypt.notebook.remove_page(currentPage);
 
