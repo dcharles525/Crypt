@@ -301,6 +301,7 @@ public class Wallet{
     Entry coinAbbrevEntry = new Entry();
 
     Gtk.Label dateLabel = new Gtk.Label(_("Date Bought"));
+    dateLabel.xalign = 0;
     Granite.Widgets.DatePicker datePicker = new Granite.Widgets.DatePicker();
 
     Gtk.Label coinAmountLabel = new Gtk.Label(_("Coin Amount"));
@@ -334,6 +335,10 @@ public class Wallet{
 
     addWalletButton.clicked.connect (() => {
 
+      int year, month, day;
+      datePicker.date.get_ymd(out year, out month, out day);
+      string date = month.to_string().concat("-",day.to_string(),"-",year.to_string());
+
       Database database = new Database();
       database.createCheckDirectory();
       Coin coin = new Coin();
@@ -341,8 +346,7 @@ public class Wallet{
       if (coin.checkCoin(coinAbbrevEntry.get_text()) == 1){
 
         coin.getCoinInfoFull(coinAbbrevEntry.get_text());
-
-        database.insertWallet(Granite.DateTime.get_relative_datetime(datePicker.date),"buy",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
+        database.insertWallet(date,"buy",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
         coinPricePurchase.get_text(),(string)coin.price);
 
         dialog.close();
@@ -397,13 +401,17 @@ public class Wallet{
 
     sellWalletButton.clicked.connect (() => {
 
+      int year, month, day;
+      datePicker.date.get_ymd(out year, out month, out day);
+      string date = month.to_string().concat("-",day.to_string(),"-",year.to_string());
+
       Database database = new Database();
       database.createCheckDirectory();
       Coin coin = new Coin();
 
       if (coin.checkCoin(coinAbbrevEntry.get_text()) == 1){
 
-        database.insertWallet(Granite.DateTime.get_relative_datetime(datePicker.date),"sell",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
+        database.insertWallet(date,"sell",coinAbbrevEntry.get_text(),coinAmountEntry.get_text(),
         "",coinSellEntry.get_text());
 
         dialog.close();
@@ -419,7 +427,16 @@ public class Wallet{
 
     string tempWalletTotal = this.total.to_string();
     string[] priceSplit = tempWalletTotal.split (".");
-    tempWalletTotal = "$".concat(priceSplit[0],".",priceSplit[1].substring(0, 2));
+
+    if (priceSplit[1] != null){
+
+      tempWalletTotal = "$".concat(priceSplit[0],".",priceSplit[1].substring(0, 2));
+
+    }else{
+
+      tempWalletTotal = "$0";
+
+    }
 
     return tempWalletTotal;
 
