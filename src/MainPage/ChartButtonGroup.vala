@@ -7,9 +7,9 @@ public class ChartButtonGroup{
   public Granite.Widgets.ModeButton createButtonGroup(string coinAbbrev, Caroline chart){
 
     var modeButton = new Granite.Widgets.ModeButton ();
-    modeButton.append_text ("Hour");
-    modeButton.append_text ("Day");
-    modeButton.append_text ("Week");
+    modeButton.append_text (_("Hour"));
+    modeButton.append_text (_("Day"));
+    modeButton.append_text (_("Week"));
     modeButton.set_active(0);
 
     modeButton.mode_changed.connect (mode => {
