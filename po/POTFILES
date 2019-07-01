@@ -1,2 +1,9 @@
-src/Crypt.vala
+src/Indicator/CoinListWidget.vala
+src/Indicator/Indicator.vala
+
+src/MainPage/ChartButtonGroup.vala
+src/MainPage/MainPageCharts.vala
+
 src/Caroline.vala
+src/Crypt.vala
+src/Wallet.vala

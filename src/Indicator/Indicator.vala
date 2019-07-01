@@ -16,7 +16,7 @@ public class Indicator : Wingpanel.Indicator {
   construct {
 
     this.visible = false;
-    display_widget = new Gtk.Label ("Loading");
+    display_widget = new Gtk.Label (_("Loading"));
 
     var hide_button = new Gtk.ModelButton ();
     hide_button.text = _("Close");

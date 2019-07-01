@@ -5,7 +5,7 @@ public class CoinListWidget : Gtk.Box {
   construct {
 
     var currentCoin = new Coin();
-    priceLabel = new Gtk.Label ("Loading");
+    priceLabel = new Gtk.Label (_("Loading"));
     pack_start (priceLabel);
 
     currentCoin.getCoinInfoFull("BTC");
