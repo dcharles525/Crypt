@@ -265,7 +265,7 @@ msgstr "Notificações ativadas para a moeda"
 #: src/Crypt.vala:733 src/Crypt.vala:1142 src/Crypt.vala:1207
 #: src/Crypt.vala:1220
 msgid "Save"
-msgstr "Gravar"
+msgstr "Guardar"
 
 #: src/Crypt.vala:926
 msgid "Welcome to Crypt!"
