@@ -1,0 +1,431 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.dcharles525.crypt package.
+# André Barata <andretiagob@protonmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.dcharles525.crypt\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-28 17:57+0200\n"
+"PO-Revision-Date: 2020-08-20 23:58+0100\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"Last-Translator: André Barata <andretiagob@protonmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: pt\n"
+
+#: src/Indicator/CoinListWidget.vala:8 src/Indicator/Indicator.vala:19
+msgid "Loading"
+msgstr "A carregar"
+
+#: src/Indicator/Indicator.vala:10
+msgid "Price Indicator"
+msgstr "Indicador de Preço"
+
+#: src/Indicator/Indicator.vala:11
+msgid "Shows prices of coins in the users list."
+msgstr "Mostrar preços de moedas na lista do utilizador."
+
+#: src/Indicator/Indicator.vala:22
+msgid "Close"
+msgstr "Fechar"
+
+#: src/Indicator/Indicator.vala:24
+msgid "Composited Icon"
+msgstr "Ícone Composto"
+
+#: src/MainPage/ChartButtonGroup.vala:10
+msgid "Hour"
+msgstr "Hora"
+
+#: src/MainPage/ChartButtonGroup.vala:11 src/Crypt.vala:306
+msgid "Day"
+msgstr "Dia"
+
+#: src/MainPage/ChartButtonGroup.vala:12 src/Crypt.vala:308
+msgid "Week"
+msgstr "Semana"
+
+#: src/Caroline.vala:270
+msgid "High: "
+msgstr "Alto: "
+
+#: src/Caroline.vala:293
+msgid "Low: "
+msgstr "Baixo: "
+
+#: src/Caroline.vala:316
+msgid "Current: "
+msgstr "Atual: "
+
+#: src/Crypt.vala:16
+msgid "A coin is already loading, wait till that finishes!"
+msgstr "Uma moeda já está a carregar, aguarde até esta acabar!"
+
+#: src/Crypt.vala:117 src/Crypt.vala:340
+msgid "Price: "
+msgstr "Preço: "
+
+#: src/Crypt.vala:118 src/Crypt.vala:341
+msgid "Last Update: "
+msgstr "Última atualização: "
+
+#: src/Crypt.vala:119 src/Crypt.vala:342
+msgid "Last Volume: "
+msgstr "Último Volume: "
+
+#: src/Crypt.vala:120 src/Crypt.vala:343
+msgid "Last Volume To: "
+msgstr "Último Volume Para: "
+
+#: src/Crypt.vala:121 src/Crypt.vala:345
+msgid "Last TradeID: "
+msgstr "ID da Última Transação: "
+
+#: src/Crypt.vala:122 src/Crypt.vala:344
+msgid "Volume Day: "
+msgstr "Volume do Dia: "
+
+#: src/Crypt.vala:123 src/Crypt.vala:346
+msgid "Volume Day To: "
+msgstr "Volume do Dia Para: "
+
+#: src/Crypt.vala:124 src/Crypt.vala:348
+msgid "Volume 24 Hour: "
+msgstr "Volume de 24 Horas: "
+
+#: src/Crypt.vala:125 src/Crypt.vala:347
+msgid "Volume 24 Hour To: "
+msgstr "Volume de 24 Horas Para: "
+
+#: src/Crypt.vala:126 src/Crypt.vala:349
+msgid "Open Day: "
+msgstr "Dia de Abertura:"
+
+#: src/Crypt.vala:127 src/Crypt.vala:350
+msgid "Open High Day: "
+msgstr "Dia de Abertura Alto:"
+
+#: src/Crypt.vala:128 src/Crypt.vala:351
+msgid "Open Low Day: "
+msgstr "Dia de Abertura Baixo:"
+
+#: src/Crypt.vala:129 src/Crypt.vala:352
+msgid "Open 24h: "
+msgstr "Abertura 24h: "
+
+#: src/Crypt.vala:130 src/Crypt.vala:353
+msgid "Open High 24h: "
+msgstr "Abertura de 24h Alta:"
+
+#: src/Crypt.vala:131 src/Crypt.vala:354
+msgid "Open Low 24h: "
+msgstr "Abertura de 24h Baixa:"
+
+#: src/Crypt.vala:132 src/Crypt.vala:355
+msgid "Last Market: "
+msgstr "Último Mercado: "
+
+#: src/Crypt.vala:133 src/Crypt.vala:356
+msgid "Change Last 24h: "
+msgstr "Mudanças das últimas 24h: "
+
+#: src/Crypt.vala:134 src/Crypt.vala:357
+msgid "Change Percent Last 24h: "
+msgstr "Mudanças de Percentagem das últimas 24h: "
+
+#: src/Crypt.vala:135 src/Crypt.vala:358
+msgid "Change Day: "
+msgstr "Dia de Mudança: "
+
+#: src/Crypt.vala:136 src/Crypt.vala:359
+msgid "Change Percent Day: "
+msgstr "Variação Percentual do dia: "
+
+#: src/Crypt.vala:137 src/Crypt.vala:360
+msgid "Supply: "
+msgstr "Provisão: "
+
+#: src/Crypt.vala:138 src/Crypt.vala:361
+msgid "Market Cap: "
+msgstr "Valor de Mercado:"
+
+#: src/Crypt.vala:139 src/Crypt.vala:362
+msgid "Total Volume 24h: "
+msgstr "Volume Total em 24h:"
+
+#: src/Crypt.vala:140 src/Crypt.vala:363
+msgid "Total Volume 24h To: "
+msgstr "Volume Total em 24h para: "
+
+#: src/Crypt.vala:230 src/Crypt.vala:840
+msgid "Current News"
+msgstr "Últimas Notícias"
+
+#: src/Crypt.vala:276 src/Crypt.vala:1041 src/Crypt.vala:1062
+msgid "Whoops!"
+msgstr "Opa!"
+
+#: src/Crypt.vala:276 src/Crypt.vala:1041
+msgid ""
+"Looks like you're not connected to a network, after connecting the app will "
+"refresh (based on your refresh rate)!"
+msgstr ""
+"Parece que não está conectado a uma rede, após restabelecer ligação a "
+"aplicação irá atualizar (baseado na sua taxa de atualização)!"
+
+#: src/Crypt.vala:304
+msgid "Minute"
+msgstr "Minuto"
+
+#: src/Crypt.vala:422
+msgid "Quick Price Lookup"
+msgstr "Ver Preço Rápido"
+
+#: src/Crypt.vala:441
+msgid "Set Limit Notifications"
+msgstr "Definir Limite de Notificações"
+
+#: src/Crypt.vala:448
+msgid "Open Detailed Info"
+msgstr "Abrir Detalhes de Informação"
+
+#: src/Crypt.vala:454 src/Wallet.vala:53
+msgid "Delete"
+msgstr "Apagar"
+
+#: src/Crypt.vala:484 src/Wallet.vala:135
+msgid "Coin"
+msgstr "Moeda"
+
+#: src/Crypt.vala:499
+msgid "Current"
+msgstr "Atual"
+
+#: src/Crypt.vala:514
+msgid "High"
+msgstr "Alto"
+
+#: src/Crypt.vala:529
+msgid "Low"
+msgstr "Baixo"
+
+#: src/Crypt.vala:544
+msgid "Change Price (DAY)"
+msgstr "Alterar Preço (DIA)"
+
+#: src/Crypt.vala:559
+msgid "Change % (DAY)"
+msgstr "Alterar % (DIA)"
+
+#: src/Crypt.vala:574
+msgid "Last Market"
+msgstr "Último Mercado"
+
+#: src/Crypt.vala:627 src/Crypt.vala:635
+msgid "Limit Notification for "
+msgstr "Limitar Notificações para "
+
+#: src/Crypt.vala:627 src/Crypt.vala:628 src/Crypt.vala:635 src/Crypt.vala:636
+msgid "!"
+msgstr "!"
+
+#: src/Crypt.vala:628
+msgid " just hit "
+msgstr " acabou de chegar "
+
+#: src/Crypt.vala:636
+msgid " just dropped to "
+msgstr " acabou de cair para "
+
+#: src/Crypt.vala:704
+msgid "Limits for "
+msgstr "Limites para "
+
+#: src/Crypt.vala:708
+msgid "High Limit"
+msgstr "Limite Alto"
+
+#: src/Crypt.vala:711
+msgid "Low Limit"
+msgstr "Limite Baixo"
+
+#: src/Crypt.vala:716
+msgid "Notifications disabled for coin"
+msgstr "Notificações desativadas para a moeda"
+
+#: src/Crypt.vala:717
+msgid "Notifications enabled for coin"
+msgstr "Notificações ativadas para a moeda"
+
+#: src/Crypt.vala:733 src/Crypt.vala:1142 src/Crypt.vala:1207
+#: src/Crypt.vala:1220
+msgid "Save"
+msgstr "Guardar"
+
+#: src/Crypt.vala:926
+msgid "Welcome to Crypt!"
+msgstr "Bem Vindo ao Crypt!"
+
+#: src/Crypt.vala:926
+msgid "Just downloading the latest data, this could take a second or two."
+msgstr ""
+"Os últimos dados estão a ser descarregados, isto pode demorar uns segundos."
+
+#: src/Crypt.vala:932
+msgid "Home"
+msgstr "Casa"
+
+#: src/Crypt.vala:934
+msgid "Bitcoin (BTC)"
+msgstr "Bitcoin (BTC)"
+
+#: src/Crypt.vala:935
+msgid "Litecoin (LTC)"
+msgstr "Litecoin (LTC)"
+
+#: src/Crypt.vala:936
+msgid "Etherum (ETH)"
+msgstr "Etherum (ETH)"
+
+#: src/Crypt.vala:1062
+msgid ""
+"Looks like you're not connected to a network, restart the app after "
+"reconnecting!"
+msgstr ""
+"Parece que não está conectado a uma rede, reinicie a aplicação depois de "
+"restabelecer ligação!"
+
+#: src/Crypt.vala:1119
+msgid "Crypt"
+msgstr "Crypt"
+
+#: src/Crypt.vala:1125
+msgid "Add coin to global list"
+msgstr "Adicionar moeda à lista global"
+
+#: src/Crypt.vala:1128
+msgid "Add Coin"
+msgstr "Adicionar Moeda"
+
+#: src/Crypt.vala:1132
+msgid "Coin Name"
+msgstr "Nome da Moeda"
+
+#: src/Crypt.vala:1137 src/Wallet.vala:299 src/Wallet.vala:366
+msgid "Coin Abbreviation"
+msgstr "Abreviação da Moeda"
+
+#: src/Crypt.vala:1174
+msgid "Fetching Data"
+msgstr "A Pesquisar Dados"
+
+#: src/Crypt.vala:1180
+msgid "Whoops, that isn't a valid coin!"
+msgstr "Opa, isso não é uma moeda válida!"
+
+#: src/Crypt.vala:1191
+msgid "Preferences"
+msgstr "Preferências"
+
+#: src/Crypt.vala:1201
+msgid "Set Default Currency (Tested with USD,GBP,EUR)"
+msgstr "Definir a Moeda Corrente Padrão (Testado com USD,GBP,EUR)"
+
+#: src/Crypt.vala:1214
+msgid "Set the refresh rate (in seconds)"
+msgstr "Definir a taxa de atualização (em segundos)"
+
+#: src/Crypt.vala:1223
+msgid "Settings"
+msgstr "Definições"
+
+#: src/Crypt.vala:1248
+msgid "Settings Saved! Restarting the app is recommended!"
+msgstr "Definições Gravadas! É recomendado reiniciar a aplicação!"
+
+#: src/Crypt.vala:1256
+msgid "Refresh rate saved! Restarting the app is recommended!"
+msgstr "Taxa de atualização gravada! É recomendado reiniciar a aplicação!"
+
+#: src/Crypt.vala:1266
+msgid "Settings schema isn't installed properly, reinstall app."
+msgstr ""
+"Esquema de configurações não está instalado corretamente, volte a instalar "
+"a aplicação."
+
+#: src/Crypt.vala:1299
+msgid "Global Notifications Toggle"
+msgstr "Alternar Notificações Globais"
+
+#: src/Crypt.vala:1336
+msgid "Wallet"
+msgstr "Carteira"
+
+#: src/Wallet.vala:105
+msgid "Date"
+msgstr "Data"
+
+#: src/Wallet.vala:120
+msgid "Buy/Sell"
+msgstr "Comprar/Vender"
+
+#: src/Wallet.vala:150
+msgid "Gain/Loss"
+msgstr "Ganhos/Perdas"
+
+#: src/Wallet.vala:165
+msgid "Quantity"
+msgstr "Quantidade"
+
+#: src/Wallet.vala:180
+msgid "Price Entered"
+msgstr "Preço Inserido"
+
+#: src/Wallet.vala:195
+msgid "Coin Price"
+msgstr "Preço da Moeda"
+
+#: src/Wallet.vala:207 src/Wallet.vala:315
+msgid "Add To Wallet"
+msgstr "Adicionar à Carteira"
+
+#: src/Wallet.vala:216 src/Wallet.vala:363
+msgid "Sell Coin"
+msgstr "Vender Moeda"
+
+#: src/Wallet.vala:285
+msgid "Total Wallet Value: "
+msgstr "Valor Total da Carteira:"
+
+#: src/Wallet.vala:289
+msgid "Total Gain/Losss Value: "
+msgstr "Ganhos Totais/Perda de Valor:"
+
+#: src/Wallet.vala:296
+msgid "Add to Wallet"
+msgstr "Adicionar à Carteira"
+
+#: src/Wallet.vala:303 src/Wallet.vala:370
+msgid "Date Bought"
+msgstr "Data de Compra"
+
+#: src/Wallet.vala:307 src/Wallet.vala:373
+msgid "Coin Amount"
+msgstr "Quantidade de Moedas"
+
+#: src/Wallet.vala:311
+msgid "Coin Price at Purchase"
+msgstr "Preço da Moeda ao Comprar"
+
+#: src/Wallet.vala:377
+msgid "Coin Selling Price"
+msgstr "Preço da Moeda ao Vender"
+
+#: src/Wallet.vala:381
+msgid "Sell"
+msgstr "Vender"

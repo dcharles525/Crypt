@@ -1,0 +1,187 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the extra package.
+# André Barata <andretiagob@protonmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: extra\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-28 18:02+0200\n"
+"PO-Revision-Date: 2020-08-21 00:28+0100\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"Last-Translator: André Barata <andretiagob@protonmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: pt\n"
+
+#: data/com.github.dcharles525.crypt.desktop.in:3
+#: data/com.github.dcharles525.crypt.appdata.xml.in:7
+msgid "Crypt"
+msgstr "Crypt"
+
+#: data/com.github.dcharles525.crypt.desktop.in:4
+msgid "Crypto Market Watcher"
+msgstr "Observador de Mercado de Criptomoedas"
+
+#: data/com.github.dcharles525.crypt.desktop.in:5
+#: data/com.github.dcharles525.crypt.appdata.xml.in:8
+msgid "View and Watch Crypto Currency With Ease!"
+msgstr "Veja e Assista ao Mercado de Criptomoedas com facilidade!"
+
+#: data/com.github.dcharles525.crypt.desktop.in:8
+msgid "com.github.dcharles525.crypt"
+msgstr "com.github.dcharles525.crypt"
+
+#: data/com.github.dcharles525.crypt.desktop.in:12
+msgid "crypto;bitcoin;litecoin;coin;bit;trading;money;"
+msgstr "criptografia;bitcoin;litecoin;moeda;bit;comércio;dinheiro;"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:10
+msgid ""
+"Ever want to view the crypto market in native Vala/GTK? Well look no more "
+"Crypt is all you need to look at charts, prices, and other information while "
+"using less than 50mb of RAM."
+msgstr ""
+"Sempre quis ver o mercado de criptomoedas em Vala/GTK nativo? Não procure "
+"mais porque o Crypt tem tudo o que precisa como gráficos, preços e outras "
+"informações usando menos de 50mb de memória RAM."
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:12
+#: data/com.github.dcharles525.crypt.appdata.xml.in:41
+msgid "Track all your coins and gains with \"Wallet\"!"
+msgstr "Siga todas as suas moedas e ganhos com a \"Carteira\"!"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:13
+msgid "Data refreshes every minute!"
+msgstr "Atualização de dados a cada minuto!"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:14
+msgid "View hourly, daily, and weekly charts!"
+msgstr "Veja gráficos por hora, dia e semana!"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:15
+msgid "Click on candles to inspect information!"
+msgstr "Clique nas velas para inspecionar informação!"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:16
+msgid "View full coin information!"
+msgstr "Veja toda a informação da moeda!"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:17
+msgid "See information in USD, EUR, GBP, and more!!"
+msgstr "Veja informação em USD, EUR, GBP, e mais!!"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:18
+msgid "Change refresh rate to save on data!"
+msgstr "Altere a taxa de atualização para salvar dados!"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:46
+msgid "Danish Translations thanks to @siigdev"
+msgstr "Tradução Dinamarquesa. Obrigado a @siigdev"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:51
+msgid "Limit Notifications (right click on the table)"
+msgstr "Limite de Notificações (clique no botão direito do rato na tabela)"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:52
+msgid "Reworked some dialog UI"
+msgstr "Alguns diálogos da interface de utilizador retrabalhados"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:53
+msgid "Using Gtk.Paned on the home tab so you can make the charts larger"
+msgstr "A usar o Gtk.Paned na aba da casa para que possa aumentar os gráficos"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:54
+#: data/com.github.dcharles525.crypt.appdata.xml.in:62
+msgid "Translation updates @NathanBnm"
+msgstr "Atualizações de tradução. Obrigado @NathanBnm"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:59
+msgid "You can now customize the coin list (right click for menu)"
+msgstr ""
+"Agora pode personalizar a lista de moedas (clique no botão direito do rato "
+"para aceder ao menu)"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:60
+msgid "Lots of stablization efforts"
+msgstr "Muitos esforços de estabilização"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:61
+msgid "Reworked the header"
+msgstr "O cabeçalho foi retrabalhado"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:67
+msgid "App adapts to network condidtions better"
+msgstr "A aplicação adapta-se melhor ás condições de rede"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:68
+msgid "New main coin area (more coin customization coming soon!)"
+msgstr ""
+"Nova área principal de moeda (mais personalizações de moeda a caminho!)"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:69
+msgid "Lots of extra guards put in place to boost stability"
+msgstr "Muitos guardas extra para aumentar a estabilidade"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:70
+#: data/com.github.dcharles525.crypt.appdata.xml.in:75
+msgid "Bug fixes"
+msgstr "Correções"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:80
+msgid "Fixed tons of bugs with help from @NathanBnm"
+msgstr "Muitos erros foram corrigidos com a ajuda de @NathanBnm"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:81
+msgid "Click on candles to see information for that time period"
+msgstr "Clique nas velas para ver informação desse período"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:86
+msgid "Translations (Thanks to @NathanBnm for French translations!)"
+msgstr "Traduções (Obrigado a @NathanBnm pelas traduções em Francês!)"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:87
+msgid "Change refresh rate"
+msgstr "Alterar a taxa de atualização"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:88
+msgid "Change base currency"
+msgstr "Alterar a moeda base"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:89
+msgid "Coin specific news"
+msgstr "Notícias especificas a cada moeda"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:90
+msgid "Close a coin tab with ctrl-w"
+msgstr "Fechar uma aba de moeda com ctrl-w"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:95
+#: data/com.github.dcharles525.crypt.appdata.xml.in:101
+msgid "Complete rewrite of how charts work"
+msgstr "Os gráficos foram completamente retrabalhados"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:96
+#: data/com.github.dcharles525.crypt.appdata.xml.in:102
+msgid "*Slaps Crypt* This bad boy can fit so many bugs in it"
+msgstr "*Estalada no Crypt* Este mauzão consegue conter imensos erros"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:107
+msgid "Better window resizing"
+msgstr "Melhorias no ajuste do tamanho da janela"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:108
+msgid "AppCenter fixes"
+msgstr "Correções no Centro de Aplicações"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:113
+msgid "Initial release"
+msgstr "Lançamento inicial"
+
+#: data/com.github.dcharles525.crypt.appdata.xml.in:141
+msgid "David Johnson"
+msgstr "David Johnson"
